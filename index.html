@@ -3401,6 +3401,8 @@ function splitAddressAndParenMemo(line){
   return { address: cleanQuickAddressLine(s), memo: '' };
 }
 function updateAutoCalcSummary(){
+  const purposeVal = (getPurpose && getPurpose()) || '';
+  const baseDateVal = document.getElementById('baseDate')?.value || '';
   const regionVal = document.getElementById('region')?.value || '';
   const travelVal = document.getElementById('travelDisplay')?.value || '';
   const actualVal = document.getElementById('actualTotal')?.value || '';
@@ -3410,6 +3412,8 @@ function updateAutoCalcSummary(){
   if(!el) return;
   el.innerHTML = [
     '<b>자동입력 확인</b>',
+    '평가목적: ' + (purposeVal || '-'),
+    '기준시점: ' + (baseDateVal || '-'),
     '지역: ' + (regionVal || '-'),
     '지역여비: ' + (travelVal || '-'),
     '실비: 기본 ' + Number(baseActual || 0).toLocaleString('ko-KR') + '원 + 추가필지 ' + parcel + '개 = ' + (actualVal || '-')
@@ -3562,34 +3566,48 @@ function parseQuickInput(){
   const hasQuickAmounts = hasExplicitQuickAmounts(quickAmountMap);
   const keepCalcInputs = hasPropertyCalcInputs() && !hasQuickAmounts;
 
-  const addressRegex = /(서울|경기|인천|부산|대구|광주|대전|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주|특별자치시|특별시|광역시|시|군|구|동|읍|면|리|로|길).*\d/;
-  const purposeRegex = /상속|증여|양수도|양도|매매|저가|특관|특수관계|주식|법인|현물|자산|담보/;
+  const addressRegex = /(서울|경기|인천|부산|대구|광주|대전|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주|특별자치시|특별시|광역시|시|군|구|동|읍|면|리|로|길).*[0-9]/;
+  const amountLabelRegex = /^(최저|하한|최소|최저가|중간|중간값|시세|적정가|기준|현재|최고|상한|최상|최대|최대가)\b/i;
 
   function isAddressLikeLine(line){ return addressRegex.test(String(line || '')); }
   function isFloorAreaOnlyLine(line){ return /층/.test(line) && /\d/.test(line) && !isAddressLikeLine(line.replace(/층/g,'')); }
-  function isCompanyHeader(line){ return /^(하이테크|복수업체|복수|업체|회사)\s*$/i.test(String(line || '').trim()); }
+  function isCompanyHeader(line){ return /^(하이테크|복수업체|복수|업체|회사)\b/i.test(String(line || '').trim()); }
   function looksLikeMetaLine(line){
     const beforeSlash = String(line || '').split('/')[0].trim();
     if(isAddressLikeLine(beforeSlash)) return false;
     const parts = beforeSlash.split(/[,，|]+/).map(v => v.trim()).filter(Boolean);
-    const hasPurpose = parts.some(p => purposeRegex.test(p));
-    const hasDate = parts.some(p => normalizeQuickDate(p) === '현재' || /\d{2}\.\d{2}\.\d{2}/.test(normalizeQuickDate(p)));
+    if(parts.length < 2) return false;
+    const hasDate = parts.some(p => {
+      const d = normalizeQuickDate(p);
+      return d === '현재' || /\d{2}\.\d{2}\.\d{2}/.test(d);
+    });
     const hasMode = parts.some(p => !!mapQuickMode(p));
-    return parts.length >= 2 && (hasPurpose || hasDate || hasMode);
+    return hasDate || hasMode;
   }
 
+  // 일반 페이지의 첫 줄 구조는 복수 페이지와 동일하게
+  // "평가목적, 기준시점, 희망금액 / 기타사항"으로 고정 해석합니다.
   const metaIndex = lines.findIndex(looksLikeMetaLine);
   const metaLine = metaIndex >= 0 ? lines[metaIndex] : '';
   const metaSource = metaLine || lines[0];
   const firstLineForParse = String(metaSource || '').split('/')[0].trim();
   const firstParts = firstLineForParse.split(/[,，|]+/).map(v => v.trim()).filter(Boolean);
-  firstParts.forEach(part => {
-    const p = mapQuickPurpose(part);
+
+  if(firstParts[0]) purpose = mapQuickPurpose(firstParts[0]) || firstParts[0];
+  if(firstParts[1]) {
+    const d = normalizeQuickDate(firstParts[1]);
+    baseDate = d || firstParts[1];
+  }
+  if(firstParts[2]) quoteMode = mapQuickMode(firstParts[2]) || '';
+
+  // 혹시 첫 줄 항목 순서가 조금 흔들려도 기준시점/희망금액은 보완 인식합니다.
+  firstParts.forEach((part, idx) => {
     const m = mapQuickMode(part);
     const d = normalizeQuickDate(part);
-    if((!purpose && p && p !== part) || purposeRegex.test(part)) purpose = p;
+    const isDatePart = d === '현재' || /\d{2}\.\d{2}\.\d{2}/.test(d);
+    if(!baseDate && isDatePart) baseDate = d;
     if(!quoteMode && m) quoteMode = m;
-    if(!baseDate && (d === '현재' || /\d{2}\.\d{2}\.\d{2}/.test(d))) baseDate = d;
+    if(!purpose && idx === 0) purpose = mapQuickPurpose(part) || part;
   });
 
   if(!quoteMode){
@@ -3602,13 +3620,15 @@ function parseQuickInput(){
   expectedAmount = hasQuickAmounts ? '' : extractExpectedAmountFromText(raw);
 
   let firstAddressSeen = false;
+  let floorAreaSeen = false;
   lines.forEach((line, idx) => {
     if(idx === metaIndex) return;
-    const quickAmountLine = parseQuickAmountLine(line);
-    if(quickAmountLine) return;
+    if(line === metaLine) return;
+    if(parseQuickAmountLine(line)) return;
+    if(amountLabelRegex.test(line)) return;
     if(isCompanyHeader(line)) return;
 
-    if(isAddressLikeLine(line)){
+    if(isAddressLikeLine(line) && !floorAreaSeen){
       firstAddressSeen = true;
       const split = splitAddressAndParenMemo(line);
       if(split.address) addressLines.push(split.address);
@@ -3620,11 +3640,17 @@ function parseQuickInput(){
       if(fa.floor) floor = fa.floor;
       if(fa.area) area = fa.area;
       if(fa.useType) useType = fa.useType;
+      floorAreaSeen = true;
       return;
     }
 
-    if(firstAddressSeen && !looksLikeMetaLine(line)) memoParts.push(line);
+    // 복수 페이지와 같은 기준: 주소/층면적 이후에 남는 내용은 전달문구 기타사항으로 반영
+    if(firstAddressSeen || floorAreaSeen) memoParts.push(line);
   });
+
+  // 첫 줄의 '/' 뒤 내용은 내부 참고용 메모입니다.
+  // 예: "유류분 반환소송, 현재, 최고 / 단독다가구"에서 "단독다가구"는 전달문구 어디에도 반영하지 않습니다.
+  const metaSlashMemo = '';
 
   if(purpose) selectPurposeByText(purpose);
   if(baseDate) document.getElementById('baseDate').value = baseDate;
@@ -3637,6 +3663,7 @@ function parseQuickInput(){
     const hit = findTravelRow(regionCandidate);
     document.getElementById('region').value = hit ? (hit.full || hit.city || hit.label) : regionCandidate;
   }
+
   if(floor) document.getElementById('floor').value = floor;
   if(area) document.getElementById('area').value = area;
   if(document.getElementById('useType')) document.getElementById('useType').value = useType || '';
@@ -3644,7 +3671,7 @@ function parseQuickInput(){
   else if(expectedAmount && !keepCalcInputs) setMidAmountFromExpected(expectedAmount);
   document.getElementById('memo').value = memoParts.join(', ');
 
-  const internalMemo = [metaLine && metaLine.includes('/') ? metaLine.split('/').slice(1).join('/').trim() : ''].filter(Boolean).join(', ');
+  const internalMemo = [metaSlashMemo && /^(메모|내\s*메모|내부\s*메모|무시|---|-)$/.test(metaSlashMemo) ? metaSlashMemo : ''].filter(Boolean).join(', ');
   const preview = [
     '✅ 자동반영 결과','',
     '평가목적: ' + (purpose || ''),
