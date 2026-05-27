@@ -993,7 +993,8 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
           </div>
 
           <div class="btns">
-            <button onclick="parseQuickInput()">재반영</button>
+            <button onclick="parseQuickInput()">반영</button>
+            <button class="light" onclick="resetPropertyInfoAndMsg()">초기화</button>
             <button class="light" onclick="toggleManualFields()">여비 수정</button>
           </div>
 
@@ -1029,7 +1030,7 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
         <div class="quickMsgPane">
           <div class="sectionTitle"><span class="badge">4</span> 전달 문구</div>
           <input id="excludeSpecialCheck" type="checkbox" onchange="makeMsg()" style="display:none;">
-          <div id="msg" class="output">계산하기를 누르면 멘트가 생성됩니다.</div>
+          <div id="msg" class="output" contenteditable="true">계산하기를 누르면 멘트가 생성됩니다.</div>
           <div class="btns">
             <button onclick="copyMsg()">복사</button>
             <button id="excludeSpecialBtn" class="specialToggleBtn" onclick="toggleExcludeSpecial()">특용비 제외</button>
@@ -1809,6 +1810,7 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
             </div>
             <div class="btns multiInfoBtns">
               <button onclick="parseMultiQuickInput()">반영</button>
+              <button class="light" onclick="resetMultiInfoAndMsg()">초기화</button>
             </div>
 
             <div class="quickParseBox" id="multiQuickParsePreview" style="display:none;"></div>
@@ -1924,7 +1926,7 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
         <section class="card multiMsgCard">
           <div class="sectionTitle"><span class="badge">5</span> 전달 문구</div>
           <input id="multiExcludeSpecialCheck" type="checkbox" onchange="multiMakeMsg()" style="display:none;">
-          <div id="multiMsg" class="output">내용을 입력하면 안내 멘트가 생성됩니다.</div>
+          <div id="multiMsg" class="output" contenteditable="true">내용을 입력하면 안내 멘트가 생성됩니다.</div>
           <div class="btns">
             <button onclick="multiCopyMsg()">복사</button>
             <button id="multiExcludeSpecialBtn" class="specialToggleBtn" onclick="multiToggleExcludeSpecial()">특용비 제외</button>
@@ -2599,6 +2601,21 @@ function resetAll(){
   syncExcludeSpecialButton();
   calculate();
 }
+
+function resetPropertyInfoAndMsg(){
+  const quick = document.getElementById('quickInput');
+  if(quick) quick.value = '';
+
+  // 이전 자동추출 값이 전달문구에 남지 않도록 기본정보/금액/선택값을 함께 초기화
+  resetAll();
+
+  const msg = document.getElementById('msg');
+  if(msg) msg.textContent = '계산하기를 누르면 멘트가 생성됩니다.';
+
+  const preview = document.getElementById('quickParsePreview');
+  if(preview) preview.textContent = '';
+}
+
 function renderFeeTable(){
   const body = document.getElementById('feeBody');
   body.innerHTML = feeTable.map(r => `<tr>
@@ -3202,12 +3219,9 @@ function multiMakeMsg(){
   lines.push('');
   lines.push('');
 
-  lines.push('*복수평가 시 복수평가액에 따라 평가액 및 수수료 변동 있을 수 있습니다.');
-  const hasSpecial = multiRows.some(r=>r.special>0);
-  if(hasSpecial){
-    lines.push('*챙겨드리는 특용비는 고객님&외부에 유출되지 않게 부탁드립니다:)');
-    lines.push('*수수료 조율로 특용비 할증/할인 가능합니다.');
-  }
+  lines.push('*특용비는 의뢰인 및 외부에 유출 주의 부탁드립니다');
+  lines.push('*복수 여부는 세무상 판단사항이며, 요청시 복수로 진행됩니다');
+  lines.push('*본평가 후 평가금액, 수수료 및 특용비에 일부 변동이 생길 수 있습니다');
   let text = lines.join('\n').trimEnd();
   if(document.getElementById('multiExcludeSpecialCheck')?.checked){
     text = removeSpecialFeeLines(text);
@@ -3239,6 +3253,18 @@ function multiReset(){
   if(chk) chk.checked = false;
   syncMultiExcludeSpecialButton();
   multiCalculate();
+}
+
+
+function resetMultiInfoAndMsg(){
+  // 기존 층/면적/기타사항/금액이 새 전달문구에 섞이지 않도록 복수 입력값 전체 초기화
+  multiReset();
+
+  const msg = document.getElementById('multiMsg');
+  if(msg) msg.textContent = '내용을 입력하면 안내 멘트가 생성됩니다.';
+
+  const preview = document.getElementById('multiQuickParsePreview');
+  if(preview) preview.textContent = '';
 }
 
 ['multiRegion','multiBaseActual','multiParcelCount','multiTarget','multiFloor','multiArea','multiUseType','multiBaseDate','multiPurposeCustom','multiMemo'].forEach(id => {
