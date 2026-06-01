@@ -959,6 +959,90 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
   line-height:1.45;
 }
 
+
+/* 수수료 단독 계산 페이지: 기존 일반/복수/무형/접수글 페이지와 분리 */
+#page_feeOnly .feeOnlyLayout {
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+  gap:16px;
+  align-items:stretch;
+  width:100%;
+  min-width:0;
+}
+#page_feeOnly .feeOnlyCard { min-width:0; }
+#page_feeOnly .feeOnlyNoticeDetails {
+  margin-bottom:14px;
+}
+#page_feeOnly .feeOnlyNoticeDetails summary,
+#page_feeOnly .feeOnlyFormulaDetails summary {
+  cursor:pointer;
+  font-weight:900;
+}
+#page_feeOnly .feeOnlyFormulaDetails {
+  margin-top:12px;
+}
+#page_feeOnly .feeOnlyFormulaDetails .feeOnlyHelpBox {
+  margin-top:10px;
+}
+#page_feeOnly .feeOnlyCard {
+  display:flex;
+  flex-direction:column;
+}
+#page_feeOnly .feeOnlyResultBox {
+  flex:1;
+}
+
+#page_feeOnly .feeOnlyResultBox {
+  background:#0f172a;
+  color:#fff;
+  border-radius:15px;
+  padding:17px;
+  line-height:1.8;
+  min-height:260px;
+  white-space:pre-wrap;
+}
+#page_feeOnly .feeOnlyResultBox b { color:#fde68a; }
+#page_feeOnly .feeOnlyHelpBox {
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:12px;
+  color:#334155;
+  line-height:1.6;
+  font-size:13px;
+  margin-top:12px;
+}
+#page_feeOnly .feeOnlyKpis {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:12px;
+}
+#page_feeOnly .feeOnlyKpi {
+  border:1px solid #bfdbfe;
+  background:#eff6ff;
+  border-radius:14px;
+  padding:13px;
+}
+#page_feeOnly .feeOnlyKpi .name { font-size:12px; color:#475569; }
+#page_feeOnly .feeOnlyKpi .val { margin-top:5px; font-size:20px; font-weight:900; color:#111827; }
+@media(max-width:980px){
+  #page_feeOnly .feeOnlyLayout { grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:10px; }
+  #page_feeOnly .feeOnlyKpis { grid-template-columns:1fr; }
+}
+
+/* 인덱스 줄 배치: 웹 1줄 / 모바일 2줄 */
+.mobileIndexBreak { display:none; }
+@media(min-width:641px){
+  .typeIndex { flex-wrap:nowrap; align-items:center; }
+  .typeTab { white-space:nowrap; }
+}
+@media(max-width:640px){
+  .mobileIndexBreak { display:block; flex-basis:100%; height:0; }
+  .typeIndex { justify-content:flex-start; }
+  .typeTab { padding:8px 10px; font-size:13px; }
+}
+
 </style>
 </head>
 <body>
@@ -967,10 +1051,80 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
     <button class="typeTab property active" onclick="showTypePage('property')">일반</button>
     <button class="typeTab property" onclick="showTypePage('multi')">복수</button>
     <button class="typeTab property" onclick="showTypePage('rights')">무형</button>
+    <button class="typeTab property" onclick="showTypePage('feeOnly')">수수료</button>
+    <span class="mobileIndexBreak" aria-hidden="true"></span>
     <button class="typeTab property" onclick="showTypePage('receiveProperty')">일반접수</button>
     <button class="typeTab property" onclick="showTypePage('receiveMulti')">복수접수</button>
     <button class="typeTab property" onclick="showTypePage('receiveRights')">무형접수</button>
   </div>
+
+
+
+  <section id="page_feeOnly" class="typePage">
+    <details class="modeNotice feeOnlyNoticeDetails">
+      <summary>[수수료] 안내 열기</summary>
+      <div style="margin-top:8px;">
+        급하게 수수료만 계산할 때 사용하는 단독 계산 페이지입니다. 기존 [일반] 페이지의 지역/여비표를 그대로 사용합니다.
+      </div>
+    </details>
+    <div class="feeOnlyLayout">
+      <section class="card feeOnlyCard">
+        <div class="sectionTitle"><span class="badge">1</span> 수수료 입력</div>
+        <div class="formGrid">
+          <div class="field">
+            <label>순수수료</label>
+            <input id="feeOnlyPure" class="userInput" placeholder="예: 158000" oninput="feeOnlyCalculate()">
+            <div class="help">입력한 숫자를 원 단위 금액으로 계산합니다.</div>
+          </div>
+          <div class="field">
+            <label>할증</label>
+            <select id="feeOnlyMarkup" class="userInput" onchange="feeOnlyCalculate()"></select>
+          </div>
+          <div class="field fullField">
+            <label>지역 / 여비</label>
+            <input id="feeOnlyRegion" class="userInput" list="regionList" placeholder="예: 서울, 부산, 세종, 영통, 대구 중구" oninput="feeOnlyApplyTravel()">
+            <input id="feeOnlyTravel" readonly placeholder="지역을 입력하면 여비가 자동 반영됩니다." style="margin-top:6px;">
+          </div>
+          <div class="field">
+            <label>실비</label>
+            <input id="feeOnlyActual" class="userInput" placeholder="필요시 입력" oninput="feeOnlyCalculate()">
+          </div>
+          <div class="field">
+            <label>추가비용 1</label>
+            <input id="feeOnlyExtra" class="userInput" placeholder="필요시 입력" oninput="feeOnlyCalculate()">
+          </div>
+          <div class="field">
+            <label>추가비용 2</label>
+            <input id="feeOnlyExtra2" class="userInput" placeholder="필요시 입력" oninput="feeOnlyCalculate()">
+          </div>
+        </div>
+        <div class="btns">
+          <button class="dark" onclick="feeOnlyCalculate()">계산</button>
+          <button class="light" onclick="feeOnlyReset()">초기화</button>
+        </div>
+        <details class="feeOnlyFormulaDetails">
+          <summary>계산 방식 보기</summary>
+          <div class="feeOnlyHelpBox">
+            총 수수료 = (순수수료 × 할증) + 여비 + 실비 + 추가비용1 + 추가비용2<br>
+            VAT 포함 총 수수료 = 총 수수료 × 1.1<br>
+            금액은 천원 단위로 올림 표시합니다.
+          </div>
+        </details>
+      </section>
+
+      <section class="card feeOnlyCard">
+        <div class="sectionTitle"><span class="badge">2</span> 계산 결과</div>
+        <div class="feeOnlyKpis">
+          <div class="feeOnlyKpi"><div class="name">총 수수료</div><div class="val" id="feeOnlyTotalView">-</div></div>
+          <div class="feeOnlyKpi"><div class="name">VAT 포함 총 수수료</div><div class="val" id="feeOnlyVatView">-</div></div>
+        </div>
+        <div id="feeOnlyResult" class="feeOnlyResultBox">수수료를 입력하면 계산 결과가 표시됩니다.</div>
+        <div class="btns">
+          <button onclick="feeOnlyCopyResult()">결과 복사</button>
+        </div>
+      </section>
+    </div>
+  </section>
 
   <section id="page_property" class="typePage active">
   <div class="grid propertyGrid">
@@ -3619,7 +3773,7 @@ function parseQuickInput(){
   const firstLineForParse = String(metaSource || '').split('/')[0].trim();
   const firstParts = firstLineForParse.split(/[,，|]+/).map(v => v.trim()).filter(Boolean);
 
-  if(firstParts[0]) purpose = mapQuickPurpose(firstParts[0]) || firstParts[0];
+  if(firstParts[0]) purpose = firstParts[0];
   if(firstParts[1]) {
     const d = normalizeQuickDate(firstParts[1]);
     baseDate = d || firstParts[1];
@@ -3633,7 +3787,7 @@ function parseQuickInput(){
     const isDatePart = d === '현재' || /\d{2}\.\d{2}\.\d{2}/.test(d);
     if(!baseDate && isDatePart) baseDate = d;
     if(!quoteMode && m) quoteMode = m;
-    if(!purpose && idx === 0) purpose = mapQuickPurpose(part) || part;
+    if(!purpose && idx === 0) purpose = part;
   });
 
   if(!quoteMode){
@@ -5596,6 +5750,96 @@ function receiveMultiHighlightOutput(plain){
     return receiveMultiEscapeHtml(line);
   }).join('\n');
 }
+
+
+/* 수수료 단독 계산 페이지 전용 스크립트: 기존 일반 페이지 함수/ID 미수정 */
+function feeOnlyInitMarkup(){
+  const sel = document.getElementById('feeOnlyMarkup');
+  if(!sel || sel.options.length) return;
+  for(let v=100; v<=200; v+=5){
+    const value = (v/100).toFixed(2).replace(/0$/,'').replace(/\.0$/,'');
+    const opt = document.createElement('option');
+    opt.value = String(v/100);
+    opt.textContent = value;
+    if(v === 100) opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+function feeOnlyParseMoney(value){
+  let raw = String(value || '').trim();
+  if(!raw) return 0;
+  raw = raw.replace(/,/g,'').replace(/\s+/g,'');
+  const numMatch = raw.match(/-?\d+(?:\.\d+)?/);
+  if(!numMatch) return 0;
+  const num = Number(numMatch[0]) || 0;
+  if(/억/.test(raw)) return num * 100000000;
+  if(/만원|만/.test(raw)) return num * 10000;
+  // 숫자만 입력하면 원 단위 그대로 계산합니다.
+  return num;
+}
+function feeOnlyFormatWon(n){
+  return (Math.round(Number(n)||0)).toLocaleString('ko-KR') + '원';
+}
+function feeOnlyFormatMan(n){
+  const man = Math.ceil((Number(n)||0)/1000)*1000/10000;
+  const txt = (Math.round(man*10)/10).toLocaleString('ko-KR', {maximumFractionDigits:1});
+  return txt + '만원';
+}
+function feeOnlyApplyTravel(){
+  const regionEl = document.getElementById('feeOnlyRegion');
+  const travelEl = document.getElementById('feeOnlyTravel');
+  if(!regionEl || !travelEl) return 0;
+  const hit = typeof findTravelRow === 'function' ? findTravelRow(regionEl.value) : null;
+  const travel = hit ? (Number(hit.cost)||0) : 0;
+  const hitName = hit ? (hit.full || hit.city || hit.label || '') : '';
+  travelEl.value = hitName ? `${hitName} / ${feeOnlyFormatWon(travel)}` : '';
+  feeOnlyCalculate();
+  return travel;
+}
+function feeOnlyCurrentTravel(){
+  const hit = typeof findTravelRow === 'function' ? findTravelRow(document.getElementById('feeOnlyRegion')?.value || '') : null;
+  return hit ? (Number(hit.cost)||0) : 0;
+}
+function feeOnlyCalculate(){
+  feeOnlyInitMarkup();
+  const pure = feeOnlyParseMoney(document.getElementById('feeOnlyPure')?.value || '');
+  const markup = Number(document.getElementById('feeOnlyMarkup')?.value || 1) || 1;
+  const travel = feeOnlyCurrentTravel();
+  const actual = feeOnlyParseMoney(document.getElementById('feeOnlyActual')?.value || '');
+  const extra = feeOnlyParseMoney(document.getElementById('feeOnlyExtra')?.value || '');
+  const extra2 = feeOnlyParseMoney(document.getElementById('feeOnlyExtra2')?.value || '');
+  const totalRaw = (pure * markup) + travel + actual + extra + extra2;
+  const total = typeof ceil1000 === 'function' ? ceil1000(totalRaw) : Math.ceil(totalRaw/1000)*1000;
+  const vatTotal = typeof ceil1000 === 'function' ? ceil1000(total * 1.1) : Math.ceil((total*1.1)/1000)*1000;
+
+  const totalView = document.getElementById('feeOnlyTotalView');
+  const vatView = document.getElementById('feeOnlyVatView');
+  const result = document.getElementById('feeOnlyResult');
+  if(totalView) totalView.textContent = feeOnlyFormatMan(total);
+  if(vatView) vatView.textContent = feeOnlyFormatMan(vatTotal);
+  if(result) {
+    result.textContent = `순수수료: ${feeOnlyFormatMan(pure)}\n할증: ${markup}\n여비: ${feeOnlyFormatMan(travel)}\n실비: ${actual ? feeOnlyFormatMan(actual) : '-'}\n추가비용 1: ${extra ? feeOnlyFormatMan(extra) : '-'}\n추가비용 2: ${extra2 ? feeOnlyFormatMan(extra2) : '-'}\n\n총 수수료: ${feeOnlyFormatMan(total)} (${feeOnlyFormatWon(total)})\nVAT 포함 총 수수료: ${feeOnlyFormatMan(vatTotal)} (${feeOnlyFormatWon(vatTotal)})`;
+  }
+}
+function feeOnlyReset(){
+  ['feeOnlyPure','feeOnlyRegion','feeOnlyTravel','feeOnlyActual','feeOnlyExtra','feeOnlyExtra2'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  const markup = document.getElementById('feeOnlyMarkup');
+  if(markup) markup.value = '1';
+  const totalView = document.getElementById('feeOnlyTotalView');
+  const vatView = document.getElementById('feeOnlyVatView');
+  const result = document.getElementById('feeOnlyResult');
+  if(totalView) totalView.textContent = '-';
+  if(vatView) vatView.textContent = '-';
+  if(result) result.textContent = '수수료를 입력하면 계산 결과가 표시됩니다.';
+}
+function feeOnlyCopyResult(){
+  const txt = document.getElementById('feeOnlyResult')?.textContent || '';
+  navigator.clipboard.writeText(txt).then(() => alert('복사되었습니다.'));
+}
+feeOnlyInitMarkup();
 
 </script>
 </body>
