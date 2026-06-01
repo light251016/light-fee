@@ -1043,6 +1043,322 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
   .typeTab { padding:8px 10px; font-size:13px; }
 }
 
+
+/* 일반접수 스프레드시트 붙여넣기용 */
+#page_receiveProperty .receiveSheetBox {
+  margin-top:14px;
+  border:1px solid #c7d2fe;
+  background:#eef2ff;
+  border-radius:16px;
+  padding:12px;
+}
+#page_receiveProperty .receiveSheetTitle {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  font-weight:900;
+  color:#1e1b4b;
+  margin-bottom:10px;
+}
+#page_receiveProperty .receiveSheetScroll {
+  overflow:auto;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+}
+#page_receiveProperty .receiveSheetTable {
+  min-width:1250px;
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+}
+#page_receiveProperty .receiveSheetTable th,
+#page_receiveProperty .receiveSheetTable td {
+  border:1px solid #e5e7eb;
+  padding:6px;
+  text-align:center;
+  vertical-align:middle;
+}
+#page_receiveProperty .receiveSheetTable th {
+  background:#fff100;
+  color:#111827;
+  font-weight:900;
+}
+#page_receiveProperty .receiveSheetTable input {
+  min-width:80px;
+  padding:7px 8px;
+  font-size:13px;
+  border-radius:8px;
+}
+#page_receiveProperty .receiveSheetPaste {
+  margin-top:10px;
+  min-height:72px;
+  font-size:13px;
+  background:#fff;
+  color:#111827;
+  border:1px dashed #94a3b8;
+}
+
+
+/* 일반접수 보기 편의 보강: 자동 높이, 스프레드시트 칸 넓이, 지역 구분표 */
+#page_receiveProperty .receiveInputCard,
+#page_receiveProperty .receiveOutputCard {
+  min-height:auto !important;
+  align-self:start;
+}
+#page_receiveProperty #receiveInput {
+  min-height:180px !important;
+  height:auto;
+  flex:unset !important;
+  overflow:hidden;
+}
+#page_receiveProperty #receiveOutput {
+  min-height:260px !important;
+  flex:unset !important;
+  overflow:visible;
+}
+#page_receiveProperty .receiveSheetTable {
+  min-width:1740px !important;
+  table-layout:auto;
+}
+#page_receiveProperty .receiveSheetTable th,
+#page_receiveProperty .receiveSheetTable td {
+  white-space:nowrap;
+}
+#page_receiveProperty .receiveSheetTable input {
+  width:100%;
+  min-width:120px;
+  white-space:nowrap;
+  overflow:visible;
+  text-overflow:clip;
+}
+#page_receiveProperty #receiveSheet_reportNo { min-width:150px; }
+#page_receiveProperty #receiveSheet_deadline,
+#page_receiveProperty #receiveSheet_depositDate,
+#page_receiveProperty #receiveSheet_doneDate { min-width:120px; }
+#page_receiveProperty #receiveSheet_customerManager,
+#page_receiveProperty #receiveSheet_appraiser { min-width:120px; }
+#page_receiveProperty #receiveSheet_client { min-width:150px; }
+#page_receiveProperty #receiveSheet_region { min-width:120px; }
+#page_receiveProperty #receiveSheet_depositStatus { min-width:170px; }
+#page_receiveProperty .receiveRegionGuide {
+  margin-top:16px;
+}
+#page_receiveProperty .receiveRegionGuide summary {
+  cursor:pointer;
+  font-weight:900;
+  padding:12px 14px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+}
+#page_receiveProperty .receiveRegionGuideInner {
+  padding:12px 0 0;
+}
+#page_receiveProperty .receiveRegionGuideGrid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+#page_receiveProperty .receiveRegionGuideBox {
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:12px;
+  line-height:1.65;
+  font-size:13px;
+  color:#334155;
+}
+#page_receiveProperty .receiveRegionGuideBox b { color:#111827; }
+@media(max-width:980px) and (pointer:coarse){
+  #page_receiveProperty .receiveRegionGuideGrid { grid-template-columns:1fr; }
+}
+
+
+/* 복수접수 스프레드시트 붙여넣기용 */
+#page_receiveMulti .receiveMultiSheetBox {
+  margin-top:14px;
+  border:1px solid #dbeafe;
+  background:#f8fbff;
+  border-radius:16px;
+  padding:12px;
+  min-width:0;
+}
+#page_receiveMulti .receiveMultiSheetTitle {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+  color:#1e3a8a;
+}
+#page_receiveMulti .receiveMultiSheetScroll { width:100%; overflow-x:auto; }
+#page_receiveMulti .receiveMultiSheetTable {
+  width:max-content;
+  min-width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+}
+#page_receiveMulti .receiveMultiSheetTable th,
+#page_receiveMulti .receiveMultiSheetTable td {
+  border:1px solid #d1d5db;
+  padding:6px;
+  white-space:nowrap;
+}
+#page_receiveMulti .receiveMultiSheetTable th { background:#eff6ff; font-weight:900; }
+#page_receiveMulti .receiveMultiSheetTable input {
+  min-width:110px;
+  width:100%;
+  padding:7px 8px;
+  font-size:13px;
+}
+#page_receiveMulti .receiveMultiSheetTable input[id$="_reportNo"] { min-width:155px; }
+#page_receiveMulti .receiveMultiSheetTable input[id$="_deadline"],
+#page_receiveMulti .receiveMultiSheetTable input[id$="_depositDate"],
+#page_receiveMulti .receiveMultiSheetTable input[id$="_assignedDate"],
+#page_receiveMulti .receiveMultiSheetTable input[id$="_doneDate"] { min-width:120px; }
+#page_receiveMulti .receiveMultiSheetTable input[id$="_client"] { min-width:150px; }
+#page_receiveMulti .receiveMultiSheetTable input[id$="_appraiser"],
+#page_receiveMulti .receiveMultiSheetTable input[id$="_customerManager"] { min-width:120px; }
+#page_receiveMulti .receiveMultiSheetTable input[id$="_region"] { min-width:120px; }
+#page_receiveMulti .receiveMultiSheetTable input[id$="_depositStatus"] { min-width:150px; }
+#page_receiveMulti .receiveMultiSheetPaste {
+  margin-top:8px;
+  width:100%;
+  min-height:52px;
+  font-size:12px !important;
+  background:#fff;
+}
+@media(max-width:980px) and (pointer:coarse){
+  #page_receiveMulti .receiveMultiSheetTitle { align-items:flex-start; flex-direction:column; }
+}
+
+
+/* 무형접수 스프레드시트 붙여넣기용 */
+#page_receiveRights .receiveRightsSheetBox {
+  margin-top:14px;
+  border:1px solid #bfdbfe;
+  background:#f8fbff;
+  border-radius:16px;
+  padding:12px;
+}
+#page_receiveRights .receiveRightsSheetTitle {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  color:#1e3a8a;
+  margin-bottom:10px;
+}
+#page_receiveRights .receiveRightsSheetScroll { width:100%; overflow-x:auto; }
+#page_receiveRights .receiveRightsSheetTable {
+  width:max-content;
+  min-width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+  table-layout:auto;
+}
+#page_receiveRights .receiveRightsSheetTable th,
+#page_receiveRights .receiveRightsSheetTable td {
+  border:1px solid #dbeafe;
+  padding:6px;
+  white-space:nowrap;
+}
+#page_receiveRights .receiveRightsSheetTable th { background:#eff6ff; font-weight:900; }
+#page_receiveRights .receiveRightsSheetTable input {
+  min-width:120px;
+  width:100%;
+  border-radius:8px;
+  padding:7px 8px;
+  font-size:13px;
+}
+#page_receiveRights #receiveRightsSheet_reportNo { min-width:155px; }
+#page_receiveRights #receiveRightsSheet_deadline,
+#page_receiveRights #receiveRightsSheet_depositDate,
+#page_receiveRights #receiveRightsSheet_assignedDate,
+#page_receiveRights #receiveRightsSheet_doneDate { min-width:120px; }
+#page_receiveRights #receiveRightsSheet_client { min-width:150px; }
+#page_receiveRights #receiveRightsSheet_targetType { min-width:160px; }
+#page_receiveRights #receiveRightsSheet_region { min-width:110px; }
+#page_receiveRights #receiveRightsSheet_depositStatus { min-width:150px; }
+#page_receiveRights .receiveRightsSheetPaste {
+  width:100%;
+  min-height:58px;
+  margin-top:8px;
+  font-size:12px;
+  line-height:1.5;
+  background:#fff;
+}
+@media(max-width:980px) and (pointer:coarse){
+  #page_receiveRights .receiveRightsSheetTitle { align-items:flex-start; flex-direction:column; }
+}
+
+
+/* 수수료 페이지 계산기/희망금액 맞추기 보강 */
+#page_feeOnly .feeOnlyMiniDivider {
+  border:0; border-top:1px solid var(--line); margin:16px 0;
+}
+#page_feeOnly .feeOnlyCalcGrid {
+  display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:10px; margin-top:10px;
+}
+#page_feeOnly .feeOnlyRateBox {
+  background:#f8fafc; border:1px solid #e5e7eb; border-radius:13px; padding:11px;
+}
+#page_feeOnly .feeOnlyRateBox .name { font-size:12px; color:#475569; font-weight:900; }
+#page_feeOnly .feeOnlyRateBox .val { margin-top:5px; font-size:17px; color:#111827; font-weight:900; }
+#page_feeOnly .feeOnlyGoalBox {
+  margin-top:14px; padding:13px; border:1px solid #bfdbfe; background:#eff6ff; border-radius:15px;
+}
+#page_feeOnly .feeOnlyNeededBox {
+  margin-top:10px; background:#fff; border:1px solid #dbeafe; border-radius:13px; padding:12px;
+  font-size:18px; font-weight:900; color:#111827;
+}
+@media(max-width:980px){
+  #page_feeOnly .feeOnlyCalcGrid { grid-template-columns:repeat(3, minmax(0, 1fr)); gap:8px; }
+  #page_feeOnly .feeOnlyRateBox { padding:9px; }
+  #page_feeOnly .feeOnlyRateBox .val { font-size:14px; }
+}
+
+
+/* 수수료 페이지 모바일 표시 보강: 요율 계산 결과 세로 정렬 / VAT 총액 강조 */
+#page_feeOnly .feeOnlyVatKpi {
+  border-color:#facc15 !important;
+  background:#fff7ed !important;
+  box-shadow:0 0 0 2px rgba(250,204,21,.20);
+}
+#page_feeOnly .feeOnlyVatKpi .name {
+  color:#9a3412 !important;
+  font-weight:900;
+}
+#page_feeOnly .feeOnlyVatKpi .val,
+#page_feeOnly #feeOnlyVatView {
+  color:#dc2626 !important;
+  font-size:24px;
+  font-weight:1000;
+}
+@media(max-width:640px), (max-width:980px) and (pointer:coarse){
+  #page_feeOnly .feeOnlyCalcGrid {
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+  #page_feeOnly .feeOnlyRateBox {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  #page_feeOnly .feeOnlyRateBox .val {
+    margin-top:0;
+    text-align:right;
+    font-size:16px !important;
+  }
+  #page_feeOnly #feeOnlyVatView {
+    font-size:22px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1061,14 +1377,22 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
 
 
   <section id="page_feeOnly" class="typePage">
-    <details class="modeNotice feeOnlyNoticeDetails">
-      <summary>[수수료] 안내 열기</summary>
-      <div style="margin-top:8px;">
-        급하게 수수료만 계산할 때 사용하는 단독 계산 페이지입니다. 기존 [일반] 페이지의 지역/여비표를 그대로 사용합니다.
-      </div>
-    </details>
     <div class="feeOnlyLayout">
       <section class="card feeOnlyCard">
+        <div class="sectionTitle"><span class="badge">계산기</span> 수수료 요율 계산기</div>
+        <div class="field">
+          <label>평가금액 전체 입력</label>
+          <input id="feeOnlyEvalAmount" class="userInput" placeholder="예: 236000000" oninput="feeOnlyCalcRates()">
+          <div class="help">평가금액을 원 단위 숫자로 입력하면 기존 일반 페이지 요율표 기준으로 하한/기준/상한 수수료를 계산합니다.</div>
+        </div>
+        <div class="feeOnlyCalcGrid">
+          <div class="feeOnlyRateBox"><div class="name">하한요율</div><div class="val" id="feeOnlyLowerRateView">-</div></div>
+          <div class="feeOnlyRateBox"><div class="name">기준요율</div><div class="val" id="feeOnlyBaseRateView">-</div></div>
+          <div class="feeOnlyRateBox"><div class="name">상한요율</div><div class="val" id="feeOnlyUpperRateView">-</div></div>
+        </div>
+
+        <hr class="feeOnlyMiniDivider">
+
         <div class="sectionTitle"><span class="badge">1</span> 수수료 입력</div>
         <div class="formGrid">
           <div class="field">
@@ -1102,28 +1426,46 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
           <button class="dark" onclick="feeOnlyCalculate()">계산</button>
           <button class="light" onclick="feeOnlyReset()">초기화</button>
         </div>
-        <details class="feeOnlyFormulaDetails">
-          <summary>계산 방식 보기</summary>
-          <div class="feeOnlyHelpBox">
-            총 수수료 = (순수수료 × 할증) + 여비 + 실비 + 추가비용1 + 추가비용2<br>
-            VAT 포함 총 수수료 = 총 수수료 × 1.1<br>
-            금액은 천원 단위로 올림 표시합니다.
-          </div>
-        </details>
       </section>
 
       <section class="card feeOnlyCard">
         <div class="sectionTitle"><span class="badge">2</span> 계산 결과</div>
         <div class="feeOnlyKpis">
           <div class="feeOnlyKpi"><div class="name">총 수수료</div><div class="val" id="feeOnlyTotalView">-</div></div>
-          <div class="feeOnlyKpi"><div class="name">VAT 포함 총 수수료</div><div class="val" id="feeOnlyVatView">-</div></div>
+          <div class="feeOnlyKpi feeOnlyVatKpi"><div class="name">VAT 포함 총 수수료</div><div class="val" id="feeOnlyVatView">-</div></div>
         </div>
         <div id="feeOnlyResult" class="feeOnlyResultBox">수수료를 입력하면 계산 결과가 표시됩니다.</div>
         <div class="btns">
           <button onclick="feeOnlyCopyResult()">결과 복사</button>
         </div>
+
+        <div class="feeOnlyGoalBox">
+          <div class="sectionTitle" style="margin-bottom:10px;"><span class="badge">3</span> 희망금액 맞추기</div>
+          <div class="field">
+            <label>희망 수수료(VAT 포함)</label>
+            <input id="feeOnlyTargetVat" class="userInput" placeholder="예: 3000000" oninput="feeOnlyCalculate()">
+          </div>
+          <div class="feeOnlyNeededBox">필요금액: <span id="feeOnlyNeededView">-</span></div>
+          <div class="help" style="margin-top:8px;">현재 1번 입력값을 기준으로, VAT 포함 총 수수료가 희망금액을 넘지 않도록 가장 가까운 추가 필요금액을 계산합니다.</div>
+        </div>
       </section>
     </div>
+
+    <details class="modeNotice feeOnlyNoticeDetails" style="margin-top:16px;">
+      <summary>[수수료] 안내 열기</summary>
+      <div style="margin-top:8px;">
+        급하게 수수료만 계산할 때 사용하는 단독 계산 페이지입니다. 기존 [일반] 페이지의 지역/여비표와 요율표를 그대로 사용합니다.
+      </div>
+    </details>
+    <details class="feeOnlyFormulaDetails">
+      <summary>계산 방식 보기</summary>
+      <div class="feeOnlyHelpBox">
+        총 수수료 = (순수수료 × 할증) + 여비 + 실비 + 추가비용1 + 추가비용2<br>
+        VAT 포함 총 수수료 = 총 수수료 × 1.1<br>
+        희망금액 맞추기는 VAT 포함 금액을 넘지 않도록 500원 여유를 두고 필요금액을 계산합니다.<br>
+        금액은 천원 단위로 올림 표시합니다.
+      </div>
+    </details>
   </section>
 
   <section id="page_property" class="typePage active">
@@ -1739,8 +2081,79 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
           <button onclick="receiveCopy()">복사</button>
           <button class="light" onclick="receiveRefreshTitle()">반영</button>
         </div>
+
+        <div class="receiveSheetBox">
+          <div class="receiveSheetTitle">
+            <span>스프레드시트 붙여넣기용</span>
+            <div class="btns" style="margin:0;">
+              <button class="smallBtn light" onclick="receiveSheetApplyFromCurrent()">반영</button>
+              <button class="smallBtn" onclick="receiveSheetCopyRow()">행 복사</button>
+            </div>
+          </div>
+          <div class="receiveSheetScroll">
+            <table class="receiveSheetTable">
+              <thead>
+                <tr>
+                  <th>감정서번호</th>
+                  <th>배정일<br>(yyy/mm/dd)</th>
+                  <th>마감일<br>(yyy/mm/dd)</th>
+                  <th>고객담당자명</th>
+                  <th>평가담당자명</th>
+                  <th>업체명<br>or 의뢰인명</th>
+                  <th>착수금입금날짜<br>(yyy/mm/dd)</th>
+                  <th>평가대상</th>
+                  <th>평가지역</th>
+                  <th>착수금 금전진행<br>/완료/미수금/취소</th>
+                  <th>처리완료날짜<br>(yyy/mm/dd)</th>
+                  <th>평가금액<br>(금액입력)</th>
+                  <th>잔금입금<br>여부</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input id="receiveSheet_reportNo"></td>
+                  <td><input id="receiveSheet_assignedDate"></td>
+                  <td><input id="receiveSheet_deadline"></td>
+                  <td><input id="receiveSheet_customerManager"></td>
+                  <td><input id="receiveSheet_appraiser"></td>
+                  <td><input id="receiveSheet_client"></td>
+                  <td><input id="receiveSheet_depositDate"></td>
+                  <td><input id="receiveSheet_targetType"></td>
+                  <td><input id="receiveSheet_region"></td>
+                  <td><input id="receiveSheet_depositStatus"></td>
+                  <td><input id="receiveSheet_doneDate"></td>
+                  <td><input id="receiveSheet_amount"></td>
+                  <td><input id="receiveSheet_balance"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <textarea id="receiveSheet_tsv" class="receiveSheetPaste" readonly placeholder="행 복사 버튼을 누르면 이 내용이 탭 구분으로 복사됩니다."></textarea>
+        </div>
       </section>
     </div>
+
+    <details class="card full receiveRegionGuide">
+      <summary>서울/경기 평가지역 구분표</summary>
+      <div class="receiveRegionGuideInner">
+        <div class="receiveRegionGuideGrid">
+          <div class="receiveRegionGuideBox">
+            <b>서울동부</b><br>강동구, 송파구, 광진구, 성동구, 동대문구, 중랑구<br><br>
+            <b>서울서부</b><br>강서구, 양천구, 마포구, 서대문구, 은평구<br><br>
+            <b>서울남부</b><br>강남구, 서초구, 관악구, 동작구, 금천구, 구로구, 영등포구<br><br>
+            <b>서울북부</b><br>강북구, 도봉구, 노원구, 성북구<br><br>
+            <b>서울중부</b><br>종로구, 중구, 용산구
+          </div>
+          <div class="receiveRegionGuideBox">
+            <b>경기북부</b><br>고양시, 파주시, 의정부시, 양주시, 동두천시, 포천시, 연천군, 가평군, 구리시, 남양주시<br><br>
+            <b>경기남부</b><br>수원시, 성남시, 용인시, 화성시, 오산시, 평택시, 안성시, 이천시, 여주시, 광주시, 하남시<br><br>
+            <b>경기서부</b><br>부천시, 광명시, 시흥시, 안산시, 안양시, 군포시, 의왕시, 과천시, 김포시<br><br>
+            <b>경기동부</b><br>양평군, 여주시, 이천시, 광주시, 하남시, 남양주시, 구리시
+          </div>
+        </div>
+        <div class="mini" style="margin-top:10px;">※ 같은 시/군이 여러 권역에 걸쳐 있는 경우 현재 자동분류 코드 기준으로 먼저 매칭되는 권역이 적용됩니다.</div>
+      </div>
+    </details>
   </section>
 
 
@@ -1801,6 +2214,20 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
         </div>
         <div id="receiveMultiHtOutput" class="output receiveMultiOutputBox" contenteditable="true">정보를 입력하고 반영을 누르면 하이테크 접수글이 생성됩니다.</div>
         <div class="btns"><button onclick="receiveMultiCopyHt()">복사</button><button class="light" onclick="receiveMultiSyncPartnerFromHt()">반영</button></div>
+        <div class="receiveMultiSheetBox">
+          <div class="receiveMultiSheetTitle">
+            <b>스프레드시트용_하이테크</b>
+            <div class="btns" style="margin-top:0;">
+              <button class="smallBtn light" onclick="receiveMultiSheetApplyAll()">반영</button>
+              <button class="smallBtn" onclick="receiveMultiSheetCopyHt()">행 복사</button>
+              
+            </div>
+          </div>
+          <div class="receiveMultiSheetScroll">
+            <table class="receiveMultiSheetTable"><thead><tr><th>감정서번호</th><th>배정일</th><th>마감일</th><th>고객담당자명</th><th>평가담당자명</th><th>업체명or의뢰인명</th><th>착수금입금날짜</th><th>평가대상</th><th>평가지역</th><th>착수금 입금~</th><th>처리완료날짜</th><th>평가금액</th><th>잔금입금여부</th></tr></thead><tbody><tr><td><input id="receiveMultiSheet_ht_reportNo"></td><td><input id="receiveMultiSheet_ht_assignedDate"></td><td><input id="receiveMultiSheet_ht_deadline"></td><td><input id="receiveMultiSheet_ht_customerManager"></td><td><input id="receiveMultiSheet_ht_appraiser"></td><td><input id="receiveMultiSheet_ht_client"></td><td><input id="receiveMultiSheet_ht_depositDate"></td><td><input id="receiveMultiSheet_ht_targetType"></td><td><input id="receiveMultiSheet_ht_region"></td><td><input id="receiveMultiSheet_ht_depositStatus"></td><td><input id="receiveMultiSheet_ht_doneDate"></td><td><input id="receiveMultiSheet_ht_amount"></td><td><input id="receiveMultiSheet_ht_balance"></td></tr></tbody></table>
+          </div>
+          <textarea id="receiveMultiSheet_ht_tsv" class="receiveMultiSheetPaste" readonly placeholder="행 복사 버튼을 누르면 이 내용이 탭 구분으로 복사됩니다."></textarea>
+        </div>
       </section>
 
       <section class="card receiveMultiPartnerOutputCard">
@@ -1812,6 +2239,20 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
         </div>
         <div id="receiveMultiPartnerOutput" class="output receiveMultiOutputBox" contenteditable="true">정보를 입력하고 반영을 누르면 복수업체 접수글이 생성됩니다.</div>
         <div class="btns"><button onclick="receiveMultiCopyPartner()">복사</button></div>
+        <div class="receiveMultiSheetBox">
+          <div class="receiveMultiSheetTitle">
+            <b>스프레드시트용_복수업체</b>
+            <div class="btns" style="margin-top:0;">
+              <button class="smallBtn light" onclick="receiveMultiSheetApplyAll()">반영</button>
+              <button class="smallBtn" onclick="receiveMultiSheetCopyPartner()">행 복사</button>
+              <button class="smallBtn dark" onclick="receiveMultiSheetCopyBoth()">두 줄 복사</button>
+            </div>
+          </div>
+          <div class="receiveMultiSheetScroll">
+            <table class="receiveMultiSheetTable"><thead><tr><th>감정서번호</th><th>배정일</th><th>마감일</th><th>고객담당자명</th><th>평가담당자명</th><th>업체명or의뢰인명</th><th>착수금입금날짜</th><th>평가대상</th><th>평가지역</th><th>착수금 입금~</th><th>처리완료날짜</th><th>평가금액</th><th>잔금입금여부</th></tr></thead><tbody><tr><td><input id="receiveMultiSheet_partner_reportNo"></td><td><input id="receiveMultiSheet_partner_assignedDate"></td><td><input id="receiveMultiSheet_partner_deadline"></td><td><input id="receiveMultiSheet_partner_customerManager"></td><td><input id="receiveMultiSheet_partner_appraiser"></td><td><input id="receiveMultiSheet_partner_client"></td><td><input id="receiveMultiSheet_partner_depositDate"></td><td><input id="receiveMultiSheet_partner_targetType"></td><td><input id="receiveMultiSheet_partner_region"></td><td><input id="receiveMultiSheet_partner_depositStatus"></td><td><input id="receiveMultiSheet_partner_doneDate"></td><td><input id="receiveMultiSheet_partner_amount"></td><td><input id="receiveMultiSheet_partner_balance"></td></tr></tbody></table>
+          </div>
+          <textarea id="receiveMultiSheet_partner_tsv" class="receiveMultiSheetPaste" readonly placeholder="행 복사 버튼을 누르면 이 내용이 탭 구분으로 복사됩니다."></textarea>
+        </div>
       </section>
     </div>
   </section>
@@ -1860,6 +2301,43 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
         <div class="sectionTitle"><span class="badge">2</span> 접수글</div>
         <div id="receiveRightsOutput" class="output" contenteditable="true">정보를 입력하고 반영을 누르면 접수글이 생성됩니다.</div>
         <div class="btns"><button onclick="receiveRightsCopy()">복사</button></div>
+
+        <div class="receiveRightsSheetBox">
+          <div class="receiveRightsSheetTitle">
+            <span>스프레드시트 붙여넣기용</span>
+            <div class="btns" style="margin-top:0;">
+              <button class="smallBtn light" onclick="receiveRightsSheetApplyFromCurrent()">반영</button>
+              <button class="smallBtn" onclick="receiveRightsSheetCopyRow()">행 복사</button>
+            </div>
+          </div>
+          <div class="receiveRightsSheetScroll">
+            <table class="receiveRightsSheetTable">
+              <thead>
+                <tr>
+                  <th>감정서번호</th><th>배정일</th><th>마감일</th><th>고객담당자명</th><th>평가담당자명</th><th>업체명or의뢰인명</th><th>착수금입금날짜</th><th>평가대상</th><th>평가지역</th><th>착수금 입금~</th><th>처리완료날짜</th><th>평가금액</th><th>잔금입금여부</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input id="receiveRightsSheet_reportNo"></td>
+                  <td><input id="receiveRightsSheet_assignedDate"></td>
+                  <td><input id="receiveRightsSheet_deadline"></td>
+                  <td><input id="receiveRightsSheet_customerManager"></td>
+                  <td><input id="receiveRightsSheet_appraiser"></td>
+                  <td><input id="receiveRightsSheet_client"></td>
+                  <td><input id="receiveRightsSheet_depositDate"></td>
+                  <td><input id="receiveRightsSheet_targetType"></td>
+                  <td><input id="receiveRightsSheet_region"></td>
+                  <td><input id="receiveRightsSheet_depositStatus"></td>
+                  <td><input id="receiveRightsSheet_doneDate"></td>
+                  <td><input id="receiveRightsSheet_amount"></td>
+                  <td><input id="receiveRightsSheet_balance"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <textarea id="receiveRightsSheet_tsv" class="receiveRightsSheetPaste" readonly placeholder="행 복사 버튼을 누르면 이 내용이 탭 구분으로 복사됩니다."></textarea>
+        </div>
       </section>
     </div>
   </section>
@@ -4398,10 +4876,16 @@ function receiveSetOutput(text, highlight=true){
   const output = document.getElementById('receiveOutput');
   if(!output) return;
   output.innerHTML = highlight ? receiveHighlightOutput(text) : receiveEscapeHtml(text);
-  receiveUpdateTitleFromText(output.innerText || text);
+  receiveUpdateTitleFromText(receiveGetOutputText() || text);
+  if(typeof receiveSheetApplyFromCurrent === 'function') {
+    receiveSheetApplyFromCurrent();
+    setTimeout(receiveSheetApplyFromCurrent, 0);
+  }
 }
 function receiveGetOutputText(){
-  return document.getElementById('receiveOutput')?.innerText || '';
+  const el = document.getElementById('receiveOutput');
+  if(!el) return '';
+  return (el.innerText || el.textContent || '').trim();
 }
 function receiveExtractReceiptTitleFromText(text){
   const m = String(text || '').match(/접수번호\s*[:：]\s*([^\n]+)/);
@@ -4415,6 +4899,7 @@ function receiveUpdateTitleFromText(text){
 }
 function receiveRefreshTitle(){
   receiveUpdateTitleFromText(receiveGetOutputText());
+  if(typeof receiveSheetApplyFromCurrent === 'function') receiveSheetApplyFromCurrent();
 }
 function receiveCopyTitle(){
   const title = document.getElementById('receiveTitleValue')?.textContent || '';
@@ -4424,6 +4909,133 @@ function receiveCopyTitle(){
   }
   navigator.clipboard.writeText(title).then(() => alert('제목이 복사되었습니다.'));
 }
+
+function receiveSheetPad2(n){ return String(n).padStart(2,'0'); }
+function receiveSheetFormatDate(d){ return d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate(); }
+function receiveSheetReceiptYear(receiptNo){
+  const m = String(receiptNo || '').match(/[A-Z]{2}(\d{2})\d{4}-/);
+  return m ? 2000 + Number(m[1]) : new Date().getFullYear();
+}
+function receiveSheetParseMDToYMD(md, receiptNo){
+  const m = String(md || '').match(/(\d{1,2})\s*\/\s*(\d{1,2})/);
+  if(!m) return '';
+  let y = receiveSheetReceiptYear(receiptNo);
+  return y + '/' + Number(m[1]) + '/' + Number(m[2]);
+}
+function receiveSheetExtractLine(text, label){
+  const re = new RegExp(label + '\\s*[:：]\\s*([^\\n]+)');
+  const m = String(text || '').match(re);
+  return m ? m[1].trim() : '';
+}
+function receiveSheetExtractDeadline(text, receiptNo){
+  const m = String(text || '').match(/평가서\s+(\d{1,2}\s*\/\s*\d{1,2})\s*오전/);
+  return m ? receiveSheetParseMDToYMD(m[1], receiptNo) : '';
+}
+function receiveSheetTargetType(target){
+  const s = String(target || '').replace(/\s+/g,' ');
+  return /(\d+\s*동\s*\d+\s*호|\d+\s*호)/.test(s) ? '집합' : '토건';
+}
+function receiveSheetRegionFromTarget(target){
+  const s = String(target || '');
+  const compact = s.replace(/\s+/g,'');
+  const seoul = {
+    '서울동부':['강동구','송파구','광진구','성동구','동대문구','중랑구'],
+    '서울서부':['강서구','양천구','마포구','서대문구','은평구'],
+    '서울남부':['강남구','서초구','관악구','동작구','금천구','구로구','영등포구'],
+    '서울북부':['강북구','도봉구','노원구','성북구'],
+    '서울중부':['종로구','중구','용산구']
+  };
+  if(/서울/.test(s)){
+    for(const [area, gus] of Object.entries(seoul)){
+      if(gus.some(g => compact.includes(g))) return area;
+    }
+    return '서울';
+  }
+  const gyeonggi = {
+    '경기북부':['고양시','파주시','의정부시','양주시','동두천시','포천시','연천군','가평군','구리시','남양주시'],
+    '경기남부':['수원시','성남시','용인시','화성시','오산시','평택시','안성시','이천시','여주시','광주시','하남시'],
+    '경기서부':['부천시','광명시','시흥시','안산시','안양시','군포시','의왕시','과천시','김포시'],
+    '경기동부':['양평군','여주시','이천시','광주시','하남시','남양주시','구리시']
+  };
+  if(/경기도|경기/.test(s)){
+    for(const [area, cities] of Object.entries(gyeonggi)){
+      if(cities.some(c => compact.includes(c))) return area;
+    }
+    return '경기';
+  }
+  const provinceMap = [
+    [/세종/, '세종'], [/부산/, '부산'], [/대구/, '대구'], [/광주/, '광주'], [/대전/, '대전'], [/울산/, '울산'], [/인천/, '인천'],
+    [/제주/, '제주'], [/청주/, '청주'], [/천안/, '천안'], [/아산/, '아산'], [/포항/, '경북 포항'], [/경상북도|경북/, '경북'], [/경상남도|경남/, '경남'], [/충청북도|충북/, '충북'], [/충청남도|충남/, '충남'], [/전라북도|전북/, '전북'], [/전라남도|전남/, '전남'], [/강원/, '강원']
+  ];
+  for(const [re, val] of provinceMap){ if(re.test(s)) return val; }
+  return '';
+}
+function receiveSheetSet(id, value){
+  const el = document.getElementById('receiveSheet_' + id) || document.getElementById(id);
+  if(el) el.value = value || '';
+}
+function receiveSheetIds(){
+  return ['reportNo','assignedDate','deadline','customerManager','appraiser','client','depositDate','targetType','region','depositStatus','doneDate','amount','balance'];
+}
+function receiveSheetBuildTsvFromInputs(){
+  const vals = receiveSheetIds().map(k => document.getElementById('receiveSheet_' + k)?.value || '');
+  const text = vals.join('\t');
+  const box = document.getElementById('receiveSheet_tsv');
+  if(box) box.value = text;
+  return text;
+}
+function receiveSheetApplyFromCurrent(){
+  const text = receiveGetOutputText();
+  const hasReceiptText = /접수번호\s*[:：]/.test(text) || /평가대상\s*[:：]/.test(text);
+  const reportNo = hasReceiptText ? receiveSheetExtractLine(text, '접수번호') : '';
+  const client = hasReceiptText ? receiveSheetExtractLine(text, '의뢰인') : '';
+  const target = hasReceiptText ? receiveSheetExtractLine(text, '평가대상') : '';
+
+  receiveSheetSet('reportNo', reportNo);
+  receiveSheetSet('assignedDate', '');
+  receiveSheetSet('deadline', hasReceiptText ? receiveSheetExtractDeadline(text, reportNo) : '');
+  receiveSheetSet('customerManager', hasReceiptText ? '김가민' : '');
+  receiveSheetSet('appraiser', '');
+  receiveSheetSet('client', client);
+  receiveSheetSet('depositDate', hasReceiptText ? receiveSheetFormatDate(new Date()) : '');
+  receiveSheetSet('targetType', target ? receiveSheetTargetType(target) : '');
+  receiveSheetSet('region', target ? receiveSheetRegionFromTarget(target) : '');
+  receiveSheetSet('depositStatus', hasReceiptText ? '진행' : '');
+  receiveSheetSet('doneDate', '');
+  receiveSheetSet('amount', '');
+  receiveSheetSet('balance', '');
+  receiveSheetBuildTsvFromInputs();
+}
+function receiveSheetCopyRow(){
+  const text = receiveSheetBuildTsvFromInputs();
+  navigator.clipboard.writeText(text).then(() => alert('스프레드시트용 행이 복사되었습니다.'));
+}
+
+function receiveSheetScheduleRefresh(){
+  if(typeof receiveSheetApplyFromCurrent !== 'function') return;
+  receiveSheetApplyFromCurrent();
+  setTimeout(receiveSheetApplyFromCurrent, 50);
+  setTimeout(receiveSheetApplyFromCurrent, 200);
+}
+
+if(document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function(){
+    const receiveOutput = document.getElementById('receiveOutput');
+    if(receiveOutput && !receiveOutput.dataset.sheetAutoReady){
+      receiveOutput.dataset.sheetAutoReady = '1';
+      receiveOutput.addEventListener('input', receiveSheetApplyFromCurrent);
+      receiveSheetScheduleRefresh();
+    }
+  });
+} else {
+  const receiveOutput = document.getElementById('receiveOutput');
+  if(receiveOutput && !receiveOutput.dataset.sheetAutoReady){
+    receiveOutput.dataset.sheetAutoReady = '1';
+    receiveOutput.addEventListener('input', receiveSheetApplyFromCurrent);
+    receiveSheetScheduleRefresh();
+  }
+}
+
 function receiveBuildMessage(parsed){
   const today = new Date();
   const deadline = receiveAddBusinessDays(today, receiveDeadlineBusinessDays(parsed.target));
@@ -5075,6 +5687,98 @@ function receiveMultiReset(){
   if(input) input.value = '';
   receiveMultiSetBothOutputs('정보를 입력하고 반영을 누르면 하이테크 접수글이 생성됩니다.', '정보를 입력하고 반영을 누르면 복수업체 접수글이 생성됩니다.', false);
 }
+
+
+/* 복수접수 스프레드시트 붙여넣기용: 일반접수 규칙 기반, 하이테크/복수업체 2행 */
+function receiveMultiSheetIds(){
+  return ['reportNo','assignedDate','deadline','customerManager','appraiser','client','depositDate','targetType','region','depositStatus','doneDate','amount','balance'];
+}
+function receiveMultiSheetSet(prefix, id, value){
+  const el = document.getElementById(prefix + '_' + id);
+  if(el) el.value = value || '';
+}
+function receiveMultiSheetGet(prefix, id){
+  return document.getElementById(prefix + '_' + id)?.value || '';
+}
+function receiveMultiSheetBuildTsv(prefix){
+  const vals = receiveMultiSheetIds().map(k => receiveMultiSheetGet(prefix, k));
+  const text = vals.join('\t');
+  const box = document.getElementById(prefix + '_tsv');
+  if(box) box.value = text;
+  return text;
+}
+function receiveMultiSheetExtractTitleAssignee(){
+  const title = document.getElementById('receiveMultiPartnerTitleValue')?.textContent || '';
+  const m = title.match(/담당\s*[:：]\s*([^\)]*)\)/);
+  return m ? (m[1] || '').trim() : '';
+}
+function receiveMultiSheetFill(prefix, text, type){
+  const hasReceiptText = /접수번호\s*[:：]/.test(text) || /평가대상\s*[:：]/.test(text);
+  const reportNo = hasReceiptText ? receiveSheetExtractLine(text, '접수번호') : '';
+  const client = hasReceiptText ? receiveSheetExtractLine(text, '의뢰인') : '';
+  const target = hasReceiptText ? receiveSheetExtractLine(text, '평가대상') : '';
+  const today = receiveSheetFormatDate(new Date());
+  receiveMultiSheetSet(prefix, 'reportNo', reportNo);
+  receiveMultiSheetSet(prefix, 'assignedDate', hasReceiptText && type === 'partner' ? today : '');
+  receiveMultiSheetSet(prefix, 'deadline', hasReceiptText ? receiveSheetExtractDeadline(text, reportNo) : '');
+  receiveMultiSheetSet(prefix, 'customerManager', hasReceiptText ? '김가민' : '');
+  receiveMultiSheetSet(prefix, 'appraiser', hasReceiptText && type === 'partner' ? receiveMultiSheetExtractTitleAssignee() : '');
+  receiveMultiSheetSet(prefix, 'client', client);
+  receiveMultiSheetSet(prefix, 'depositDate', hasReceiptText ? today : '');
+  receiveMultiSheetSet(prefix, 'targetType', target ? receiveSheetTargetType(target) : '');
+  receiveMultiSheetSet(prefix, 'region', target ? receiveSheetRegionFromTarget(target) : '');
+  receiveMultiSheetSet(prefix, 'depositStatus', hasReceiptText ? '진행' : '');
+  receiveMultiSheetSet(prefix, 'doneDate', '');
+  receiveMultiSheetSet(prefix, 'amount', '');
+  receiveMultiSheetSet(prefix, 'balance', '');
+  receiveMultiSheetBuildTsv(prefix);
+}
+function receiveMultiSheetApplyAll(){
+  receiveMultiSheetFill('receiveMultiSheet_ht', receiveMultiGetOutputText('receiveMultiHtOutput'), 'ht');
+  receiveMultiSheetFill('receiveMultiSheet_partner', receiveMultiGetOutputText('receiveMultiPartnerOutput'), 'partner');
+}
+function receiveMultiSheetCopyHt(){
+  const text = receiveMultiSheetBuildTsv('receiveMultiSheet_ht');
+  navigator.clipboard.writeText(text).then(() => alert('하이테크 스프레드시트용 행이 복사되었습니다.'));
+}
+function receiveMultiSheetCopyPartner(){
+  const text = receiveMultiSheetBuildTsv('receiveMultiSheet_partner');
+  navigator.clipboard.writeText(text).then(() => alert('복수업체 스프레드시트용 행이 복사되었습니다.'));
+}
+function receiveMultiSheetCopyBoth(){
+  const text = receiveMultiSheetBuildTsv('receiveMultiSheet_ht') + '\n' + receiveMultiSheetBuildTsv('receiveMultiSheet_partner');
+  navigator.clipboard.writeText(text).then(() => alert('스프레드시트용 두 줄이 복사되었습니다.'));
+}
+function receiveMultiSheetScheduleRefresh(){
+  if(typeof receiveMultiSheetApplyAll !== 'function') return;
+  receiveMultiSheetApplyAll();
+  setTimeout(receiveMultiSheetApplyAll, 50);
+  setTimeout(receiveMultiSheetApplyAll, 200);
+}
+(function(){
+  const oldSetBoth = window.receiveMultiSetBothOutputs;
+  window.receiveMultiSetBothOutputs = function(htText, partnerText, highlight=true){
+    if(typeof oldSetBoth === 'function') oldSetBoth(htText, partnerText, highlight);
+    receiveMultiSheetScheduleRefresh();
+  };
+  const oldSync = window.receiveMultiSyncPartnerFromHt;
+  window.receiveMultiSyncPartnerFromHt = function(){
+    if(typeof oldSync === 'function') oldSync();
+    receiveMultiSheetScheduleRefresh();
+  };
+  const setup = function(){
+    ['receiveMultiHtOutput','receiveMultiPartnerOutput','receiveMultiPartnerTitleValue'].forEach(id => {
+      const el = document.getElementById(id);
+      if(el && !el.dataset.multiSheetReady){
+        el.dataset.multiSheetReady = '1';
+        el.addEventListener('input', receiveMultiSheetApplyAll);
+      }
+    });
+    receiveMultiSheetScheduleRefresh();
+  };
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
+  else setup();
+})();
 
 
 /* 접수글_무형 전용 스크립트: 부동산/복수/무형과 완전 분리 */
@@ -5774,7 +6478,6 @@ function feeOnlyParseMoney(value){
   const num = Number(numMatch[0]) || 0;
   if(/억/.test(raw)) return num * 100000000;
   if(/만원|만/.test(raw)) return num * 10000;
-  // 숫자만 입력하면 원 단위 그대로 계산합니다.
   return num;
 }
 function feeOnlyFormatWon(n){
@@ -5784,6 +6487,28 @@ function feeOnlyFormatMan(n){
   const man = Math.ceil((Number(n)||0)/1000)*1000/10000;
   const txt = (Math.round(man*10)/10).toLocaleString('ko-KR', {maximumFractionDigits:1});
   return txt + '만원';
+}
+function feeOnlySetText(id, value){
+  const el = document.getElementById(id);
+  if(el) el.textContent = value;
+}
+function feeOnlyCalcRates(){
+  const amount = feeOnlyParseMoney(document.getElementById('feeOnlyEvalAmount')?.value || '');
+  if(!amount){
+    feeOnlySetText('feeOnlyLowerRateView','-');
+    feeOnlySetText('feeOnlyBaseRateView','-');
+    feeOnlySetText('feeOnlyUpperRateView','-');
+    return;
+  }
+  const lowerRaw = typeof interp === 'function' ? interp(amount, 'lower') : 0;
+  const baseRaw = typeof interp === 'function' ? interp(amount, 'base') : 0;
+  const lower = typeof ceil1000 === 'function' ? ceil1000(lowerRaw) : Math.ceil(lowerRaw/1000)*1000;
+  const base = typeof ceil1000 === 'function' ? ceil1000(baseRaw) : Math.ceil(baseRaw/1000)*1000;
+  const upperRaw = baseRaw * 1.2;
+  const upper = typeof ceil1000 === 'function' ? ceil1000(upperRaw) : Math.ceil(upperRaw/1000)*1000;
+  feeOnlySetText('feeOnlyLowerRateView', `${feeOnlyFormatMan(lower)} (${feeOnlyFormatWon(lower)})`);
+  feeOnlySetText('feeOnlyBaseRateView', `${feeOnlyFormatMan(base)} (${feeOnlyFormatWon(base)})`);
+  feeOnlySetText('feeOnlyUpperRateView', `${feeOnlyFormatMan(upper)} (${feeOnlyFormatWon(upper)})`);
 }
 function feeOnlyApplyTravel(){
   const regionEl = document.getElementById('feeOnlyRegion');
@@ -5800,16 +6525,28 @@ function feeOnlyCurrentTravel(){
   const hit = typeof findTravelRow === 'function' ? findTravelRow(document.getElementById('feeOnlyRegion')?.value || '') : null;
   return hit ? (Number(hit.cost)||0) : 0;
 }
-function feeOnlyCalculate(){
-  feeOnlyInitMarkup();
+function feeOnlyCurrentBaseRaw(){
   const pure = feeOnlyParseMoney(document.getElementById('feeOnlyPure')?.value || '');
   const markup = Number(document.getElementById('feeOnlyMarkup')?.value || 1) || 1;
   const travel = feeOnlyCurrentTravel();
   const actual = feeOnlyParseMoney(document.getElementById('feeOnlyActual')?.value || '');
   const extra = feeOnlyParseMoney(document.getElementById('feeOnlyExtra')?.value || '');
   const extra2 = feeOnlyParseMoney(document.getElementById('feeOnlyExtra2')?.value || '');
-  const totalRaw = (pure * markup) + travel + actual + extra + extra2;
-  const total = typeof ceil1000 === 'function' ? ceil1000(totalRaw) : Math.ceil(totalRaw/1000)*1000;
+  return { pure, markup, travel, actual, extra, extra2, raw:(pure * markup) + travel + actual + extra + extra2 };
+}
+function feeOnlyCalcNeeded(baseRaw){
+  const target = feeOnlyParseMoney(document.getElementById('feeOnlyTargetVat')?.value || '');
+  const view = document.getElementById('feeOnlyNeededView');
+  if(!view) return;
+  if(!target){ view.textContent = '-'; return; }
+  const maxPreVatRounded = Math.floor((target / 1.1) / 1000) * 1000;
+  const needed = Math.max(0, maxPreVatRounded - baseRaw - 500);
+  view.textContent = needed > 0 ? feeOnlyFormatWon(needed) : '0원';
+}
+function feeOnlyCalculate(){
+  feeOnlyInitMarkup();
+  const v = feeOnlyCurrentBaseRaw();
+  const total = typeof ceil1000 === 'function' ? ceil1000(v.raw) : Math.ceil(v.raw/1000)*1000;
   const vatTotal = typeof ceil1000 === 'function' ? ceil1000(total * 1.1) : Math.ceil((total*1.1)/1000)*1000;
 
   const totalView = document.getElementById('feeOnlyTotalView');
@@ -5818,21 +6555,19 @@ function feeOnlyCalculate(){
   if(totalView) totalView.textContent = feeOnlyFormatMan(total);
   if(vatView) vatView.textContent = feeOnlyFormatMan(vatTotal);
   if(result) {
-    result.textContent = `순수수료: ${feeOnlyFormatMan(pure)}\n할증: ${markup}\n여비: ${feeOnlyFormatMan(travel)}\n실비: ${actual ? feeOnlyFormatMan(actual) : '-'}\n추가비용 1: ${extra ? feeOnlyFormatMan(extra) : '-'}\n추가비용 2: ${extra2 ? feeOnlyFormatMan(extra2) : '-'}\n\n총 수수료: ${feeOnlyFormatMan(total)} (${feeOnlyFormatWon(total)})\nVAT 포함 총 수수료: ${feeOnlyFormatMan(vatTotal)} (${feeOnlyFormatWon(vatTotal)})`;
+    result.textContent = `순수수료: ${feeOnlyFormatMan(v.pure)} (${feeOnlyFormatWon(v.pure)})\n할증: ${v.markup}\n여비: ${feeOnlyFormatMan(v.travel)}\n실비: ${v.actual ? feeOnlyFormatMan(v.actual) : '-'}\n추가비용 1: ${v.extra ? feeOnlyFormatMan(v.extra) : '-'}\n추가비용 2: ${v.extra2 ? feeOnlyFormatMan(v.extra2) : '-'}\n\n총 수수료: ${feeOnlyFormatMan(total)} (${feeOnlyFormatWon(total)})\nVAT 포함 총 수수료: ${feeOnlyFormatMan(vatTotal)} (${feeOnlyFormatWon(vatTotal)})`;
   }
+  feeOnlyCalcNeeded(v.raw);
 }
 function feeOnlyReset(){
-  ['feeOnlyPure','feeOnlyRegion','feeOnlyTravel','feeOnlyActual','feeOnlyExtra','feeOnlyExtra2'].forEach(id => {
+  ['feeOnlyEvalAmount','feeOnlyPure','feeOnlyRegion','feeOnlyTravel','feeOnlyActual','feeOnlyExtra','feeOnlyExtra2','feeOnlyTargetVat'].forEach(id => {
     const el = document.getElementById(id);
     if(el) el.value = '';
   });
   const markup = document.getElementById('feeOnlyMarkup');
   if(markup) markup.value = '1';
-  const totalView = document.getElementById('feeOnlyTotalView');
-  const vatView = document.getElementById('feeOnlyVatView');
+  ['feeOnlyLowerRateView','feeOnlyBaseRateView','feeOnlyUpperRateView','feeOnlyTotalView','feeOnlyVatView','feeOnlyNeededView'].forEach(id => feeOnlySetText(id,'-'));
   const result = document.getElementById('feeOnlyResult');
-  if(totalView) totalView.textContent = '-';
-  if(vatView) vatView.textContent = '-';
   if(result) result.textContent = '수수료를 입력하면 계산 결과가 표시됩니다.';
 }
 function feeOnlyCopyResult(){
@@ -5840,6 +6575,131 @@ function feeOnlyCopyResult(){
   navigator.clipboard.writeText(txt).then(() => alert('복사되었습니다.'));
 }
 feeOnlyInitMarkup();
+
+/* 일반접수 자동 높이 보정 */
+function receiveAutoResizeTextarea(el){
+  if(!el) return;
+  el.style.height = 'auto';
+  el.style.height = Math.max(el.scrollHeight, 180) + 'px';
+}
+function receiveAutoResizeAll(){
+  receiveAutoResizeTextarea(document.getElementById('receiveInput'));
+}
+function receiveSetupAutoResize(){
+  const input = document.getElementById('receiveInput');
+  if(input && !input.dataset.autoResizeReady){
+    input.dataset.autoResizeReady = '1';
+    input.addEventListener('input', () => receiveAutoResizeTextarea(input));
+    receiveAutoResizeTextarea(input);
+  }
+  const output = document.getElementById('receiveOutput');
+  if(output && !output.dataset.autoResizeReady){
+    output.dataset.autoResizeReady = '1';
+    output.addEventListener('input', () => {
+      if(typeof receiveSheetApplyFromCurrent === 'function') receiveSheetApplyFromCurrent();
+    });
+  }
+  document.querySelectorAll('#page_receiveProperty .receiveSheetTable input').forEach(el => {
+    if(!el.dataset.tsvReady){
+      el.dataset.tsvReady = '1';
+      el.addEventListener('input', () => {
+        if(typeof receiveSheetBuildTsvFromInputs === 'function') receiveSheetBuildTsvFromInputs();
+      });
+    }
+  });
+}
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', receiveSetupAutoResize);
+} else {
+  receiveSetupAutoResize();
+}
+
+
+/* 무형접수 스프레드시트 붙여넣기용: 일반접수 규칙 기반, 무형 평가대상만 별도 처리 */
+function receiveRightsSheetIds(){
+  return ['reportNo','assignedDate','deadline','customerManager','appraiser','client','depositDate','targetType','region','depositStatus','doneDate','amount','balance'];
+}
+function receiveRightsSheetSet(id, value){
+  const el = document.getElementById('receiveRightsSheet_' + id);
+  if(el) el.value = value || '';
+}
+function receiveRightsSheetGet(id){
+  return document.getElementById('receiveRightsSheet_' + id)?.value || '';
+}
+function receiveRightsSheetBuildTsvFromInputs(){
+  const vals = receiveRightsSheetIds().map(k => receiveRightsSheetGet(k));
+  const text = vals.join('\t');
+  const box = document.getElementById('receiveRightsSheet_tsv');
+  if(box) box.value = text;
+  return text;
+}
+function receiveRightsSheetTargetType(target){
+  const s = String(target || '').replace(/\s+/g,' ').trim();
+  if(!s) return '';
+  const parts = s.split(' ').filter(Boolean);
+  if(parts.length < 2) return '';
+  const rest = parts.slice(1).join(' ').trim();
+  if(!rest) return '';
+  if(/(권|평가|주식|보험|특허|상표|저작|인허가|디자인|판권|영업권|차량)/.test(rest)) return rest;
+  return '';
+}
+function receiveRightsSheetApplyFromCurrent(){
+  const text = receiveRightsGetOutputText();
+  const hasReceiptText = /접수번호\s*[:：]/.test(text) || /평가대상\s*[:：]/.test(text);
+  const reportNo = hasReceiptText ? receiveSheetExtractLine(text, '접수번호') : '';
+  const client = hasReceiptText ? receiveSheetExtractLine(text, '의뢰인') : '';
+  const target = hasReceiptText ? receiveSheetExtractLine(text, '평가대상') : '';
+  const today = hasReceiptText ? receiveSheetFormatDate(new Date()) : '';
+
+  receiveRightsSheetSet('reportNo', reportNo);
+  receiveRightsSheetSet('assignedDate', '');
+  receiveRightsSheetSet('deadline', hasReceiptText ? receiveSheetExtractDeadline(text, reportNo) : '');
+  receiveRightsSheetSet('customerManager', hasReceiptText ? '김가민' : '');
+  receiveRightsSheetSet('appraiser', '');
+  receiveRightsSheetSet('client', client);
+  receiveRightsSheetSet('depositDate', today);
+  receiveRightsSheetSet('targetType', target ? receiveRightsSheetTargetType(target) : '');
+  receiveRightsSheetSet('region', '');
+  receiveRightsSheetSet('depositStatus', hasReceiptText ? '진행' : '');
+  receiveRightsSheetSet('doneDate', '');
+  receiveRightsSheetSet('amount', '');
+  receiveRightsSheetSet('balance', '');
+  receiveRightsSheetBuildTsvFromInputs();
+}
+function receiveRightsSheetCopyRow(){
+  const text = receiveRightsSheetBuildTsvFromInputs();
+  navigator.clipboard.writeText(text).then(() => alert('무형접수 스프레드시트용 행이 복사되었습니다.'));
+}
+function receiveRightsSheetScheduleRefresh(){
+  if(typeof receiveRightsSheetApplyFromCurrent !== 'function') return;
+  receiveRightsSheetApplyFromCurrent();
+  setTimeout(receiveRightsSheetApplyFromCurrent, 50);
+  setTimeout(receiveRightsSheetApplyFromCurrent, 200);
+}
+(function(){
+  const oldRightsSetOutput = window.receiveRightsSetOutput;
+  window.receiveRightsSetOutput = function(text, highlight=true){
+    if(typeof oldRightsSetOutput === 'function') oldRightsSetOutput(text, highlight);
+    receiveRightsSheetScheduleRefresh();
+  };
+  const setup = function(){
+    const output = document.getElementById('receiveRightsOutput');
+    if(output && !output.dataset.rightsSheetReady){
+      output.dataset.rightsSheetReady = '1';
+      output.addEventListener('input', receiveRightsSheetApplyFromCurrent);
+    }
+    receiveRightsSheetIds().forEach(k => {
+      const el = document.getElementById('receiveRightsSheet_' + k);
+      if(el && !el.dataset.rightsSheetInputReady){
+        el.dataset.rightsSheetInputReady = '1';
+        el.addEventListener('input', receiveRightsSheetBuildTsvFromInputs);
+      }
+    });
+    receiveRightsSheetScheduleRefresh();
+  };
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
+  else setup();
+})();
 
 </script>
 </body>
