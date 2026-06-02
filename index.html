@@ -1462,8 +1462,8 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
       <div class="feeOnlyHelpBox">
         총 수수료 = (순수수료 × 할증) + 여비 + 실비 + 추가비용1 + 추가비용2<br>
         VAT 포함 총 수수료 = 총 수수료 × 1.1<br>
-        희망금액 맞추기는 VAT 포함 금액을 넘지 않도록 500원 여유를 두고 필요금액을 계산합니다.<br>
-        금액은 천원 단위로 올림 표시합니다.
+        희망금액 맞추기는 VAT 포함 금액을 넘지 않는 선에서 가장 가까운 원 단위 필요금액을 계산합니다.<br>
+        계산 결과의 총 수수료와 VAT 포함 총 수수료는 올림/내림/반올림 없이 실제 계산값을 숫자로만 표시합니다.
       </div>
     </details>
   </section>
@@ -6483,6 +6483,11 @@ function feeOnlyParseMoney(value){
 function feeOnlyFormatWon(n){
   return (Math.round(Number(n)||0)).toLocaleString('ko-KR') + '원';
 }
+function feeOnlyFormatNumberOnly(n){
+  const num = Number(n) || 0;
+  const clean = Math.abs(num - Math.round(num)) < 0.000001 ? Math.round(num) : Number(num.toFixed(6));
+  return clean.toLocaleString('ko-KR', {maximumFractionDigits:6});
+}
 function feeOnlyFormatMan(n){
   const man = Math.ceil((Number(n)||0)/1000)*1000/10000;
   const txt = (Math.round(man*10)/10).toLocaleString('ko-KR', {maximumFractionDigits:1});
@@ -6539,23 +6544,26 @@ function feeOnlyCalcNeeded(baseRaw){
   const view = document.getElementById('feeOnlyNeededView');
   if(!view) return;
   if(!target){ view.textContent = '-'; return; }
-  const maxPreVatRounded = Math.floor((target / 1.1) / 1000) * 1000;
-  const needed = Math.max(0, maxPreVatRounded - baseRaw - 500);
+
+  // 희망 VAT 포함 총액을 넘지 않는 선에서 가장 가까운 원 단위 추가금액을 계산합니다.
+  // 필요금액 = floor(희망 VAT포함금액 / 1.1 - 현재 VAT전 총액)
+  const maxPreVat = target / 1.1;
+  const needed = Math.max(0, Math.floor((maxPreVat - baseRaw) + 0.000001));
   view.textContent = needed > 0 ? feeOnlyFormatWon(needed) : '0원';
 }
 function feeOnlyCalculate(){
   feeOnlyInitMarkup();
   const v = feeOnlyCurrentBaseRaw();
-  const total = typeof ceil1000 === 'function' ? ceil1000(v.raw) : Math.ceil(v.raw/1000)*1000;
-  const vatTotal = typeof ceil1000 === 'function' ? ceil1000(total * 1.1) : Math.ceil((total*1.1)/1000)*1000;
+  const total = v.raw;
+  const vatTotal = total * 1.1;
 
   const totalView = document.getElementById('feeOnlyTotalView');
   const vatView = document.getElementById('feeOnlyVatView');
   const result = document.getElementById('feeOnlyResult');
-  if(totalView) totalView.textContent = feeOnlyFormatMan(total);
-  if(vatView) vatView.textContent = feeOnlyFormatMan(vatTotal);
+  if(totalView) totalView.textContent = feeOnlyFormatNumberOnly(total);
+  if(vatView) vatView.textContent = feeOnlyFormatNumberOnly(vatTotal);
   if(result) {
-    result.textContent = `순수수료: ${feeOnlyFormatMan(v.pure)} (${feeOnlyFormatWon(v.pure)})\n할증: ${v.markup}\n여비: ${feeOnlyFormatMan(v.travel)}\n실비: ${v.actual ? feeOnlyFormatMan(v.actual) : '-'}\n추가비용 1: ${v.extra ? feeOnlyFormatMan(v.extra) : '-'}\n추가비용 2: ${v.extra2 ? feeOnlyFormatMan(v.extra2) : '-'}\n\n총 수수료: ${feeOnlyFormatMan(total)} (${feeOnlyFormatWon(total)})\nVAT 포함 총 수수료: ${feeOnlyFormatMan(vatTotal)} (${feeOnlyFormatWon(vatTotal)})`;
+    result.textContent = `순수수료: ${feeOnlyFormatMan(v.pure)} (${feeOnlyFormatWon(v.pure)})\n할증: ${v.markup}\n여비: ${feeOnlyFormatMan(v.travel)}\n실비: ${v.actual ? feeOnlyFormatMan(v.actual) : '-'}\n추가비용 1: ${v.extra ? feeOnlyFormatMan(v.extra) : '-'}\n추가비용 2: ${v.extra2 ? feeOnlyFormatMan(v.extra2) : '-'}\n\n총 수수료: ${feeOnlyFormatNumberOnly(total)}\nVAT 포함 총 수수료: ${feeOnlyFormatNumberOnly(vatTotal)}`;
   }
   feeOnlyCalcNeeded(v.raw);
 }
