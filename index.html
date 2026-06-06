@@ -1387,6 +1387,116 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
   .quoteEmbedFrame { height:980px; }
 }
 
+
+/* 통합 v2: 모바일 메뉴 접힘 구조 */
+.typeExtraMenu {
+  display:none;
+  flex-basis:100%;
+  width:100%;
+  flex-wrap:wrap;
+  gap:8px;
+  padding-top:2px;
+}
+.typeExtraMenu.open { display:flex; }
+#typeMoreBtn.extraOpen { background:#111827; color:#fff; border-color:#111827; }
+@media(max-width:640px){
+  .typeIndex{
+    flex-wrap:nowrap !important;
+    overflow-x:visible !important;
+    gap:5px !important;
+    padding:7px !important;
+    align-items:center !important;
+  }
+  .typeIndex > .typeTab{
+    flex:1 1 0 !important;
+    min-width:0 !important;
+    padding:8px 6px !important;
+    font-size:12px !important;
+    white-space:nowrap !important;
+    text-align:center !important;
+  }
+  .typeExtraMenu{
+    position:absolute;
+    left:7px;
+    right:7px;
+    top:48px;
+    width:auto;
+    background:rgba(245,246,250,.99);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:8px;
+    box-shadow:0 8px 18px rgba(15,23,42,.15);
+    z-index:10000;
+  }
+  .typeExtraMenu.open{ display:flex; }
+  .typeExtraMenu .typeTab{
+    flex:1 1 calc(50% - 6px);
+    padding:9px 8px !important;
+    font-size:12px !important;
+  }
+  .wrap{ padding-top:64px !important; }
+}
+/* 견적서 iframe 모바일 표시 안정화 */
+.quoteEmbedFrame { height:1320px; }
+@media(max-width:980px){ .quoteEmbedFrame { height:980px !important; } }
+@media(max-width:640px){ .quoteEmbedFrame { height:760px !important; } }
+
+
+/* 통합 v3: 메뉴 전체 1줄 가로 스크롤 구조 */
+.typeIndex {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  white-space: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+.typeIndex::-webkit-scrollbar {
+  height: 5px;
+}
+.typeIndex::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+.typeIndex .typeTab {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+.mobileIndexBreak,
+.typeExtraMenu,
+#typeMoreBtn {
+  display: none !important;
+}
+
+@media(max-width:640px){
+  .typeIndex {
+    width: calc(100% - 16px) !important;
+    max-width: none !important;
+    padding: 8px !important;
+    gap: 6px !important;
+    border-radius: 0 0 14px 14px !important;
+  }
+  .typeIndex .typeTab {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+  .wrap {
+    padding-top: 66px !important;
+  }
+}
+
+
+/* final menu override: 기타 접힘 제거 + 전체 메뉴 가로 스크롤 */
+.typeIndex{flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;white-space:nowrap!important;justify-content:flex-start!important;-webkit-overflow-scrolling:touch;}
+.typeIndex .typeTab{flex:0 0 auto!important;white-space:nowrap!important;}
+.typeExtraMenu,#typeMoreBtn,.mobileIndexBreak{display:none!important;}
+@media(max-width:640px){
+  .typeIndex{gap:6px!important;padding:8px!important;}
+  .typeIndex .typeTab{font-size:12px!important;padding:8px 10px!important;}
+}
+
 </style>
 </head>
 <body>
@@ -1396,13 +1506,11 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
     <button class="typeTab property" onclick="showTypePage('multi')">복수</button>
     <button class="typeTab property" onclick="showTypePage('rights')">무형</button>
     <button class="typeTab property" onclick="showTypePage('feeOnly')">수수료</button>
-    <span class="mobileIndexBreak" aria-hidden="true"></span>
     <button class="typeTab property" onclick="showTypePage('receiveProperty')">일반접수</button>
     <button class="typeTab property" onclick="showTypePage('receiveMulti')">복수접수</button>
     <button class="typeTab property" onclick="showTypePage('receiveRights')">무형접수</button>
-    <span class="mobileIndexBreak" aria-hidden="true"></span>
-    <button class="typeTab property" onclick="showTypePage('quoteHagam')">하감 견적서</button>
-    <button class="typeTab property" onclick="showTypePage('quoteBareum')">바름 견적서</button>
+    <button class="typeTab property" onclick="showTypePage('quoteHagam')">하감견적서</button>
+    <button class="typeTab property" onclick="showTypePage('quoteBareum')">바름견적서</button>
   </div>
 
 
@@ -2192,6 +2300,60 @@ th { font-weight:700 !important; }
   gap:38px !important;
 }
 
+
+/* 통합본 모바일 A4 표시 보정 */
+.lineText [data-key=&quot;caseName&quot;],
+.targetLine [data-key=&quot;target&quot;]{
+  display:inline-block !important;
+  min-width:360px !important;
+  min-height:1.2em !important;
+  border-bottom:1px dotted #d1d5db;
+  vertical-align:baseline;
+}
+@media(max-width:850px){
+  html,body{ overflow-x:hidden !important; }
+  header{ position:relative !important; top:auto !important; }
+  .stage{
+    padding:8px !important;
+    display:flex !important;
+    justify-content:center !important;
+    align-items:flex-start !important;
+    overflow:hidden !important;
+    min-height:calc(1123px * var(--quoteScale, .45) + 20px) !important;
+  }
+  .paper{
+    width:794px !important;
+    height:1123px !important;
+    min-width:794px !important;
+    min-height:1123px !important;
+    max-height:1123px !important;
+    aspect-ratio:794 / 1123 !important;
+    zoom:1 !important;
+    transform:scale(var(--quoteScale, .45)) !important;
+    transform-origin:top center !important;
+    margin:0 auto !important;
+  }
+  .overlay{
+    padding:48px 0 20px !important;
+    overflow:auto !important;
+  }
+  .overlay .paper{
+    width:794px !important;
+    height:1123px !important;
+    min-width:794px !important;
+    transform:scale(var(--quoteScale, .45)) !important;
+    transform-origin:top center !important;
+    zoom:1 !important;
+  }
+}
+@media(max-width:430px){
+  .toolbar{gap:6px !important;}
+  .toolbar button{font-size:12px !important; padding:8px 9px !important;}
+  .sub{display:none !important;}
+  .lineText [data-key=&quot;caseName&quot;],
+  .targetLine [data-key=&quot;target&quot;]{ min-width:300px !important; }
+}
+
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -2780,6 +2942,19 @@ function openFull(){
   document.getElementById(&#x27;overlay&#x27;).classList.add(&#x27;on&#x27;);
 }
 function closeFull(){document.getElementById(&#x27;overlay&#x27;).classList.remove(&#x27;on&#x27;);}
+
+
+function quoteAdjustScale(){
+  const scale = Math.min(1, Math.max(0.34, (window.innerWidth - 16) / 794));
+  document.documentElement.style.setProperty(&#x27;--quoteScale&#x27;, String(scale));
+}
+const quoteOriginalRender = render;
+render = function(){
+  quoteOriginalRender();
+  quoteAdjustScale();
+};
+window.addEventListener(&#x27;resize&#x27;, quoteAdjustScale);
+window.addEventListener(&#x27;orientationchange&#x27;, function(){ setTimeout(quoteAdjustScale, 250); });
 
 render();
 &lt;/script&gt;
@@ -3572,6 +3747,60 @@ th { font-weight:700 !important; }
   gap:38px !important;
 }
 
+
+/* 통합본 모바일 A4 표시 보정 */
+.lineText [data-key=&quot;caseName&quot;],
+.targetLine [data-key=&quot;target&quot;]{
+  display:inline-block !important;
+  min-width:360px !important;
+  min-height:1.2em !important;
+  border-bottom:1px dotted #d1d5db;
+  vertical-align:baseline;
+}
+@media(max-width:850px){
+  html,body{ overflow-x:hidden !important; }
+  header{ position:relative !important; top:auto !important; }
+  .stage{
+    padding:8px !important;
+    display:flex !important;
+    justify-content:center !important;
+    align-items:flex-start !important;
+    overflow:hidden !important;
+    min-height:calc(1123px * var(--quoteScale, .45) + 20px) !important;
+  }
+  .paper{
+    width:794px !important;
+    height:1123px !important;
+    min-width:794px !important;
+    min-height:1123px !important;
+    max-height:1123px !important;
+    aspect-ratio:794 / 1123 !important;
+    zoom:1 !important;
+    transform:scale(var(--quoteScale, .45)) !important;
+    transform-origin:top center !important;
+    margin:0 auto !important;
+  }
+  .overlay{
+    padding:48px 0 20px !important;
+    overflow:auto !important;
+  }
+  .overlay .paper{
+    width:794px !important;
+    height:1123px !important;
+    min-width:794px !important;
+    transform:scale(var(--quoteScale, .45)) !important;
+    transform-origin:top center !important;
+    zoom:1 !important;
+  }
+}
+@media(max-width:430px){
+  .toolbar{gap:6px !important;}
+  .toolbar button{font-size:12px !important; padding:8px 9px !important;}
+  .sub{display:none !important;}
+  .lineText [data-key=&quot;caseName&quot;],
+  .targetLine [data-key=&quot;target&quot;]{ min-width:300px !important; }
+}
+
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -4160,6 +4389,19 @@ function openFull(){
   document.getElementById(&#x27;overlay&#x27;).classList.add(&#x27;on&#x27;);
 }
 function closeFull(){document.getElementById(&#x27;overlay&#x27;).classList.remove(&#x27;on&#x27;);}
+
+
+function quoteAdjustScale(){
+  const scale = Math.min(1, Math.max(0.34, (window.innerWidth - 16) / 794));
+  document.documentElement.style.setProperty(&#x27;--quoteScale&#x27;, String(scale));
+}
+const quoteOriginalRender = render;
+render = function(){
+  quoteOriginalRender();
+  quoteAdjustScale();
+};
+window.addEventListener(&#x27;resize&#x27;, quoteAdjustScale);
+window.addEventListener(&#x27;orientationchange&#x27;, function(){ setTimeout(quoteAdjustScale, 250); });
 
 render();
 &lt;/script&gt;
@@ -7248,6 +7490,7 @@ function multiToggleExcludeSpecial(){
     });
   });
 });
+
 
 function showTypePage(type){
   document.querySelectorAll('.typeTab').forEach(btn => btn.classList.remove('active'));
