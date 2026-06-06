@@ -1504,6 +1504,28 @@ input, textarea, [contenteditable="true"] {
   -webkit-ime-mode: active;
 }
 
+
+/* 견적서 모바일 확대 허용 */
+#page_quoteHagam,
+#page_quoteBareum,
+#page_quoteHagam .quoteEmbedWrap,
+#page_quoteBareum .quoteEmbedWrap,
+#page_quoteHagam .quoteEmbedFrame,
+#page_quoteBareum .quoteEmbedFrame {
+  touch-action: pan-x pan-y pinch-zoom !important;
+}
+@media(max-width:640px){
+  #page_quoteHagam .quoteEmbedWrap,
+  #page_quoteBareum .quoteEmbedWrap {
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+  #page_quoteHagam .quoteEmbedFrame,
+  #page_quoteBareum .quoteEmbedFrame {
+    height:860px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1530,7 +1552,7 @@ input, textarea, [contenteditable="true"] {
 &lt;html lang=&quot;ko&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes&quot;&gt;
 &lt;title&gt;견적서 자동생성기 하감/바름 v7&lt;/title&gt;
 &lt;style&gt;
 :root{
@@ -2366,6 +2388,26 @@ th { font-weight:700 !important; }
 input, textarea, [contenteditable=&quot;true&quot;] {
   ime-mode: active;
   -webkit-ime-mode: active;
+}
+
+
+/* 모바일 견적서 문서 확대 허용 */
+html, body, .stage, .paper, .overlay {
+  touch-action: pan-x pan-y pinch-zoom !important;
+}
+@media(max-width:850px){
+  html, body {
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+  .stage{
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+  .paper{
+    /* 기존 A4 비율은 유지하되, 브라우저 확대/핀치줌을 막지 않음 */
+    touch-action: pan-x pan-y pinch-zoom !important;
+  }
 }
 
 &lt;/style&gt;
@@ -3007,7 +3049,7 @@ applyKoreanInputHints(document);
 &lt;html lang=&quot;ko&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes&quot;&gt;
 &lt;title&gt;견적서 자동생성기 하감/바름 v7&lt;/title&gt;
 &lt;style&gt;
 :root{
@@ -3843,6 +3885,26 @@ th { font-weight:700 !important; }
 input, textarea, [contenteditable=&quot;true&quot;] {
   ime-mode: active;
   -webkit-ime-mode: active;
+}
+
+
+/* 모바일 견적서 문서 확대 허용 */
+html, body, .stage, .paper, .overlay {
+  touch-action: pan-x pan-y pinch-zoom !important;
+}
+@media(max-width:850px){
+  html, body {
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+  .stage{
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+  .paper{
+    /* 기존 A4 비율은 유지하되, 브라우저 확대/핀치줌을 막지 않음 */
+    touch-action: pan-x pan-y pinch-zoom !important;
+  }
 }
 
 &lt;/style&gt;
