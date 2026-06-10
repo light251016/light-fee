@@ -6041,9 +6041,10 @@ function feeMan(n){
   return manwon.toLocaleString('ko-KR') + '만원 내외';
 }
 function specialMan(n){
-  const floored = floor1000(n);
-  const v = floored / 10000;
-  const txt = (Math.round(v*10)/10).toLocaleString('ko-KR', {maximumFractionDigits:1});
+  // 특용비 전달문구 표기: 백원단위에서 버림
+  // 예) 156,900원 → 15.6만원 / 623,100원 → 62.3만원 / 1,569,850원 → 156.9만원
+  const man10 = Math.floor((Number(n)||0) / 1000) / 10;
+  const txt = man10.toLocaleString('ko-KR', {maximumFractionDigits:1});
   return txt + '만원 내외';
 }
 function eokTextFromWon(w){ return (Number(w||0)/100000000).toLocaleString('ko-KR',{maximumFractionDigits:2}) + '억 내외'; }
@@ -6269,6 +6270,17 @@ function interp(w, kind){
   if(base == null || rate == null) return 0;
   return base + (w-r.lower)*rate;
 }
+// 감정평가수수료계산기 앱과 동일하게 요율 계산값은 천원 미만 버림 처리합니다.
+// 일반/복수/수수료 페이지가 모두 이 값을 기준으로 표시·계산되도록 공통 적용합니다.
+function appRateFeeRaw(w, kind, markup=1){
+  return interp(w, kind) * (Number(markup)||1);
+}
+function appRateFee(w, kind, markup=1){
+  return floor1000(appRateFeeRaw(w, kind, markup));
+}
+function specialFeeDiffRaw(w, markup=1){
+  return Math.max(appRateFeeRaw(w, 'basis', markup) - appRateFeeRaw(w, 'lower', markup), 0);
+}
 function loadRegions(){
   try{
     const saved = localStorage.getItem('hitechTravelRegionsV5_detailEdit');
@@ -6399,8 +6411,8 @@ function calculate(){
     const extra = Number(document.getElementById('extra_'+meta.key).value)||0;
     const basis = interp(w,'basis');
     const lower = interp(w,'lower');
-    const pure = basis * markup;
-    const lowerFinal = lower * markup;
+    const pure = appRateFee(w, 'basis', markup);
+    const lowerFinal = appRateFee(w, 'lower', markup);
     const finalRaw = (pure + extra + actual + travel) * 1.1;
     const final = ceil1000(finalRaw);
 
@@ -6411,7 +6423,9 @@ function calculate(){
       special = floor1000(extra);
       specialReason = '5.1억 미만 추가비용';
     } else {
-      special = Math.max(floor1000(pure - lowerFinal), 0);
+      // 특용비는 어플의 원계산 기준-하한 차액을 기준으로 사용합니다.
+      // 기준/하한 표시값을 각각 천원버림한 뒤 빼면 37.1억 예시에서 622,600원이 623,000원으로 올라가므로 주의합니다.
+      special = specialFeeDiffRaw(w, markup);
       specialReason = '기준요율-하한요율';
     }
 
@@ -6983,8 +6997,8 @@ function multiCalcOne(company,key,label){
   const extra = Number(document.getElementById(`multi_${company}_extra_${key}`)?.value)||0;
   const basis = interp(w,'basis');
   const lower = interp(w,'lower');
-  const pure = basis * markup;
-  const lowerFinal = lower * markup;
+  const pure = appRateFee(w, 'basis', markup);
+  const lowerFinal = appRateFee(w, 'lower', markup);
   const finalRaw = (pure + extra + actual + travel) * 1.1;
   const final = ceil1000(finalRaw);
   let special = 0;
@@ -6993,7 +7007,8 @@ function multiCalcOne(company,key,label){
     special = floor1000(extra);
     specialReason = '5.1억 미만 추가비용';
   } else {
-    special = Math.max(floor1000(pure - lowerFinal),0);
+    // 특용비는 어플의 원계산 기준-하한 차액을 기준으로 사용합니다.
+    special = specialFeeDiffRaw(w, markup);
     specialReason = '기준요율-하한요율';
   }
   return {company, companyLabel: company === 'ht' ? '하이테크' : '복수업체', key, label, w, extra, actual, travel, basis, lower, pure, lowerFinal, finalRaw, final, special, specialReason};
@@ -9905,14 +9920,9 @@ function feeOnlyCalcRates(){
     feeOnlySetText('feeOnlyUpperRateView','-');
     return;
   }
-  const lowerRaw = typeof interp === 'function' ? interp(amount, 'lower') : 0;
-  const baseRaw = typeof interp === 'function' ? interp(amount, 'base') : 0;
-  const upperRaw = typeof interp === 'function' ? interp(amount, 'upper') : 0;
-  // 감정평가수수료계산기 앱 표시 방식에 맞춰 천원 미만은 버림 처리
-  const appRound = typeof floor1000 === 'function' ? floor1000 : (v => Math.floor((Number(v)||0)/1000)*1000);
-  const lower = appRound(lowerRaw);
-  const base = appRound(baseRaw);
-  const upper = appRound(upperRaw);
+  const lower = typeof appRateFee === 'function' ? appRateFee(amount, 'lower', 1) : 0;
+  const base = typeof appRateFee === 'function' ? appRateFee(amount, 'base', 1) : 0;
+  const upper = typeof appRateFee === 'function' ? appRateFee(amount, 'upper', 1) : 0;
   feeOnlySetText('feeOnlyLowerRateView', `${feeOnlyFormatMan(lower)} (${feeOnlyFormatWon(lower)})`);
   feeOnlySetText('feeOnlyBaseRateView', `${feeOnlyFormatMan(base)} (${feeOnlyFormatWon(base)})`);
   feeOnlySetText('feeOnlyUpperRateView', `${feeOnlyFormatMan(upper)} (${feeOnlyFormatWon(upper)})`);
