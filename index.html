@@ -1514,24 +1514,29 @@ input, textarea, [contenteditable="true"] {
 #page_quoteHagam,
 #page_quoteBareum,
 #page_hagamRequest,
+#page_bareumRequest,
 #page_quoteHagam .quoteEmbedWrap,
 #page_quoteBareum .quoteEmbedWrap,
 #page_hagamRequest .quoteEmbedWrap,
+#page_bareumRequest .quoteEmbedWrap,
 #page_quoteHagam .quoteEmbedFrame,
 #page_quoteBareum .quoteEmbedFrame,
-#page_hagamRequest .quoteEmbedFrame {
+#page_hagamRequest .quoteEmbedFrame,
+#page_bareumRequest .quoteEmbedFrame {
   touch-action: pan-x pan-y pinch-zoom !important;
 }
 @media(max-width:640px){
   #page_quoteHagam .quoteEmbedWrap,
   #page_quoteBareum .quoteEmbedWrap,
-  #page_hagamRequest .quoteEmbedWrap {
+  #page_hagamRequest .quoteEmbedWrap,
+  #page_bareumRequest .quoteEmbedWrap {
     overflow:auto !important;
     -webkit-overflow-scrolling:touch !important;
   }
   #page_quoteHagam .quoteEmbedFrame,
   #page_quoteBareum .quoteEmbedFrame,
-  #page_hagamRequest .quoteEmbedFrame {
+  #page_hagamRequest .quoteEmbedFrame,
+#page_bareumRequest .quoteEmbedFrame {
     height:860px !important;
   }
 }
@@ -1541,7 +1546,8 @@ input, textarea, [contenteditable="true"] {
 @media(max-width:640px){
   #page_quoteHagam .quoteEmbedFrame,
   #page_quoteBareum .quoteEmbedFrame,
-  #page_hagamRequest .quoteEmbedFrame {
+  #page_hagamRequest .quoteEmbedFrame,
+#page_bareumRequest .quoteEmbedFrame {
     height: 900px !important;
   }
 }
@@ -1583,6 +1589,7 @@ input, textarea, [contenteditable="true"] {
     <button class="typeTab property" onclick="showTypePage('quoteHagam')">하감견적서</button>
     <button class="typeTab property" onclick="showTypePage('quoteBareum')">바름견적서</button>
     <button class="typeTab property" onclick="showTypePage('hagamRequest')">하감의뢰서</button>
+    <button class="typeTab property" onclick="showTypePage('bareumRequest')">바름의뢰서</button>
   </div>
 
 
@@ -4854,7 +4861,9 @@ function applyZoom(){const isMobile=innerWidth&lt;=850;const base=isMobile?Math.
 function zoomIn(){zoom=Math.min(2.2,zoom+.1);applyZoom();}
 function zoomOut(){zoom=Math.max(.5,zoom-.1);applyZoom();}
 function zoomReset(){zoom=1;applyZoom();}
-function wrapLines(ctx,text,maxWidth){const src=String(text||&#x27;&#x27;).replace(/\r/g,&#x27;&#x27;).split(&#x27;\n&#x27;);const out=[];src.forEach(line=&gt;{let cur=&#x27;&#x27;;for(const ch of line){const test=cur+ch;if(ctx.measureText(test).width&lt;=maxWidth||cur===&#x27;&#x27;){cur=test;}else{out.push(cur);cur=ch;}}out.push(cur);});return out;}
+function wrapLines(ctx,text,maxWidth){const src=String(text||&#x27;&#x27;).replace(/
+/g,&#x27;&#x27;).split(&#x27;
+&#x27;);const out=[];src.forEach(line=&gt;{let cur=&#x27;&#x27;;for(const ch of line){const test=cur+ch;if(ctx.measureText(test).width&lt;=maxWidth||cur===&#x27;&#x27;){cur=test;}else{out.push(cur);cur=ch;}}out.push(cur);});return out;}
 function drawText(ctx,text,x,y,maxWidth,lineHeight,align=&#x27;left&#x27;,maxLines=99){const lines=wrapLines(ctx,text,maxWidth);let cy=y;for(let i=0;i&lt;Math.min(lines.length,maxLines);i++){let tx=x;if(align===&#x27;center&#x27;)tx=x+maxWidth/2;if(align===&#x27;right&#x27;)tx=x+maxWidth;ctx.textAlign=align;ctx.fillText(lines[i],tx,cy);cy+=lineHeight;}ctx.textAlign=&#x27;left&#x27;;return cy;}function drawTextInCell(ctx,text,x,top,w,h,lineHeight=16,align=&#x27;left&#x27;,maxLines=99){let lines=wrapLines(ctx,text,w).slice(0,maxLines);if(!lines.length)lines=[&#x27;&#x27;];const totalH=lines.length*lineHeight;let cy=top+(h-totalH)/2+lineHeight*.78;for(let i=0;i&lt;lines.length;i++){let tx=x;if(align===&#x27;center&#x27;)tx=x+w/2;if(align===&#x27;right&#x27;)tx=x+w;ctx.textAlign=align;ctx.fillText(lines[i],tx,cy);cy+=lineHeight;}ctx.textAlign=&#x27;left&#x27;;}
 function centerText(ctx,text,x,y,w,h,font=&#x27;14px Malgun Gothic&#x27;,bold=false){ctx.font=(bold?&#x27;700 &#x27;:&#x27;&#x27;)+font;ctx.textAlign=&#x27;center&#x27;;ctx.textBaseline=&#x27;middle&#x27;;ctx.fillText(text,x+w/2,y+h/2);ctx.textAlign=&#x27;left&#x27;;ctx.textBaseline=&#x27;alphabetic&#x27;;}
 function drawCheck(ctx,x,y,checked){ctx.strokeRect(x,y,10,10);if(checked){ctx.beginPath();ctx.moveTo(x+2,y+5);ctx.lineTo(x+4.5,y+8);ctx.lineTo(x+9,y+2);ctx.stroke();}}
@@ -4877,6 +4886,141 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
 "></iframe>
     </div>
   </section>
+
+  <section id="page_bareumRequest" class="typePage">
+    <div class="quoteEmbedWrap">
+      <iframe class="quoteEmbedFrame" title="바름 의뢰서" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes&quot;&gt;
+&lt;title&gt;바름 의뢰서&lt;/title&gt;
+&lt;style&gt;
+:root{--bg:#f4f6f8;--line:#d8dde6;--ink:#111827;--blue:#2563eb;--paperW:794px;--paperH:1123px;--displayScale:1;}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);font-family:Arial,&#x27;Malgun Gothic&#x27;,&#x27;Apple SD Gothic Neo&#x27;,sans-serif;color:var(--ink);}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);padding:11px 14px;backdrop-filter:blur(10px)}
+h1{font-size:18px;margin:0 0 4px}.sub{font-size:12px;color:#6b7280;line-height:1.45}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+button{appearance:none;border:0;border-radius:10px;padding:10px 12px;background:#e8eef7;font-weight:800;cursor:pointer;color:#1f2937}button.primary{background:var(--blue);color:#fff}button.ghost{background:#fff;border:1px solid var(--line)}
+.stage{padding:18px;display:flex;justify-content:center;align-items:flex-start;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;}
+.paper{width:var(--paperW);height:var(--paperH);background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.13);position:relative;color:#000;padding:64px 60px 0;transform-origin:top center;transform:scale(var(--displayScale));}
+.paper *{font-family:Arial,&#x27;Malgun Gothic&#x27;,&#x27;Apple SD Gothic Neo&#x27;,sans-serif;}
+.requestBox{width:674px;height:1000px;border:1.5px solid #111;position:relative;background:#fff;display:flex;flex-direction:column;}
+table{border-collapse:collapse;width:100%;table-layout:fixed}.mainTable{height:640px;flex:0 0 auto;font-size:14.5px;line-height:1.26}.mainTable td{border:1px solid #111;vertical-align:middle;text-align:center;padding:0 12px;word-break:keep-all}.mainTable tr:first-child td{border-top:0}.mainTable td:first-child{border-left:0}.mainTable td:last-child{border-right:0}
+.docTitle{height:92px;font-size:33px;font-weight:900;letter-spacing:14px;text-align:center;padding-left:14px!important}.docTitleEdit{display:grid;align-content:center;justify-content:center;height:100%;outline:none;white-space:pre-wrap;line-height:1.08}.docTitleEdit:empty:before{content:&#x27;감 정 평 가 의 뢰 서&#x27;}
+.label{text-align:left!important;font-weight:500;letter-spacing:.3px}.label.centerLabel{text-align:center!important}.subLabel{letter-spacing:12px;padding-left:12px!important}.subLabel.phoneLabel{letter-spacing:7px}.ownerLabel,.mortgageLabel{text-align:left!important;line-height:1.65}
+.inputCell{padding:0 12px!important}.editBox{display:grid;align-content:center;width:100%;height:100%;min-height:100%;outline:none;border-radius:3px;cursor:text;white-space:pre-wrap;overflow:hidden;text-align:left;line-height:1.24}.editBox.center{text-align:center;justify-content:center}
+.purposeCell{padding:7px 10px 9px!important;text-align:left!important;vertical-align:top!important}.purposeList{display:flex;flex-wrap:wrap;gap:3px 6px;align-items:flex-start;align-content:flex-start;padding-top:1px;padding-bottom:7px;min-height:64px}.purposeItem{display:inline-flex;align-items:center;gap:2px;white-space:nowrap;font-size:11.8px;line-height:1.25;margin-bottom:2px}.purposeItem input{width:11px;height:11px;margin:0;accent-color:#111;flex:0 0 auto}.purposeEtc{display:inline-block;min-width:120px;min-height:14px;border-bottom:1px solid #999;outline:none;white-space:pre-wrap;vertical-align:bottom;line-height:1.1}.purposeEtc:focus{background:#eef6ff;box-shadow:0 0 0 1.5px #2563eb inset;}
+.agreement{height:196px;border-top:0;padding:22px 18px 0;text-align:center;flex:0 0 auto}.agreeTitle{font-size:17px;font-weight:900;letter-spacing:.1px;margin-bottom:20px}.dateLine{font-size:14.5px;margin-bottom:14px}.dateLine span[contenteditable]{display:inline-block;min-width:32px;text-align:center;outline:none}.partyRows{width:76%;margin:0 auto;font-size:14px;line-height:1.65;text-align:left}.partyRow{display:grid;grid-template-columns:96px 100px 1fr 44px;align-items:center;min-height:23px}.partyRow.phone{grid-template-columns:96px 100px 1fr 44px;min-height:23px}.partyBlank{min-height:19px;outline:none}.spreadLabel{display:inline-flex;align-items:center;justify-content:space-between;white-space:nowrap}.spreadLabel.short{width:88px}.spreadLabel.org{width:88px}.spreadLabel.org .middle{flex:1;text-align:center;padding:0 1px}.signCell{text-align:right!important}
+.company{height:auto;min-height:118px;border-top:1px solid #111;text-align:center;padding:17px 12px 12px;flex:1 1 auto}.companyName{font-size:26px;font-weight:900;margin-bottom:15px}.companyAddr,.companyBank,.companyRep{font-size:14.5px;line-height:1.38}.companyBank{display:flex;justify-content:center;gap:32px;white-space:nowrap}.companyRep{letter-spacing:9px;padding-left:9px;margin-top:4px}
+.bottomTable{height:46px;flex:0 0 46px;margin-top:0;font-size:14px}.bottomTable td{border:1px solid #111;border-bottom:0;text-align:center;height:46px;padding:0 8px}.bottomTable td:first-child{border-left:0}.bottomTable td:last-child{border-right:0}.bottomTable .depositCell{text-align:left!important;padding-left:14px!important;vertical-align:middle!important}.depositEdit{display:inline-block;min-width:80px;outline:none;text-align:left;white-space:nowrap}
+[contenteditable=&quot;true&quot;]{outline:none;cursor:text;border-radius:3px;min-height:1em;touch-action:manipulation;-webkit-user-select:text;user-select:text;}[contenteditable=&quot;true&quot;]:focus{background:#eef6ff;box-shadow:0 0 0 1.5px #2563eb inset;}
+@media(max-width:850px){.stage{justify-content:flex-start;min-height:var(--stageH,560px)}.paper{transform-origin:top left;margin:0}.toolbar{gap:5px}.toolbar button{font-size:11px;padding:7px 8px}.docTitle{font-size:30px;letter-spacing:10px}.mainTable{font-size:12.5px}.purposeItem{font-size:11px}.agreeTitle{font-size:15px}.companyName{font-size:23px}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;header&gt;
+  &lt;h1&gt;바름 의뢰서&lt;/h1&gt;
+  &lt;div class=&quot;sub&quot;&gt;문서 칸을 바로 눌러 내용을 입력할 수 있습니다. 날짜와 제출처는 기본값으로 자동 입력됩니다.&lt;/div&gt;
+  &lt;div class=&quot;toolbar&quot;&gt;
+    &lt;button class=&quot;ghost&quot; onclick=&quot;resetDefaults()&quot;&gt;초기화&lt;/button&gt;
+    &lt;button class=&quot;primary&quot; onclick=&quot;saveJpg(event)&quot;&gt;jpg저장&lt;/button&gt;
+    &lt;button class=&quot;ghost&quot; onclick=&quot;zoomOut()&quot;&gt;-&lt;/button&gt;
+    &lt;button class=&quot;ghost&quot; onclick=&quot;zoomReset()&quot;&gt;원본크기&lt;/button&gt;
+    &lt;button class=&quot;ghost&quot; onclick=&quot;zoomIn()&quot;&gt;+&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+&lt;main class=&quot;stage&quot; id=&quot;stage&quot;&gt;
+  &lt;section id=&quot;paper&quot; class=&quot;paper&quot;&gt;
+    &lt;div class=&quot;requestBox&quot;&gt;
+      &lt;table class=&quot;mainTable&quot;&gt;
+        &lt;colgroup&gt;&lt;col style=&quot;width:150px&quot;&gt;&lt;col style=&quot;width:90px&quot;&gt;&lt;col&gt;&lt;/colgroup&gt;
+        &lt;tr style=&quot;height:92px&quot;&gt;&lt;td colspan=&quot;3&quot; class=&quot;docTitle&quot;&gt;&lt;div id=&quot;docTitle&quot; class=&quot;docTitleEdit&quot; contenteditable=&quot;true&quot;&gt;감 정 평 가 의 뢰 서&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:48px&quot;&gt;&lt;td colspan=&quot;2&quot; class=&quot;label&quot;&gt;감정평가 의뢰 물건(권리)&lt;/td&gt;&lt;td class=&quot;inputCell&quot;&gt;&lt;div id=&quot;targetRight&quot; class=&quot;editBox&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:48px&quot;&gt;&lt;td colspan=&quot;2&quot; class=&quot;label&quot;&gt;감정평가 의뢰 물건 소재지&lt;/td&gt;&lt;td class=&quot;inputCell&quot;&gt;&lt;div id=&quot;objectRight&quot; class=&quot;editBox&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:48px&quot;&gt;&lt;td rowspan=&quot;2&quot; class=&quot;ownerLabel&quot;&gt;소유자 (권리자)&lt;/td&gt;&lt;td class=&quot;subLabel&quot;&gt;주&amp;nbsp;&amp;nbsp;소&lt;/td&gt;&lt;td class=&quot;inputCell&quot;&gt;&lt;div id=&quot;ownerAddr&quot; class=&quot;editBox&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:48px&quot;&gt;&lt;td class=&quot;subLabel&quot;&gt;성&amp;nbsp;&amp;nbsp;명&lt;/td&gt;&lt;td class=&quot;inputCell&quot;&gt;&lt;div id=&quot;ownerName&quot; class=&quot;editBox&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:82px&quot;&gt;&lt;td colspan=&quot;2&quot; class=&quot;label&quot;&gt;감정평가서의 사용목적&lt;/td&gt;&lt;td class=&quot;purposeCell&quot;&gt;
+          &lt;div class=&quot;purposeList&quot;&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;처분&quot;&gt;처분&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;매수&quot;&gt;매수&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;관리&quot;&gt;관리&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;자산재평가&quot;&gt;자산재평가&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;임대차&quot;&gt;임대차&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;일반거래&quot;&gt;일반거래&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;법원제출용(시가참고, 소송자문, 현물출자)&quot;&gt;법원제출용(시가참고, 소송자문, 현물출자)&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;법인전환&quot;&gt;법인전환&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;국세청 및 세무서제출용(상속세·증여세 등)&quot;&gt;국세청 및 세무서제출용(상속세·증여세 등)&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;투자자문&quot;&gt;투자자문&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;컨설팅&quot;&gt;컨설팅&lt;/label&gt;
+            &lt;label class=&quot;purposeItem&quot;&gt;&lt;input type=&quot;checkbox&quot; data-purpose=&quot;비상장주식평가&quot;&gt;비상장주식평가&lt;/label&gt;
+            &lt;span class=&quot;purposeItem etcWrap&quot; id=&quot;purposeEtcWrap&quot;&gt;&lt;input id=&quot;purposeEtcCheck&quot; type=&quot;checkbox&quot; data-purpose=&quot;기타&quot;&gt;&lt;label for=&quot;purposeEtcCheck&quot;&gt;기타(&lt;/label&gt;&lt;span id=&quot;purposeEtc&quot; class=&quot;purposeEtc&quot; contenteditable=&quot;true&quot;&gt;&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:48px&quot;&gt;&lt;td colspan=&quot;2&quot; class=&quot;label&quot;&gt;기준시점&lt;/td&gt;&lt;td class=&quot;inputCell&quot;&gt;&lt;div id=&quot;baseDate&quot; class=&quot;editBox&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:48px&quot;&gt;&lt;td rowspan=&quot;2&quot; class=&quot;mortgageLabel&quot;&gt;금융기관 등의 담보&lt;br&gt;감정평가인 경우&lt;/td&gt;&lt;td class=&quot;centerLabel&quot;&gt;채무자명&lt;/td&gt;&lt;td class=&quot;inputCell&quot;&gt;&lt;div id=&quot;debtorName&quot; class=&quot;editBox&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:48px&quot;&gt;&lt;td class=&quot;centerLabel&quot;&gt;전화번호&lt;/td&gt;&lt;td class=&quot;inputCell&quot;&gt;&lt;div id=&quot;debtorPhone&quot; class=&quot;editBox&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:48px&quot;&gt;&lt;td colspan=&quot;2&quot; class=&quot;label&quot;&gt;감정평가서의 제출처&lt;/td&gt;&lt;td class=&quot;inputCell&quot;&gt;&lt;div id=&quot;submitPlace&quot; class=&quot;editBox&quot; contenteditable=&quot;true&quot;&gt;국세청 및 세무서&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr style=&quot;height:48px&quot;&gt;&lt;td colspan=&quot;2&quot; class=&quot;label&quot;&gt;기타참고사항&lt;/td&gt;&lt;td class=&quot;inputCell&quot;&gt;&lt;div id=&quot;notes&quot; class=&quot;editBox&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+      &lt;/table&gt;
+      &lt;div class=&quot;agreement&quot;&gt;
+        &lt;div class=&quot;agreeTitle&quot;&gt;위 물건에 대하여 이면기재의 약정사항에 동의하고 감정평가를 의뢰합니다.&lt;/div&gt;
+        &lt;div class=&quot;dateLine&quot;&gt;&lt;span id=&quot;year&quot; contenteditable=&quot;true&quot;&gt;&lt;/span&gt; 년&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span id=&quot;month&quot; contenteditable=&quot;true&quot;&gt;&lt;/span&gt; 월&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span id=&quot;day&quot; contenteditable=&quot;true&quot;&gt;&lt;/span&gt; 일&lt;/div&gt;
+        &lt;div class=&quot;partyRows&quot;&gt;
+          &lt;div class=&quot;partyRow&quot;&gt;&lt;span&gt;위 의뢰인&lt;/span&gt;&lt;span class=&quot;spreadLabel short&quot;&gt;&lt;span&gt;주&lt;/span&gt;&lt;span&gt;소&lt;/span&gt;&lt;/span&gt;&lt;span id=&quot;clientAddr&quot; class=&quot;partyBlank&quot; contenteditable=&quot;true&quot;&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;partyRow&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;spreadLabel org&quot;&gt;&lt;span&gt;기&lt;/span&gt;&lt;span class=&quot;middle&quot;&gt;관또는상&lt;/span&gt;&lt;span&gt;호&lt;/span&gt;&lt;/span&gt;&lt;span id=&quot;clientOrg&quot; class=&quot;partyBlank&quot; contenteditable=&quot;true&quot;&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;partyRow&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;spreadLabel short&quot;&gt;&lt;span&gt;성&lt;/span&gt;&lt;span&gt;명&lt;/span&gt;&lt;/span&gt;&lt;span id=&quot;clientName&quot; class=&quot;partyBlank&quot; contenteditable=&quot;true&quot;&gt;&lt;/span&gt;&lt;span class=&quot;signCell&quot;&gt;(인)&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;partyRow phone&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&quot;spreadLabel short&quot;&gt;&lt;span&gt;전&lt;/span&gt;&lt;span&gt;화&lt;/span&gt;&lt;span&gt;번&lt;/span&gt;&lt;span&gt;호&lt;/span&gt;&lt;/span&gt;&lt;span id=&quot;clientPhone&quot; class=&quot;partyBlank&quot; contenteditable=&quot;true&quot;&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;company&quot;&gt;
+        &lt;div class=&quot;companyName&quot;&gt;(주)바름감정평가법인&lt;/div&gt;
+        &lt;div class=&quot;companyAddr&quot;&gt;서울특별시 강남구 삼성로 104길 11, 4층&lt;/div&gt;
+        &lt;div class=&quot;companyBank&quot;&gt;&lt;span&gt;국민은행&lt;/span&gt;&lt;span&gt;529401-01-292371&lt;/span&gt;&lt;span&gt;(주)바름감정평가법인&lt;/span&gt;&lt;/div&gt;
+        &lt;div class=&quot;companyRep&quot;&gt;대표 권다은&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;table class=&quot;bottomTable&quot;&gt;&lt;colgroup&gt;&lt;col style=&quot;width:15.5%&quot;&gt;&lt;col style=&quot;width:34.5%&quot;&gt;&lt;col style=&quot;width:15.5%&quot;&gt;&lt;col&gt;&lt;/colgroup&gt;&lt;tr&gt;&lt;td&gt;접수번호&lt;/td&gt;&lt;td&gt;&lt;div id=&quot;receiptNo&quot; class=&quot;editBox center&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;착수금&lt;/td&gt;&lt;td class=&quot;depositCell&quot;&gt;&lt;span id=&quot;depositAmount&quot; class=&quot;depositEdit&quot; contenteditable=&quot;true&quot;&gt;50만원&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+&lt;script&gt;
+function $(id){return document.getElementById(id);}
+function txt(id){const el=$(id);return el?(el.textContent||&#x27;&#x27;).trim():&#x27;&#x27;;}
+function applyKoreanInputHints(root){(root||document).querySelectorAll(&#x27;input,textarea,[contenteditable=&quot;true&quot;]&#x27;).forEach(el=&gt;{el.setAttribute(&#x27;lang&#x27;,&#x27;ko&#x27;);el.setAttribute(&#x27;inputmode&#x27;,&#x27;text&#x27;);el.setAttribute(&#x27;autocomplete&#x27;,&#x27;off&#x27;);el.setAttribute(&#x27;autocapitalize&#x27;,&#x27;off&#x27;);el.setAttribute(&#x27;spellcheck&#x27;,&#x27;false&#x27;);el.style.imeMode=&#x27;active&#x27;;});}
+function setToday(){const d=new Date();$(&#x27;year&#x27;).textContent=d.getFullYear();$(&#x27;month&#x27;).textContent=String(d.getMonth()+1).padStart(2,&#x27;0&#x27;);$(&#x27;day&#x27;).textContent=String(d.getDate()).padStart(2,&#x27;0&#x27;);}
+function resetDefaults(){document.querySelectorAll(&#x27;[contenteditable=&quot;true&quot;]&#x27;).forEach(el=&gt;el.textContent=&#x27;&#x27;);document.querySelectorAll(&#x27;input[type=&quot;checkbox&quot;]&#x27;).forEach(el=&gt;el.checked=false);$(&#x27;docTitle&#x27;).textContent=&#x27;감 정 평 가 의 뢰 서&#x27;;$(&#x27;submitPlace&#x27;).textContent=&#x27;국세청 및 세무서&#x27;;$(&#x27;depositAmount&#x27;).textContent=&#x27;50만원&#x27;;setToday();applyKoreanInputHints(document);}
+let zoom=1;
+function applyZoom(){const isMobile=innerWidth&lt;=850;const base=isMobile?Math.max(.42,Math.min(.78,(innerWidth-36)/794)):1;document.documentElement.style.setProperty(&#x27;--displayScale&#x27;,(base*zoom).toFixed(3));const stage=$(&#x27;stage&#x27;);stage.style.setProperty(&#x27;--stageH&#x27;,Math.ceil(1123*base*zoom+40)+&#x27;px&#x27;);}
+function zoomIn(){zoom=Math.min(2.2,zoom+.1);applyZoom();}
+function zoomOut(){zoom=Math.max(.5,zoom-.1);applyZoom();}
+function zoomReset(){zoom=1;applyZoom();}
+function wrapLines(ctx,text,maxWidth){const src=String(text||&#x27;&#x27;).replace(/\r/g,&#x27;&#x27;).split(&#x27;\n&#x27;);const out=[];src.forEach(line=&gt;{let cur=&#x27;&#x27;;for(const ch of line){const test=cur+ch;if(ctx.measureText(test).width&lt;=maxWidth||cur===&#x27;&#x27;){cur=test;}else{out.push(cur);cur=ch;}}out.push(cur);});return out;}
+function drawText(ctx,text,x,y,maxWidth,lineHeight,align=&#x27;left&#x27;,maxLines=99){const lines=wrapLines(ctx,text,maxWidth);let cy=y;for(let i=0;i&lt;Math.min(lines.length,maxLines);i++){let tx=x;if(align===&#x27;center&#x27;)tx=x+maxWidth/2;if(align===&#x27;right&#x27;)tx=x+maxWidth;ctx.textAlign=align;ctx.fillText(lines[i],tx,cy);cy+=lineHeight;}ctx.textAlign=&#x27;left&#x27;;return cy;}
+function drawCenteredLines(ctx,text,x,y,w,h,lineHeight,align=&#x27;left&#x27;,maxLines=99){const lines=wrapLines(ctx,text,w);const count=Math.min(lines.length,maxLines);let start=y+(h-(count*lineHeight))/2+lineHeight*.78;for(let i=0;i&lt;count;i++){let tx=x;if(align===&#x27;center&#x27;)tx=x+w/2;if(align===&#x27;right&#x27;)tx=x+w;ctx.textAlign=align;ctx.fillText(lines[i],tx,start+i*lineHeight);}ctx.textAlign=&#x27;left&#x27;;}
+function centerText(ctx,text,x,y,w,h,font=&#x27;14px Malgun Gothic&#x27;,bold=false){ctx.font=(bold?&#x27;700 &#x27;:&#x27;&#x27;)+font;ctx.textAlign=&#x27;center&#x27;;ctx.textBaseline=&#x27;middle&#x27;;ctx.fillText(text,x+w/2,y+h/2);ctx.textAlign=&#x27;left&#x27;;ctx.textBaseline=&#x27;alphabetic&#x27;;}
+function drawCheck(ctx,x,y,checked){ctx.strokeRect(x,y,10,10);if(checked){ctx.beginPath();ctx.moveTo(x+2,y+5);ctx.lineTo(x+4.5,y+8);ctx.lineTo(x+9,y+2);ctx.stroke();}}
+function isChecked(name){const el=document.querySelector(&#x27;input[data-purpose=&quot;&#x27;+name+&#x27;&quot;]&#x27;);return !!(el&amp;&amp;el.checked);}
+function drawPurpose(ctx,x,y,w,h){ctx.font=&#x27;11.8px Malgun Gothic&#x27;;ctx.fillStyle=&#x27;#000&#x27;;ctx.lineWidth=1;const items=[[&#x27;처분&#x27;,&#x27;처분&#x27;],[&#x27;매수&#x27;,&#x27;매수&#x27;],[&#x27;관리&#x27;,&#x27;관리&#x27;],[&#x27;자산재평가&#x27;,&#x27;자산재평가&#x27;],[&#x27;임대차&#x27;,&#x27;임대차&#x27;],[&#x27;일반거래&#x27;,&#x27;일반거래&#x27;],[&#x27;법원제출용(시가참고, 소송자문, 현물출자)&#x27;,&#x27;법원제출용(시가참고, 소송자문, 현물출자)&#x27;],[&#x27;법인전환&#x27;,&#x27;법인전환&#x27;],[&#x27;국세청 및 세무서제출용(상속세·증여세 등)&#x27;,&#x27;국세청 및 세무서제출용(상속세·증여세 등)&#x27;],[&#x27;투자자문&#x27;,&#x27;투자자문&#x27;],[&#x27;컨설팅&#x27;,&#x27;컨설팅&#x27;],[&#x27;비상장주식평가&#x27;,&#x27;비상장주식평가&#x27;]];let cx=x,cy=y+2;const lineH=17;items.forEach(([name,label])=&gt;{const bw=10,gap=3,itemW=bw+gap+ctx.measureText(label).width+7;if(cx+itemW&gt;x+w){cx=x;cy+=lineH;}drawCheck(ctx,cx,cy+2,isChecked(name));ctx.fillText(label,cx+bw+gap,cy+12);cx+=itemW;});const etcVal=txt(&#x27;purposeEtc&#x27;);const label=&#x27;기타(&#x27;;let itemW=10+3+ctx.measureText(label).width+Math.max(120,ctx.measureText(etcVal).width+30)+8;if(cx+itemW&gt;x+w){cx=x;cy+=lineH;}drawCheck(ctx,cx,cy+2,isChecked(&#x27;기타&#x27;));ctx.fillText(label,cx+13,cy+12);let lx=cx+13+ctx.measureText(label).width+2;ctx.beginPath();ctx.moveTo(lx,cy+14);ctx.lineTo(lx+Math.max(120,ctx.measureText(etcVal).width+25),cy+14);ctx.stroke();ctx.fillText(etcVal,lx+3,cy+12);ctx.fillText(&#x27;)&#x27;,lx+Math.max(120,ctx.measureText(etcVal).width+25)+3,cy+12);}
+function drawPair(ctx,a,b,x,y,w){ctx.fillText(a,x,y);ctx.fillText(b,x+w-ctx.measureText(b).width,y);}
+function drawFour(ctx,x,y,w){const chars=[&#x27;전&#x27;,&#x27;화&#x27;,&#x27;번&#x27;,&#x27;호&#x27;];for(let i=0;i&lt;chars.length;i++){ctx.fillText(chars[i],x+(w-ctx.measureText(chars[i]).width)*i/3,y);}}
+function drawOrgLabel(ctx,x,y,w){const left=&#x27;기&#x27;;const mid=&#x27;관또는상&#x27;;const right=&#x27;호&#x27;;ctx.fillText(left,x,y);ctx.fillText(mid,x+(w-ctx.measureText(mid).width)/2,y);ctx.fillText(right,x+w-ctx.measureText(right).width,y);}
+function drawCanvas(canvas,scale){scale=scale||2.5;const W=794,H=1123;canvas.width=W*scale;canvas.height=H*scale;const ctx=canvas.getContext(&#x27;2d&#x27;);ctx.scale(scale,scale);ctx.fillStyle=&#x27;#fff&#x27;;ctx.fillRect(0,0,W,H);ctx.fillStyle=&#x27;#000&#x27;;ctx.strokeStyle=&#x27;#000&#x27;;ctx.lineWidth=1;const X=60,Y=64,BW=674,BH=1000,C1=150,C2=90,LW=C1+C2;ctx.strokeRect(X,Y,BW,BH);let y=Y;const rows=[92,48,48,48,48,82,48,48,48,48,48];let ys=[Y];rows.forEach(h=&gt;{y+=h;ys.push(y);});ctx.beginPath();for(let i=1;i&lt;ys.length;i++){if(i===4||i===8){ctx.moveTo(X+C1,ys[i]);ctx.lineTo(X+BW,ys[i]);}else{ctx.moveTo(X,ys[i]);ctx.lineTo(X+BW,ys[i]);}}ctx.moveTo(X+LW,ys[1]);ctx.lineTo(X+LW,ys[11]);ctx.moveTo(X+C1,ys[3]);ctx.lineTo(X+C1,ys[5]);ctx.moveTo(X+C1,ys[7]);ctx.lineTo(X+C1,ys[9]);ctx.stroke();
+ctx.font=&#x27;900 33px Malgun Gothic&#x27;;ctx.textAlign=&#x27;center&#x27;;ctx.textBaseline=&#x27;middle&#x27;;ctx.fillText(txt(&#x27;docTitle&#x27;)||&#x27;감 정 평 가 의 뢰 서&#x27;,X+BW/2,Y+rows[0]/2);ctx.textAlign=&#x27;left&#x27;;ctx.textBaseline=&#x27;alphabetic&#x27;;ctx.font=&#x27;14px Malgun Gothic&#x27;;drawCenteredLines(ctx,&#x27;감정평가 의뢰 물건(권리)&#x27;,X+12,ys[1],LW-24,rows[1],17);drawCenteredLines(ctx,&#x27;감정평가 의뢰 물건 소재지&#x27;,X+12,ys[2],LW-24,rows[2],17);drawCenteredLines(ctx,&#x27;소유자 (권리자)&#x27;,X+12,ys[3],C1-24,rows[3]+rows[4],17);centerText(ctx,&#x27;주    소&#x27;,X+C1,ys[3],C2,rows[3],&#x27;14px Malgun Gothic&#x27;);centerText(ctx,&#x27;성    명&#x27;,X+C1,ys[4],C2,rows[4],&#x27;14px Malgun Gothic&#x27;);drawCenteredLines(ctx,&#x27;감정평가서의 사용목적&#x27;,X+12,ys[5],LW-24,rows[5],17);drawCenteredLines(ctx,&#x27;기준시점&#x27;,X+12,ys[6],LW-24,rows[6],17);drawCenteredLines(ctx,&#x27;금융기관 등의 담보\n감정평가인 경우&#x27;,X+12,ys[7],C1-24,rows[7]+rows[8],20);centerText(ctx,&#x27;채무자명&#x27;,X+C1,ys[7],C2,rows[7],&#x27;14px Malgun Gothic&#x27;);centerText(ctx,&#x27;전화번호&#x27;,X+C1,ys[8],C2,rows[8],&#x27;14px Malgun Gothic&#x27;);drawCenteredLines(ctx,&#x27;감정평가서의 제출처&#x27;,X+12,ys[9],LW-24,rows[9],17);drawCenteredLines(ctx,&#x27;기타참고사항&#x27;,X+12,ys[10],LW-24,rows[10],17);
+ctx.font=&#x27;13px Malgun Gothic&#x27;;drawCenteredLines(ctx,txt(&#x27;targetRight&#x27;),X+LW+10,ys[1],BW-LW-20,rows[1],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;objectRight&#x27;),X+LW+10,ys[2],BW-LW-20,rows[2],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;ownerAddr&#x27;),X+LW+10,ys[3],BW-LW-20,rows[3],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;ownerName&#x27;),X+LW+10,ys[4],BW-LW-20,rows[4],16,&#x27;left&#x27;,3);drawPurpose(ctx,X+LW+8,ys[5]+7,BW-LW-16,rows[5]-14);drawCenteredLines(ctx,txt(&#x27;baseDate&#x27;),X+LW+10,ys[6],BW-LW-20,rows[6],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;debtorName&#x27;),X+LW+10,ys[7],BW-LW-20,rows[7],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;debtorPhone&#x27;),X+LW+10,ys[8],BW-LW-20,rows[8],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;submitPlace&#x27;),X+LW+10,ys[9],BW-LW-20,rows[9],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;notes&#x27;),X+LW+10,ys[10],BW-LW-20,rows[10],16,&#x27;left&#x27;,3);
+let ay=ys[11];ctx.beginPath();ctx.moveTo(X,ay+196);ctx.lineTo(X+BW,ay+196);ctx.stroke();ctx.font=&#x27;700 17px Malgun Gothic&#x27;;ctx.textAlign=&#x27;center&#x27;;ctx.fillText(&#x27;위 물건에 대하여 이면기재의 약정사항에 동의하고 감정평가를 의뢰합니다.&#x27;,X+BW/2,ay+38);ctx.font=&#x27;14px Malgun Gothic&#x27;;ctx.fillText(`${txt(&#x27;year&#x27;)} 년    ${txt(&#x27;month&#x27;)} 월    ${txt(&#x27;day&#x27;)} 일`,X+BW/2,ay+72);ctx.textAlign=&#x27;left&#x27;;ctx.font=&#x27;14px Malgun Gothic&#x27;;ctx.fillText(&#x27;위 의뢰인&#x27;,X+146,ay+104);drawPair(ctx,&#x27;주&#x27;,&#x27;소&#x27;,X+238,ay+104,88);ctx.fillText(txt(&#x27;clientAddr&#x27;),X+358,ay+104);drawOrgLabel(ctx,X+238,ay+130,88);ctx.fillText(txt(&#x27;clientOrg&#x27;),X+358,ay+130);drawPair(ctx,&#x27;성&#x27;,&#x27;명&#x27;,X+238,ay+156,88);ctx.fillText(txt(&#x27;clientName&#x27;),X+358,ay+156);ctx.fillText(&#x27;(인)&#x27;,X+595,ay+156);drawFour(ctx,X+238,ay+182,88);ctx.fillText(txt(&#x27;clientPhone&#x27;),X+358,ay+182);
+let cy=ay+196;const bottomH=46;const by=Y+BH-bottomH;ctx.beginPath();ctx.moveTo(X,by);ctx.lineTo(X+BW,by);ctx.stroke();ctx.textAlign=&#x27;center&#x27;;ctx.font=&#x27;900 26px Malgun Gothic&#x27;;ctx.fillText(&#x27;(주)바름감정평가법인&#x27;,X+BW/2,cy+36);ctx.font=&#x27;14px Malgun Gothic&#x27;;ctx.fillText(&#x27;서울특별시 강남구 삼성로 104길 11, 4층&#x27;,X+BW/2,cy+64);ctx.fillText(&#x27;국민은행      529401-01-292371      (주)바름감정평가법인&#x27;,X+BW/2,cy+88);ctx.fillText(&#x27;대 표 권 다 은&#x27;,X+BW/2,cy+106);
+ctx.beginPath();ctx.moveTo(X+104,by);ctx.lineTo(X+104,Y+BH);ctx.moveTo(X+337,by);ctx.lineTo(X+337,Y+BH);ctx.moveTo(X+441,by);ctx.lineTo(X+441,Y+BH);ctx.stroke();ctx.font=&#x27;14px Malgun Gothic&#x27;;ctx.textBaseline=&#x27;middle&#x27;;ctx.textAlign=&#x27;center&#x27;;ctx.fillText(&#x27;접수번호&#x27;,X+52,by+bottomH/2);ctx.fillText(txt(&#x27;receiptNo&#x27;),X+220,by+bottomH/2);ctx.fillText(&#x27;착수금&#x27;,X+389,by+bottomH/2);ctx.textAlign=&#x27;left&#x27;;ctx.fillText(txt(&#x27;depositAmount&#x27;),X+455,by+bottomH/2);ctx.textBaseline=&#x27;alphabetic&#x27;;}
+function downloadCanvas(canvas,btn,old){canvas.toBlob(function(blob){if(!blob){alert(&#x27;이미지 생성에 실패했어요.&#x27;);if(btn)btn.textContent=old;return;}const out=URL.createObjectURL(blob);const a=document.createElement(&#x27;a&#x27;);a.href=out;a.download=&#x27;바름_의뢰서.jpg&#x27;;document.body.appendChild(a);a.click();setTimeout(()=&gt;{URL.revokeObjectURL(out);a.remove();if(btn)btn.textContent=old;},500);},&#x27;image/jpeg&#x27;,0.95);}
+function saveJpg(ev){if(ev){ev.preventDefault();ev.stopPropagation();}if(document.activeElement)document.activeElement.blur();const btn=ev&amp;&amp;ev.currentTarget?ev.currentTarget:null;const old=btn?btn.textContent:&#x27;&#x27;;try{if(btn)btn.textContent=&#x27;저장중...&#x27;;const canvas=document.createElement(&#x27;canvas&#x27;);drawCanvas(canvas,2.5);downloadCanvas(canvas,btn,old);}catch(err){alert(&#x27;저장 중 오류: &#x27;+err.message);if(btn)btn.textContent=old;}}
+document.addEventListener(&#x27;DOMContentLoaded&#x27;,()=&gt;{resetDefaults();applyZoom();const etc=$(&#x27;purposeEtc&#x27;);const etcWrap=$(&#x27;purposeEtcWrap&#x27;);etc.addEventListener(&#x27;pointerdown&#x27;,e=&gt;e.stopPropagation());etc.addEventListener(&#x27;click&#x27;,e=&gt;e.stopPropagation());etc.addEventListener(&#x27;focus&#x27;,()=&gt;{$(&#x27;purposeEtcCheck&#x27;).checked=true;});etcWrap.addEventListener(&#x27;click&#x27;,e=&gt;{if(e.target!==$(&#x27;purposeEtc&#x27;)){$(&#x27;purposeEtcCheck&#x27;).checked=true;setTimeout(()=&gt;etc.focus(),0);}});});
+window.addEventListener(&#x27;resize&#x27;,applyZoom);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+    </div>
+  </section>
+
 
   <section id="page_feeOnly" class="typePage">
     <div class="feeOnlyLayout">
