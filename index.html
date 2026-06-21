@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
 <title>하이테크 수수료 자동화 계산기 - 한칸입력 층면적금액 추출버전</title>
 <style>
 :root {
@@ -1574,6 +1574,1022 @@ input, textarea, [contenteditable="true"] {
   text-overflow:ellipsis !important;
 }
 
+
+
+/* 수수료 페이지 v2: 엑셀형 입력/자동계산 표 */
+#page_feeOnly .feeExcelWrap{
+  width:100%;
+  overflow:auto;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 8px 18px rgba(15,23,42,.035);
+}
+#page_feeOnly .feeExcelSheet{
+  min-width:1120px;
+  width:100%;
+  display:grid;
+  grid-template-columns:96px 96px 96px 84px 86px 86px 86px 120px 108px 120px;
+  grid-auto-rows:28px;
+  align-items:stretch;
+  font-size:13px;
+  color:#000;
+  background:#fff;
+}
+#page_feeOnly .fxCell{
+  border-right:1px solid #d9d9d9;
+  border-bottom:1px solid #d9d9d9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2px 4px;
+  min-width:0;
+  overflow:hidden;
+  white-space:nowrap;
+}
+#page_feeOnly .fxTitle{
+  color:#0000cc;
+  font-weight:900;
+  font-size:15px;
+  justify-content:center;
+}
+#page_feeOnly .fxHead{
+  font-weight:800;
+  background:#fff;
+}
+#page_feeOnly .fxYellow{background:#fff200!important;}
+#page_feeOnly .fxGreen{background:#00ff00!important;}
+#page_feeOnly .fxBlank{background:#fff;}
+#page_feeOnly .fxLeft{justify-content:flex-start;text-align:left;}
+#page_feeOnly .fxRight{justify-content:flex-end;text-align:right;}
+#page_feeOnly .fxBold{font-weight:900;}
+#page_feeOnly .fxTiny{font-size:12px;}
+#page_feeOnly .fxInput,
+#page_feeOnly .fxCalcInput{
+  width:100%;
+  height:100%;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  padding:3px 6px;
+  font-size:13px;
+  text-align:center;
+  outline:none;
+}
+#page_feeOnly .fxInput:focus,
+#page_feeOnly .fxCalcInput:focus{
+  box-shadow:inset 0 0 0 2px #2563eb;
+  background:rgba(255,255,255,.45);
+}
+#page_feeOnly .fxOutput{
+  width:100%;
+  text-align:center;
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#page_feeOnly .fxOutput.leftOut{text-align:left;padding-left:6px;}
+#page_feeOnly .fxBtn{
+  width:100%;
+  height:100%;
+  border:0;
+  border-radius:0;
+  padding:0;
+  background:#fff;
+  color:#0000cc;
+  font-weight:900;
+  font-size:12px;
+  cursor:pointer;
+}
+#page_feeOnly .fxBtn.calc{
+  color:#000;
+  background:#fff;
+}
+#page_feeOnly .fxBtn:hover{background:#eef6ff;}
+#page_feeOnly .fxFormulaBox{
+  width:100%;
+  height:100%;
+  min-height:28px;
+  border:0;
+  resize:none;
+  background:transparent;
+  padding:4px 6px;
+  font-size:13px;
+  line-height:1.35;
+  outline:none;
+  text-align:left;
+}
+#page_feeOnly .fxNote{
+  margin-top:12px;
+  font-size:12px;
+  color:#64748b;
+  line-height:1.55;
+}
+@media(max-width:980px){
+  #page_feeOnly .feeExcelWrap{padding:10px;border-radius:14px;}
+  #page_feeOnly .feeExcelSheet{min-width:1050px;grid-auto-rows:30px;font-size:12px;}
+}
+
+
+
+
+/* 수수료 페이지 v4: 모바일 우선 초압축 스프레드시트 디자인 */
+#page_feeOnly .feeModernWrap{
+  max-width:1220px;
+  margin:0 auto;
+  padding:0 0 24px;
+}
+#page_feeOnly .feeModernHeader{
+  background:#111827;
+  color:#fff;
+  border-radius:14px;
+  padding:10px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+  box-shadow:0 6px 14px rgba(15,23,42,.12);
+}
+#page_feeOnly .feeModernHeader h2{
+  margin:0;
+  font-size:18px;
+  letter-spacing:-.04em;
+  white-space:nowrap;
+}
+#page_feeOnly .feeModernHeader p,
+#page_feeOnly .feeLegend,
+#page_feeOnly .feeHint,
+#page_feeOnly .feeNote{
+  display:none !important;
+}
+#page_feeOnly .feeResetAll{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  border-radius:9px;
+  padding:7px 10px;
+  font-size:12px;
+  font-weight:900;
+  white-space:nowrap;
+}
+#page_feeOnly .feePanel{
+  background:#fff;
+  border:1px solid #d8dee9;
+  border-radius:12px;
+  padding:8px;
+  margin-bottom:8px;
+  box-shadow:none;
+  overflow:hidden;
+}
+#page_feeOnly .feePanelTitle{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin:0 0 6px;
+  color:#111827;
+  font-size:14px;
+  font-weight:1000;
+  letter-spacing:-.03em;
+  line-height:1.2;
+}
+#page_feeOnly .feePanelTitle .num{
+  display:inline-flex;
+  width:20px;
+  height:20px;
+  align-items:center;
+  justify-content:center;
+  border-radius:6px;
+  background:#111827;
+  color:#fff;
+  font-size:11px;
+}
+#page_feeOnly .feeTableScroll{
+  width:100%;
+  overflow-x:auto;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  background:#fff;
+  -webkit-overflow-scrolling:touch;
+}
+#page_feeOnly .feeTable{
+  width:100%;
+  min-width:840px;
+  border-collapse:collapse;
+  table-layout:fixed;
+  font-size:12px;
+}
+#page_feeOnly .feeTable.compactRate{min-width:780px;}
+#page_feeOnly .feeTable.compactCalc{min-width:640px;}
+#page_feeOnly .feeTable.compactGoal{min-width:850px;}
+#page_feeOnly .feeTable th{
+  background:#f1f5f9;
+  color:#0f172a;
+  font-weight:1000;
+  padding:5px 4px;
+  text-align:center;
+  border:1px solid #dbe2ea;
+  white-space:nowrap;
+  line-height:1.15;
+}
+#page_feeOnly .feeTable td{
+  padding:3px;
+  border:1px solid #e2e8f0;
+  vertical-align:middle;
+  background:#fff;
+  height:30px;
+}
+#page_feeOnly .feeTable .resetCol{width:62px;}
+#page_feeOnly .feeTable .smallCol{width:70px;}
+#page_feeOnly .feeTable .moneyCol{width:105px;}
+#page_feeOnly .feeTable .regionCol{width:105px;}
+#page_feeOnly .feeTable .travelCol{width:88px;}
+#page_feeOnly .feeTable .wideCol{width:135px;}
+#page_feeOnly .feeTable .resultCol{width:130px;}
+#page_feeOnly .feeTable input,
+#page_feeOnly .feeInput,
+#page_feeOnly .feeTextarea{
+  width:100%;
+  min-width:0;
+  border:1px solid #e6b980;
+  background:#fffaf0;
+  border-radius:4px;
+  padding:4px 5px;
+  height:24px;
+  font-size:12px;
+  font-weight:800;
+  color:#111827;
+  outline:none;
+  text-align:right;
+}
+#page_feeOnly .feeTable .regionInput{
+  text-align:left;
+}
+#page_feeOnly .feeInput:focus,
+#page_feeOnly .feeTextarea:focus{
+  border-color:#f97316;
+  box-shadow:0 0 0 2px rgba(249,115,22,.12);
+}
+#page_feeOnly .feeTextarea{
+  height:48px;
+  min-height:48px;
+  resize:vertical;
+  line-height:1.25;
+  text-align:left;
+}
+#page_feeOnly .feeOutputBox,
+#page_feeOnly .feeOutputCell{
+  width:100%;
+  min-height:24px;
+  height:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #a7d7b7;
+  background:#f1fbf4;
+  border-radius:4px;
+  padding:3px 4px;
+  color:#064e3b;
+  font-size:12px;
+  font-weight:1000;
+  line-height:1.2;
+  white-space:normal;
+  word-break:keep-all;
+  text-align:center;
+}
+#page_feeOnly .feeFormulaResult{
+  justify-content:flex-start;
+  align-items:flex-start;
+  text-align:left;
+  white-space:pre-wrap;
+  line-height:1.35;
+  min-height:48px;
+}
+#page_feeOnly .feeBtn{
+  width:100%;
+  min-width:0;
+  height:24px;
+  border:1px solid #cbd5e1;
+  background:#f8fafc;
+  color:#111827;
+  border-radius:4px;
+  padding:0 4px;
+  font-size:11px;
+  font-weight:1000;
+  cursor:pointer;
+  white-space:nowrap;
+}
+#page_feeOnly .feeBtn.primary{
+  background:#2563eb;
+  border-color:#2563eb;
+  color:#fff;
+}
+#page_feeOnly .feeBtn:hover{background:#eef2ff;border-color:#a5b4fc;}
+#page_feeOnly .feeBtn.primary:hover{background:#1d4ed8;}
+#page_feeOnly .feeResultStrong{
+  background:#f1fbf4;
+  color:#064e3b;
+}
+#page_feeOnly .feeGroupLabel{
+  width:58px;
+  background:#f8fafc !important;
+  color:#1d4ed8;
+  font-weight:1000;
+  text-align:center;
+  white-space:nowrap;
+}
+#page_feeOnly .feeCalcButtonCell{width:62px;}
+@media(max-width:640px){
+  #page_feeOnly .feeModernWrap{padding:0 0 16px;}
+  #page_feeOnly .feeModernHeader{
+    border-radius:10px;
+    padding:8px 9px;
+    margin-bottom:6px;
+  }
+  #page_feeOnly .feeModernHeader h2{font-size:16px;}
+  #page_feeOnly .feeResetAll{padding:6px 8px;font-size:11px;}
+  #page_feeOnly .feePanel{
+    padding:6px;
+    border-radius:9px;
+    margin-bottom:6px;
+  }
+  #page_feeOnly .feePanelTitle{
+    font-size:13px;
+    margin-bottom:4px;
+  }
+  #page_feeOnly .feePanelTitle .num{
+    width:18px;
+    height:18px;
+    font-size:10px;
+  }
+  #page_feeOnly .feeTable{
+    min-width:790px;
+    font-size:11px;
+  }
+  #page_feeOnly .feeTable.compactRate{min-width:720px;}
+  #page_feeOnly .feeTable.compactCalc{min-width:560px;}
+  #page_feeOnly .feeTable.compactGoal{min-width:760px;}
+  #page_feeOnly .feeTable th{padding:4px 3px;}
+  #page_feeOnly .feeTable td{height:26px;padding:2px;}
+  #page_feeOnly .feeTable input,
+  #page_feeOnly .feeInput,
+  #page_feeOnly .feeTextarea{
+    height:22px;
+    padding:3px 4px;
+    font-size:11px;
+  }
+  #page_feeOnly .feeTextarea{
+    height:42px;
+    min-height:42px;
+  }
+  #page_feeOnly .feeOutputBox,
+  #page_feeOnly .feeOutputCell{
+    min-height:22px;
+    font-size:11px;
+  }
+}
+
+
+/* 수수료 페이지 v4-1: 더 촘촘한 계산기/희망금액 + 모바일 확대 허용 */
+#page_feeOnly,
+#page_feeOnly *{
+  touch-action:pan-x pan-y pinch-zoom;
+}
+#page_feeOnly .feeCalcTable{
+  min-width:520px !important;
+}
+#page_feeOnly .feeCalcTable .labelCol{
+  width:58px;
+}
+#page_feeOnly .feeCalcTable .btnCol{
+  width:66px;
+}
+#page_feeOnly .feeCalcTable th.feeRowHead{
+  background:#f8fafc;
+  color:#334155;
+  font-weight:1000;
+}
+#page_feeOnly .feeCalcTable td{
+  height:24px;
+}
+#page_feeOnly .feeCalcTable .feeTextarea{
+  height:30px !important;
+  min-height:30px !important;
+  padding:3px 5px !important;
+  line-height:1.2 !important;
+}
+#page_feeOnly .feeCalcTable .feeFormulaResult{
+  min-height:22px !important;
+  max-height:48px;
+  overflow:auto;
+  align-items:flex-start;
+}
+#page_feeOnly .feeGoalMainTable{
+  min-width:720px !important;
+}
+#page_feeOnly .feeGoalTargetTable{
+  min-width:420px !important;
+}
+#page_feeOnly .feeGoalTargetTable .labelCol{
+  width:82px;
+}
+#page_feeOnly .feeGoalTargetTable .valueCol{
+  width:150px;
+}
+#page_feeOnly .feePanel .feeTableScroll + .feeTableScroll{
+  margin-top:4px !important;
+}
+#page_feeOnly input::placeholder,
+#page_feeOnly textarea::placeholder{
+  color:transparent !important;
+}
+@media(max-width:640px){
+  #page_feeOnly .feeCalcTable{
+    min-width:470px !important;
+  }
+  #page_feeOnly .feeCalcTable .labelCol{
+    width:50px;
+  }
+  #page_feeOnly .feeCalcTable .btnCol{
+    width:60px;
+  }
+  #page_feeOnly .feeCalcTable .feeTextarea{
+    height:26px !important;
+    min-height:26px !important;
+  }
+  #page_feeOnly .feeGoalMainTable{
+    min-width:660px !important;
+  }
+  #page_feeOnly .feeGoalTargetTable{
+    min-width:380px !important;
+  }
+}
+
+
+/* 계산기 v4-2: 수식 [계산] 입력칸 / 결과 [초기화] 입력칸 */
+#page_feeOnly .feeCalcTable{
+  min-width:520px !important;
+}
+#page_feeOnly .feeCalcTable .labelCol{
+  width:56px !important;
+}
+#page_feeOnly .feeCalcTable .btnCol{
+  width:66px !important;
+}
+#page_feeOnly .feeCalcTable .inputCol{
+  width:auto !important;
+}
+#page_feeOnly .feeCalcTable .feeTextarea{
+  height:28px !important;
+  min-height:28px !important;
+}
+#page_feeOnly .feeCalcTable .feeFormulaResult{
+  min-height:22px !important;
+  justify-content:flex-start !important;
+  text-align:left !important;
+  padding-left:5px !important;
+}
+@media(max-width:640px){
+  #page_feeOnly .feeCalcTable{
+    min-width:460px !important;
+  }
+  #page_feeOnly .feeCalcTable .labelCol{
+    width:48px !important;
+  }
+  #page_feeOnly .feeCalcTable .btnCol{
+    width:58px !important;
+  }
+}
+
+
+/* 수수료 페이지 v3-1: 숫자 잘림 방지 - 입력/결과값 폰트 축소 및 볼드 제거 */
+#page_feeOnly .feeTable input,
+#page_feeOnly .feeInput,
+#page_feeOnly .feeTextarea,
+#page_feeOnly .feeOutputBox,
+#page_feeOnly .feeOutputCell,
+#page_feeOnly .feeResultStrong,
+#page_feeOnly .feeFormulaResult{
+  font-size:10.5px !important;
+  font-weight:400 !important;
+  letter-spacing:-0.04em !important;
+  line-height:1.08 !important;
+  padding:2px 3px !important;
+  min-height:20px !important;
+  height:20px !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:clip !important;
+  word-break:normal !important;
+}
+#page_feeOnly .feeTextarea{
+  height:26px !important;
+  min-height:26px !important;
+  white-space:pre !important;
+  overflow:auto !important;
+}
+#page_feeOnly .feeFormulaResult{
+  height:26px !important;
+  min-height:26px !important;
+  white-space:pre !important;
+  overflow:auto !important;
+  align-items:flex-start !important;
+}
+#page_feeOnly .feeTable td{
+  padding:2px !important;
+  height:24px !important;
+}
+#page_feeOnly .feeTable th{
+  font-size:11px !important;
+  padding:4px 3px !important;
+}
+#page_feeOnly .feeBtn{
+  font-size:10.5px !important;
+  font-weight:700 !important;
+  height:20px !important;
+  padding:0 3px !important;
+}
+@media(max-width:640px){
+  #page_feeOnly .feeTable input,
+  #page_feeOnly .feeInput,
+  #page_feeOnly .feeTextarea,
+  #page_feeOnly .feeOutputBox,
+  #page_feeOnly .feeOutputCell,
+  #page_feeOnly .feeResultStrong,
+  #page_feeOnly .feeFormulaResult{
+    font-size:9.8px !important;
+    height:19px !important;
+    min-height:19px !important;
+    padding:1px 2px !important;
+  }
+  #page_feeOnly .feeTextarea,
+  #page_feeOnly .feeFormulaResult{
+    height:24px !important;
+    min-height:24px !important;
+  }
+  #page_feeOnly .feeTable td{
+    height:22px !important;
+  }
+}
+
+
+
+/* 멘트 페이지: 다른 페이지와 완전 분리 */
+#page_ment {
+  --mentBlue:#2563eb;
+  --mentInk:#111827;
+  --mentLine:#e5e7eb;
+  --mentSoft:#f8fafc;
+  --mentYellow:#fff8db;
+  --mentStickyTop:64px;
+}
+#page_ment, #page_ment * { box-sizing:border-box; }
+#page_ment { width:100%; max-width:100%; min-width:0; overflow-x:hidden; }
+#page_ment .mentWrap { width:100%; max-width:100%; min-width:0; display:grid; gap:12px; }
+#page_ment .mentTabs {
+  display:flex; gap:8px; overflow-x:auto; overflow-y:hidden; padding:9px 10px; background:rgba(255,255,255,.98);
+  border:1px solid var(--mentLine); border-radius:0 0 18px 18px;
+  box-shadow:0 8px 18px rgba(15,23,42,.08); position:sticky; top:var(--mentStickyTop); z-index:9998;
+  -webkit-overflow-scrolling:touch; max-width:100%; scrollbar-width:thin;
+}
+#page_ment .mentTabs::-webkit-scrollbar,
+#page_ment .mentBlockScroll::-webkit-scrollbar { height:5px; }
+#page_ment .mentTabs::-webkit-scrollbar-thumb,
+#page_ment .mentBlockScroll::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:999px; }
+#page_ment .mentSubTab {
+  flex:0 0 auto; border:1px solid var(--mentLine); background:#fff; color:var(--mentInk);
+  border-radius:999px; padding:9px 12px; font-weight:900; white-space:nowrap; cursor:pointer; font-size:13px;
+}
+#page_ment .mentSubTab.active { background:var(--mentInk); color:#fff; border-color:var(--mentInk); }
+#page_ment .mentSubPage { display:none; min-width:0; max-width:100%; }
+#page_ment .mentSubPage.active { display:block; }
+#page_ment .mentGrid {
+  display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:12px; align-items:start;
+  width:100%; max-width:100%; min-width:0;
+}
+#page_ment .mentCard {
+  background:#fff; border:1px solid var(--mentLine); border-radius:18px; padding:14px;
+  box-shadow:0 8px 18px rgba(15,23,42,.025); min-width:0; max-width:100%; overflow:hidden;
+}
+#page_ment .mentControlCard { align-self:start; }
+#page_ment .mentCardTitle {
+  font-weight:1000; margin:0 0 10px; letter-spacing:-.03em; display:flex; align-items:center; gap:8px;
+  min-width:0; flex-wrap:wrap;
+}
+#page_ment .mentCardTitleText { flex:1 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#page_ment .mentNum {
+  display:inline-flex; align-items:center; justify-content:center; min-width:28px; height:28px; padding:0 8px; border-radius:999px;
+  background:#111827; color:#fff; font-weight:1000; font-size:13px;
+}
+#page_ment .mentField { display:flex; flex-direction:column; gap:6px; margin-bottom:12px; min-width:0; }
+#page_ment .mentField label { color:#334155; font-size:13px; font-weight:900; }
+#page_ment .mentField input,
+#page_ment .mentField select,
+#page_ment .mentField textarea {
+  width:100%; min-width:0; border:1px solid #d1d5db; border-radius:12px; padding:9px 11px; font-size:15px; background:#fff;
+}
+#page_ment .mentField input.mentMoney { text-align:right; background:var(--mentYellow); font-weight:900; }
+#page_ment .mentMoneyLine { display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:8px; align-items:end; }
+#page_ment .mentMoneyLine .mentCheckPill { margin-bottom:12px; height:39px; }
+#page_ment .mentRoleChips,
+#page_ment .mentCheckGrid,
+#page_ment .mentCountBtns { display:flex; flex-wrap:wrap; gap:7px; margin:7px 0 12px; min-width:0; }
+#page_ment .mentRoleChips label,
+#page_ment .mentCheckPill,
+#page_ment .mentCountBtns button {
+  display:inline-flex; align-items:center; gap:5px; border:1px solid var(--mentLine); background:#fff;
+  border-radius:999px; padding:7px 10px; font-size:13px; font-weight:900; cursor:pointer; color:#111827; min-width:0;
+}
+#page_ment .mentRoleChips input[type="radio"],
+#page_ment .mentRoleChips input[type="checkbox"],
+#page_ment .mentCheckPill input { width:auto; margin:0; accent-color:#111827; flex:0 0 auto; }
+#page_ment .mentRoleChips label:has(input[type="radio"]:checked),
+#page_ment .mentRoleChips label:has(input[type="checkbox"]:checked),
+#page_ment .mentCheckPill:has(input:checked) { background:#111827; color:#fff; border-color:#111827; }
+#page_ment .mentCustomRolePill { padding:4px 6px !important; }
+#page_ment .mentCustomRolePill input[type="text"] {
+  width:96px; min-width:70px; border:1px solid #d1d5db; border-radius:999px; padding:6px 8px; font-size:13px; background:#fff; color:#111827;
+}
+#page_ment .mentCustomRolePill:has(input[type="checkbox"]:checked) input[type="text"] { border-color:#111827; }
+#page_ment .mentCountBtns button.active { background:#2563eb; color:#fff; border-color:#2563eb; }
+#page_ment .mentOutput {
+  width:100%; min-height:430px; resize:vertical; border:1px solid #cbd5e1; border-radius:15px; padding:14px;
+  background:#fffdf0; color:#111827; line-height:1.68; font-size:15px; font-family:inherit; white-space:pre-wrap;
+  overflow:auto; max-width:100%; min-width:0;
+}
+#page_ment .mentOutput.short { min-height:250px; }
+#page_ment .mentCopyBtn,
+#page_ment .mentLightBtn {
+  border:0; border-radius:10px; padding:8px 12px; font-weight:1000; cursor:pointer; flex:0 0 auto; white-space:nowrap;
+}
+#page_ment .mentCopyBtn { background:#2563eb; color:#fff; }
+#page_ment .mentLightBtn { background:#e5e7eb; color:#111827; }
+#page_ment .mentMini { color:#64748b; font-size:12px; line-height:1.5; }
+#page_ment .mentOptionBox { background:#f8fafc; border:1px solid #e5e7eb; border-radius:14px; padding:11px; margin-top:10px; min-width:0; }
+#page_ment .mentBlockScroll { display:flex; gap:10px; overflow-x:auto; overflow-y:hidden; padding:3px 2px 10px; -webkit-overflow-scrolling:touch; max-width:100%; }
+#page_ment .mentBlock { flex:0 0 min(390px, 86vw); background:#fff; border:1px solid var(--mentLine); border-radius:18px; padding:12px; min-width:0; max-width:100%; }
+#page_ment .mentBlockHead { display:flex; align-items:center; gap:8px; margin:0 0 9px; min-width:0; flex-wrap:wrap; }
+#page_ment .mentBlockHead h3 { margin:0; font-size:15px; flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#page_ment .mentBlock textarea { min-height:330px; }
+#page_ment .mentTwoCols { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px; min-width:0; }
+#page_ment .mentFull { grid-column:1/-1; }
+@media(max-width:980px){
+  #page_ment .mentGrid { grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) !important; gap:8px; }
+  #page_ment .mentTabs { top:var(--mentStickyTop); border-radius:0 0 14px 14px; padding:8px; gap:6px; }
+  #page_ment .mentBlock { flex-basis:min(330px, 86vw); }
+  #page_ment .mentTwoCols { grid-template-columns:minmax(0,1fr); gap:8px; }
+  #page_ment .mentCard { padding:10px; border-radius:14px; }
+  #page_ment .mentCardTitle { font-size:14px; }
+  #page_ment .mentRoleChips label,
+  #page_ment .mentCheckPill,
+  #page_ment .mentCountBtns button { font-size:12px; padding:6px 8px; }
+  #page_ment .mentCustomRolePill input[type="text"] { width:82px; font-size:12px; }
+  #page_ment .mentOutput { min-height:360px; font-size:13px; padding:10px; }
+  #page_ment .mentOutput.short { min-height:220px; }
+}
+@media(max-width:640px){
+  #page_ment .mentSubTab { padding:8px 9px; font-size:12px; }
+  #page_ment .mentGrid { gap:7px; }
+  #page_ment .mentNum { min-width:24px; height:24px; font-size:11px; padding:0 6px; }
+  #page_ment .mentCard { padding:8px; }
+  #page_ment .mentCardTitleText { white-space:normal; }
+  #page_ment .mentOutput { min-height:340px; font-size:12px; line-height:1.62; }
+  #page_ment .mentBlock { flex-basis:min(300px, 86vw); padding:9px; }
+  #page_ment .mentBlock textarea { min-height:310px; }
+  #page_ment .mentMoneyLine { grid-template-columns:1fr; gap:4px; }
+  #page_ment .mentMoneyLine .mentCheckPill { margin-bottom:8px; height:auto; width:fit-content; }
+}
+
+
+/* 멘트 페이지 v3: 메뉴 통합/2차메뉴 밀착/웹 2:1 레이아웃 */
+#page_ment {
+  --mentStickyTop:54px;
+}
+#page_ment .mentWrap {
+  gap:8px !important;
+  margin-top:-8px !important;
+  overflow:visible !important;
+}
+#page_ment .mentTabs {
+  top:var(--mentStickyTop) !important;
+  margin:0 0 8px !important;
+  padding:6px 8px !important;
+  border-radius:14px !important;
+  box-shadow:0 4px 12px rgba(15,23,42,.07) !important;
+  z-index:9997 !important;
+}
+#page_ment .mentSubTab {
+  padding:7px 11px !important;
+  font-size:13px !important;
+}
+#page_ment .mentSubPage { padding-top:0 !important; }
+#page_ment .mentStack {
+  display:grid;
+  gap:12px;
+  min-width:0;
+}
+#page_ment .mentOutputCard { min-width:0; }
+#page_ment .mentControlStack { align-self:start; }
+#page_ment .mentControlCard .mentRoleChips,
+#page_ment .mentControlCard .mentCheckGrid,
+#page_ment .mentControlCard .mentCountBtns {
+  flex-direction:column;
+  align-items:stretch;
+}
+#page_ment .mentControlCard .mentRoleChips label,
+#page_ment .mentControlCard .mentCheckPill,
+#page_ment .mentControlCard .mentCountBtns button {
+  width:100%;
+  justify-content:flex-start;
+}
+#page_ment .mentCustomRolePill { gap:6px !important; }
+#page_ment .mentCustomRolePill input[type="text"] { flex:1 1 auto; width:100% !important; min-width:0 !important; }
+#page_ment .mentControlCard .mentTwoCols { grid-template-columns:1fr !important; }
+#page_ment .mentCardTitle { margin-bottom:8px !important; }
+#page_ment .mentCardTitleText { white-space:normal !important; }
+#page_ment .mentBlockScroll {
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  scroll-snap-type:x proximity;
+}
+#page_ment .mentBlock { scroll-snap-align:start; }
+@media(min-width:981px){
+  #page_ment .mentGrid {
+    grid-template-columns:minmax(0, 2.25fr) minmax(160px, .75fr) !important;
+    gap:12px !important;
+  }
+  #page_ment .mentControlCard {
+    padding:12px !important;
+    position:sticky;
+    top:calc(var(--mentStickyTop) + 48px);
+  }
+  #page_ment .mentOutput { min-height:460px; }
+  #page_ment .mentOutput.short { min-height:230px; }
+  #page_ment .mentBlock { flex-basis:min(430px, 48vw) !important; }
+}
+@media(max-width:980px){
+  #page_ment .mentWrap { margin-top:-4px !important; }
+  #page_ment .mentTabs { padding:6px !important; gap:5px !important; }
+  #page_ment .mentGrid {
+    grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap:8px !important;
+  }
+  #page_ment .mentStack { gap:8px !important; }
+  #page_ment .mentControlCard .mentRoleChips,
+  #page_ment .mentControlCard .mentCheckGrid,
+  #page_ment .mentControlCard .mentCountBtns {
+    flex-direction:column;
+  }
+  #page_ment .mentSubTab { padding:7px 9px !important; font-size:12px !important; }
+}
+@media(max-width:640px){
+  #page_ment .mentWrap { margin-top:-2px !important; }
+  #page_ment .mentTabs { top:var(--mentStickyTop) !important; }
+  #page_ment .mentGrid { grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) !important; }
+  #page_ment .mentOutput { min-height:330px !important; }
+  #page_ment .mentOutput.short { min-height:210px !important; }
+  #page_ment .mentBlock { flex-basis:min(300px, 84vw) !important; }
+}
+
+
+/* 멘트 페이지 v4: 2차 메뉴 밀착/가림 방지 + 합친 페이지 행 구분 + 업체별 착수 건수 */
+#page_ment{
+  margin-top:-24px !important;
+  overflow:visible !important;
+}
+#page_ment .mentWrap{
+  margin-top:0 !important;
+  gap:6px !important;
+}
+#page_ment .mentTabs{
+  top:var(--mentStickyTop) !important;
+  margin:0 0 6px !important;
+  padding:4px 6px !important;
+  min-height:34px !important;
+  border-radius:12px !important;
+  background:rgba(245,246,250,.99) !important;
+  box-shadow:0 3px 10px rgba(15,23,42,.08) !important;
+  align-items:center !important;
+}
+#page_ment .mentSubTab{
+  padding:5px 10px !important;
+  font-size:12px !important;
+  line-height:1.2 !important;
+}
+#page_ment .mentSubPage.active{
+  display:block !important;
+}
+#page_ment .mentPairStack{
+  display:grid;
+  gap:12px;
+  min-width:0;
+}
+#page_ment .mentPairGrid{
+  display:grid;
+  grid-template-columns:minmax(0, 2.25fr) minmax(160px, .75fr);
+  gap:12px;
+  align-items:start;
+  min-width:0;
+  padding:0 0 12px;
+  border-bottom:1px dashed #e5e7eb;
+}
+#page_ment .mentPairGrid:last-child{
+  border-bottom:0;
+  padding-bottom:0;
+}
+#page_ment .mentLightBtn.active{
+  background:#111827 !important;
+  color:#fff !important;
+}
+#page_ment .mentCompactTitleBtn{
+  padding:7px 10px !important;
+}
+@media(min-width:981px){
+  #page_ment .mentControlCard{
+    top:calc(var(--mentStickyTop) + 40px) !important;
+  }
+}
+@media(max-width:980px){
+  #page_ment{ margin-top:-18px !important; }
+  #page_ment .mentTabs{
+    padding:4px 5px !important;
+    gap:5px !important;
+    min-height:32px !important;
+  }
+  #page_ment .mentSubTab{
+    padding:5px 8px !important;
+    font-size:11px !important;
+  }
+  #page_ment .mentPairGrid{
+    grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+    gap:8px;
+  }
+}
+@media(max-width:640px){
+  #page_ment{ margin-top:-14px !important; }
+  #page_ment .mentTabs{
+    margin-bottom:5px !important;
+    min-height:30px !important;
+  }
+  #page_ment .mentSubTab{
+    padding:5px 7px !important;
+    font-size:11px !important;
+  }
+  #page_ment .mentPairStack{ gap:8px; }
+  #page_ment .mentPairGrid{ gap:7px; padding-bottom:8px; }
+}
+
+
+
+/* 멘트 페이지 v5: 완료 멘트/설정 메뉴 높이 맞춤 + 모바일 마무리/특용비 전용 구조 */
+#page_ment .mentGrid,
+#page_ment .mentPairGrid{
+  align-items:stretch !important;
+}
+#page_ment .mentCard{
+  height:100% !important;
+}
+#page_ment .mentOutputCard,
+#page_ment .mentControlCard{
+  display:flex !important;
+  flex-direction:column !important;
+  align-self:stretch !important;
+}
+#page_ment .mentControlCard{
+  position:relative !important;
+  top:auto !important;
+}
+#page_ment .mentOutputCard .mentOutput{
+  flex:1 1 auto !important;
+  height:auto !important;
+}
+#page_ment .mentOutputCard .mentBlockScroll{
+  flex:1 1 auto !important;
+  align-items:stretch !important;
+}
+#page_ment .mentOutputCard .mentBlock{
+  display:flex !important;
+  flex-direction:column !important;
+}
+#page_ment .mentOutputCard .mentBlock textarea{
+  flex:1 1 auto !important;
+  height:auto !important;
+}
+
+@media(min-width:981px){
+  #page_ment .mentGrid,
+  #page_ment .mentPairGrid{
+    grid-template-columns:minmax(0, 2.35fr) minmax(150px, .65fr) !important;
+  }
+}
+
+@media(max-width:640px), (max-width:980px) and (pointer:coarse){
+  /* 마무리/특용비는 모바일에서 설정을 먼저 보여주고, 멘트 블록은 전체폭으로 사용 */
+  #ment_sub_finish .mentGrid,
+  #ment_sub_special .mentGrid{
+    display:grid !important;
+    grid-template-columns:minmax(0, 1fr) !important;
+    gap:8px !important;
+    width:100% !important;
+  }
+  #ment_sub_finish .mentControlCard,
+  #ment_sub_special .mentControlCard{
+    order:1 !important;
+    width:100% !important;
+    height:auto !important;
+  }
+  #ment_sub_finish .mentOutputCard,
+  #ment_sub_special .mentOutputCard{
+    order:2 !important;
+    width:100% !important;
+    height:auto !important;
+    min-width:0 !important;
+    overflow:hidden !important;
+  }
+  #ment_sub_finish .mentControlCard .mentRoleChips,
+  #ment_sub_finish .mentControlCard .mentCheckGrid,
+  #ment_sub_special .mentControlCard .mentCheckGrid{
+    flex-direction:row !important;
+    align-items:center !important;
+  }
+  #ment_sub_finish .mentControlCard .mentRoleChips label,
+  #ment_sub_finish .mentControlCard .mentCheckPill,
+  #ment_sub_special .mentControlCard .mentCheckPill{
+    width:auto !important;
+    flex:0 0 auto !important;
+  }
+  #ment_sub_special .mentControlCard .mentTwoCols{
+    grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap:7px !important;
+  }
+  #ment_sub_finish .mentBlockScroll,
+  #ment_sub_special .mentBlockScroll{
+    display:flex !important;
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    padding:2px 2px 10px !important;
+    scroll-snap-type:x mandatory !important;
+  }
+  #ment_sub_finish .mentBlock,
+  #ment_sub_special .mentBlock{
+    flex:0 0 calc(100vw - 32px) !important;
+    width:calc(100vw - 32px) !important;
+    max-width:calc(100vw - 32px) !important;
+    scroll-snap-align:start !important;
+  }
+  #ment_sub_finish .mentBlock textarea,
+  #ment_sub_special .mentBlock textarea{
+    min-height:360px !important;
+  }
+}
+
+@media(max-width:420px){
+  #ment_sub_special .mentControlCard .mentTwoCols{
+    grid-template-columns:1fr !important;
+  }
+  #ment_sub_finish .mentBlock,
+  #ment_sub_special .mentBlock{
+    flex-basis:calc(100vw - 28px) !important;
+    width:calc(100vw - 28px) !important;
+    max-width:calc(100vw - 28px) !important;
+  }
+}
+
+
+/* 멘트 페이지 v6: 2차 메뉴 완전 고정 + 메뉴명/복수진행 버튼 정리 */
+#page_ment.active .mentTabs{
+  position:fixed !important;
+  top:var(--mentStickyTop) !important;
+  left:50% !important;
+  transform:translateX(-50%) !important;
+  width:min(calc(100% - 28px), 1312px) !important;
+  max-width:1312px !important;
+  margin:0 !important;
+  z-index:9998 !important;
+}
+#page_ment.active .mentWrap{
+  padding-top:42px !important;
+}
+#page_ment .mentTabs{
+  min-height:32px !important;
+  align-items:center !important;
+}
+#page_ment .mentLightBtn.active{
+  background:#111827 !important;
+  color:#fff !important;
+}
+@media(max-width:640px){
+  #page_ment.active .mentTabs{
+    width:calc(100% - 16px) !important;
+    max-width:none !important;
+  }
+  #page_ment.active .mentWrap{
+    padding-top:40px !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1583,6 +2599,7 @@ input, textarea, [contenteditable="true"] {
     <button class="typeTab property" onclick="showTypePage('multi')">복수</button>
     <button class="typeTab property" onclick="showTypePage('rights')">무형</button>
     <button class="typeTab property" onclick="showTypePage('feeOnly')">수수료</button>
+    <button class="typeTab property" onclick="showTypePage('ment')">멘트</button>
     <button class="typeTab property" onclick="showTypePage('receiveProperty')">일반접수</button>
     <button class="typeTab property" onclick="showTypePage('receiveMulti')">복수접수</button>
     <button class="typeTab property" onclick="showTypePage('receiveRights')">무형접수</button>
@@ -1595,6 +2612,225 @@ input, textarea, [contenteditable="true"] {
 
 
   
+
+
+
+  <section id="page_ment" class="typePage">
+    <div class="mentWrap">
+      <div class="mentTabs" aria-label="멘트 메뉴">
+        <button class="mentSubTab active" onclick="mentShowSub('takgam', this)">탁감</button>
+        <button class="mentSubTab" onclick="mentShowSub('firstContact', this)">고객인사</button>
+        <button class="mentSubTab" onclick="mentShowSub('start', this)">착수</button>
+        <button class="mentSubTab" onclick="mentShowSub('done', this)">평가완료</button>
+        <button class="mentSubTab" onclick="mentShowSub('finish', this)">마무리</button>
+        <button class="mentSubTab" onclick="mentShowSub('special', this)">특용비</button>
+      </div>
+
+      <div id="ment_sub_takgam" class="mentSubPage active">
+        <div class="mentPairStack">
+          <div class="mentPairGrid">
+            <div class="mentCard mentOutputCard">
+              <div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">탁감</span><button class="mentCopyBtn" onclick="mentCopy('ment_takgam_output', this)">복사</button></div>
+              <textarea id="ment_takgam_output" class="mentOutput"></textarea>
+            </div>
+            <div class="mentCard mentControlCard">
+              <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">탁감</span></div>
+              <div class="mentRoleChips">
+  <label><input type="radio" name="mentRole_takgam" onchange="mentChooseRole('takgam','대표님')"> 대표님</label>
+  <label><input type="radio" name="mentRole_takgam" checked onchange="mentChooseRole('takgam','세무사님')"> 세무사님</label>
+  <label><input type="radio" name="mentRole_takgam" onchange="mentChooseRole('takgam','법무사님')"> 법무사님</label>
+  <label><input type="radio" name="mentRole_takgam" onchange="mentChooseRole('takgam','회계사님')"> 회계사님</label>
+  <label><input type="radio" name="mentRole_takgam" onchange="mentChooseRole('takgam','변호사님')"> 변호사님</label>
+  <label><input type="radio" name="mentRole_takgam" onchange="mentChooseRole('takgam','변리사님')"> 변리사님</label>
+  <label class="mentCustomRolePill"><input type="checkbox" id="ment_takgam_customCheck" onchange="mentUseCustomRole('takgam')"><input type="text" id="ment_takgam_role" value="세무사님" onfocus="mentCheckCustomRole('takgam')" oninput="mentCheckCustomRole('takgam'); mentUpdateTakgam();"></label>
+</div>
+              <div class="mentOptionBox">
+                <b>추가 멘트</b>
+                <div class="mentCheckGrid">
+                  <label class="mentCheckPill"><input type="checkbox" id="ment_takgam_extra1" onchange="mentUpdateTakgam()"> 참고서류 안내</label>
+                  <label class="mentCheckPill"><input type="checkbox" id="ment_takgam_extra2" onchange="mentUpdateTakgam()"> 입주권/분양권 서류 안내</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mentPairGrid">
+            <div class="mentCard mentOutputCard">
+              <div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">무형 탁감</span><button class="mentCopyBtn" onclick="mentCopy('ment_rightsTakgam_output', this)">복사</button></div>
+              <textarea id="ment_rightsTakgam_output" class="mentOutput short"></textarea>
+            </div>
+            <div class="mentCard mentControlCard">
+              <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">무형 탁감</span></div>
+              <div class="mentRoleChips">
+  <label><input type="radio" name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','대표님')"> 대표님</label>
+  <label><input type="radio" name="mentRole_rightsTakgam" checked onchange="mentChooseRole('rightsTakgam','세무사님')"> 세무사님</label>
+  <label><input type="radio" name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','법무사님')"> 법무사님</label>
+  <label><input type="radio" name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','회계사님')"> 회계사님</label>
+  <label><input type="radio" name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','변호사님')"> 변호사님</label>
+  <label><input type="radio" name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','변리사님')"> 변리사님</label>
+  <label class="mentCustomRolePill"><input type="checkbox" id="ment_rightsTakgam_customCheck" onchange="mentUseCustomRole('rightsTakgam')"><input type="text" id="ment_rightsTakgam_role" value="세무사님" onfocus="mentCheckCustomRole('rightsTakgam')" oninput="mentCheckCustomRole('rightsTakgam'); mentUpdateRightsTakgam();"></label>
+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ment_sub_start" class="mentSubPage">
+        <div class="mentGrid">
+          <div class="mentCard mentOutputCard">
+            <div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">착수</span><button class="mentCopyBtn mentCompactTitleBtn" onclick="mentCopy('ment_start_output', this)">복사</button><button class="mentLightBtn mentCompactTitleBtn" id="ment_start_multiBtn" onclick="mentToggleStartMulti(this)">복수진행</button></div>
+            <textarea id="ment_start_output" class="mentOutput"></textarea>
+          </div>
+          <div class="mentCard mentControlCard">
+            <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">착수</span></div>
+            <div class="mentOptionBox">
+              <b>하이테크 평가 건수</b>
+              <div class="mentCountBtns" id="ment_start_ht_countBtns">
+                <button type="button" onclick="mentSetStartCount('ht', 1)">1</button>
+                <button type="button" class="active" onclick="mentSetStartCount('ht', 2)">2</button>
+                <button type="button" onclick="mentSetStartCount('ht', 3)">3</button>
+                <button type="button" onclick="mentSetStartCount('ht', 4)">4</button>
+                <button type="button" onclick="mentSetStartCount('ht', 5)">5</button>
+              </div>
+              <input type="hidden" id="ment_start_ht_count" value="2">
+              <label class="mentCheckPill"><input type="checkbox" id="ment_start_ht_multi" onchange="mentUpdateStart()"> 하이테크: 평가 N건</label>
+            </div>
+            <div class="mentOptionBox">
+              <b>복수업체 평가 건수</b>
+              <div class="mentCountBtns" id="ment_start_partner_countBtns">
+                <button type="button" onclick="mentSetStartCount('partner', 1)">1</button>
+                <button type="button" class="active" onclick="mentSetStartCount('partner', 2)">2</button>
+                <button type="button" onclick="mentSetStartCount('partner', 3)">3</button>
+                <button type="button" onclick="mentSetStartCount('partner', 4)">4</button>
+                <button type="button" onclick="mentSetStartCount('partner', 5)">5</button>
+              </div>
+              <input type="hidden" id="ment_start_partner_count" value="2">
+              <label class="mentCheckPill"><input type="checkbox" id="ment_start_partner_multi" onchange="mentUpdateStart()"> 복수업체: 평가 N건</label>
+            </div>
+            <input type="hidden" id="ment_start_multiMode" value="0">
+          </div>
+        </div>
+      </div>
+
+      <div id="ment_sub_firstContact" class="mentSubPage">
+        <div class="mentGrid">
+          <div class="mentCard mentOutputCard">
+            <div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">고객인사</span><button class="mentCopyBtn" onclick="mentCopy('ment_firstContact_output', this)">복사</button></div>
+            <textarea id="ment_firstContact_output" class="mentOutput short"></textarea>
+          </div>
+          <div class="mentCard mentControlCard">
+            <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">고객인사</span></div>
+            <div class="mentRoleChips">
+  <label><input type="radio" name="mentRole_firstContact" checked onchange="mentChooseRole('firstContact','대표님')"> 대표님</label>
+  <label><input type="radio" name="mentRole_firstContact" onchange="mentChooseRole('firstContact','세무사님')"> 세무사님</label>
+  <label><input type="radio" name="mentRole_firstContact" onchange="mentChooseRole('firstContact','법무사님')"> 법무사님</label>
+  <label><input type="radio" name="mentRole_firstContact" onchange="mentChooseRole('firstContact','회계사님')"> 회계사님</label>
+  <label><input type="radio" name="mentRole_firstContact" onchange="mentChooseRole('firstContact','변호사님')"> 변호사님</label>
+  <label><input type="radio" name="mentRole_firstContact" onchange="mentChooseRole('firstContact','변리사님')"> 변리사님</label>
+  <label class="mentCustomRolePill"><input type="checkbox" id="ment_firstContact_customCheck" onchange="mentUseCustomRole('firstContact')"><input type="text" id="ment_firstContact_role" value="대표님" onfocus="mentCheckCustomRole('firstContact')" oninput="mentCheckCustomRole('firstContact'); mentUpdateFirstContact();"></label>
+</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ment_sub_done" class="mentSubPage">
+        <div class="mentPairStack">
+          <div class="mentPairGrid">
+            <div class="mentCard mentOutputCard">
+              <div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">평가완료_고객</span><button class="mentCopyBtn" onclick="mentCopy('ment_doneCustomer_output', this)">복사</button><button class="mentLightBtn mentCompactTitleBtn" id="ment_doneCustomer_multiBtn" onclick="mentToggleDoneCustomerMulti(this)">복수진행</button></div>
+              <textarea id="ment_doneCustomer_output" class="mentOutput"></textarea>
+            </div>
+            <div class="mentCard mentControlCard">
+              <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">고객</span></div>
+              <div class="mentRoleChips">
+  <label><input type="radio" name="mentRole_doneCustomer" checked onchange="mentChooseRole('doneCustomer','대표님')"> 대표님</label>
+  <label><input type="radio" name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','세무사님')"> 세무사님</label>
+  <label><input type="radio" name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','법무사님')"> 법무사님</label>
+  <label><input type="radio" name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','회계사님')"> 회계사님</label>
+  <label><input type="radio" name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','변호사님')"> 변호사님</label>
+  <label><input type="radio" name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','변리사님')"> 변리사님</label>
+  <label class="mentCustomRolePill"><input type="checkbox" id="ment_doneCustomer_customCheck" onchange="mentUseCustomRole('doneCustomer')"><input type="text" id="ment_doneCustomer_role" value="대표님" onfocus="mentCheckCustomRole('doneCustomer')" oninput="mentCheckCustomRole('doneCustomer'); mentUpdateDoneCustomer();"></label>
+</div>
+              <div class="mentTwoCols">
+                <div class="mentField"><label>하이테크 잔금</label><input id="ment_doneCustomer_ht" class="mentMoney" data-ment-money value="" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();"></div>
+                <div class="mentField"><label>복수업체 잔금</label><input id="ment_doneCustomer_partner" class="mentMoney" data-ment-money value="" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();"></div>
+                <input type="hidden" id="ment_doneCustomer_multiMode" value="0">
+              </div>
+            </div>
+          </div>
+          <div class="mentPairGrid">
+            <div class="mentCard mentOutputCard">
+              <div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">평가완료_거래처</span><button class="mentCopyBtn" onclick="mentCopy('ment_donePartner_output', this)">복사</button></div>
+              <textarea id="ment_donePartner_output" class="mentOutput short"></textarea>
+            </div>
+            <div class="mentCard mentControlCard">
+              <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">거래처</span></div>
+              <div class="mentRoleChips">
+  <label><input type="radio" name="mentRole_donePartner" onchange="mentChooseRole('donePartner','대표님')"> 대표님</label>
+  <label><input type="radio" name="mentRole_donePartner" checked onchange="mentChooseRole('donePartner','세무사님')"> 세무사님</label>
+  <label><input type="radio" name="mentRole_donePartner" onchange="mentChooseRole('donePartner','법무사님')"> 법무사님</label>
+  <label><input type="radio" name="mentRole_donePartner" onchange="mentChooseRole('donePartner','회계사님')"> 회계사님</label>
+  <label><input type="radio" name="mentRole_donePartner" onchange="mentChooseRole('donePartner','변호사님')"> 변호사님</label>
+  <label><input type="radio" name="mentRole_donePartner" onchange="mentChooseRole('donePartner','변리사님')"> 변리사님</label>
+  <label class="mentCustomRolePill"><input type="checkbox" id="ment_donePartner_customCheck" onchange="mentUseCustomRole('donePartner')"><input type="text" id="ment_donePartner_role" value="세무사님" onfocus="mentCheckCustomRole('donePartner')" oninput="mentCheckCustomRole('donePartner'); mentUpdateDonePartner();"></label>
+</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ment_sub_finish" class="mentSubPage">
+        <div class="mentGrid">
+          <div class="mentCard mentOutputCard">
+            <div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">마무리</span></div>
+            <div class="mentBlockScroll">
+              <div class="mentBlock"><div class="mentBlockHead"><h3>고객 카톡</h3><button class="mentCopyBtn" onclick="mentCopy('ment_finish_1', this)">복사</button></div><textarea id="ment_finish_1" class="mentOutput"></textarea></div>
+              <div class="mentBlock"><div class="mentBlockHead"><h3>고객 메일</h3><button class="mentCopyBtn" onclick="mentCopy('ment_finish_2', this)">복사</button></div><textarea id="ment_finish_2" class="mentOutput"></textarea></div>
+              <div class="mentBlock"><div class="mentBlockHead"><h3>고객 카톡2</h3><button class="mentCopyBtn" onclick="mentCopy('ment_finish_3', this)">복사</button></div><textarea id="ment_finish_3" class="mentOutput"></textarea></div>
+            </div>
+          </div>
+          <div class="mentCard mentControlCard">
+            <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">마무리</span></div>
+            <div class="mentCheckGrid">
+              <label class="mentCheckPill"><input type="checkbox" value="현금영수증" checked onchange="mentUpdateFinish()"> 현금영수증</label>
+              <label class="mentCheckPill"><input type="checkbox" value="평가서 파일" onchange="mentUpdateFinish()"> 평가서 파일</label>
+              <label class="mentCheckPill"><input type="checkbox" value="청구서" onchange="mentUpdateFinish()"> 청구서</label>
+            </div>
+            <div class="mentRoleChips">
+  <label><input type="radio" name="mentRole_finish" checked onchange="mentChooseRole('finish','대표님')"> 대표님</label>
+  <label><input type="radio" name="mentRole_finish" onchange="mentChooseRole('finish','세무사님')"> 세무사님</label>
+  <label><input type="radio" name="mentRole_finish" onchange="mentChooseRole('finish','법무사님')"> 법무사님</label>
+  <label><input type="radio" name="mentRole_finish" onchange="mentChooseRole('finish','회계사님')"> 회계사님</label>
+  <label><input type="radio" name="mentRole_finish" onchange="mentChooseRole('finish','변호사님')"> 변호사님</label>
+  <label><input type="radio" name="mentRole_finish" onchange="mentChooseRole('finish','변리사님')"> 변리사님</label>
+  <label class="mentCustomRolePill"><input type="checkbox" id="ment_finish_customCheck" onchange="mentUseCustomRole('finish')"><input type="text" id="ment_finish_role" value="대표님" onfocus="mentCheckCustomRole('finish')" oninput="mentCheckCustomRole('finish'); mentUpdateFinish();"></label>
+</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ment_sub_special" class="mentSubPage">
+        <div class="mentGrid">
+          <div class="mentCard mentOutputCard">
+            <div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">특용비</span><button class="mentLightBtn mentCompactTitleBtn" id="ment_special_multiBtn" onclick="mentToggleSpecialMulti(this)">복수진행</button></div>
+            <div class="mentBlockScroll">
+              <div class="mentBlock"><div class="mentBlockHead"><h3>특용 처음</h3><button class="mentCopyBtn" onclick="mentCopy('ment_special_1', this)">복사</button></div><textarea id="ment_special_1" class="mentOutput"></textarea></div>
+              <div class="mentBlock"><div class="mentBlockHead"><h3>특용비 2</h3><button class="mentCopyBtn" onclick="mentCopy('ment_special_2', this)">복사</button></div><textarea id="ment_special_2" class="mentOutput short"></textarea></div>
+              <div class="mentBlock"><div class="mentBlockHead"><h3>특용비 3</h3><button class="mentCopyBtn" onclick="mentCopy('ment_special_3', this)">복사</button></div><textarea id="ment_special_3" class="mentOutput short"></textarea></div>
+              <div class="mentBlock"><div class="mentBlockHead"><h3>특용비 4</h3><button class="mentCopyBtn" onclick="mentCopy('ment_special_4', this)">복사</button></div><textarea id="ment_special_4" class="mentOutput"></textarea></div>
+            </div>
+          </div>
+          <div class="mentCard mentControlCard">
+            <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">특용비</span></div>
+            <div class="mentTwoCols">
+              <div class="mentField"><label>하이테크 특용비</label><input id="ment_special_ht" class="mentMoney" data-ment-money value="" oninput="mentMoneyInput(this); mentUpdateSpecial();"></div>
+              <div class="mentField"><label>복수업체 특용비</label><input id="ment_special_partner" class="mentMoney" data-ment-money value="" oninput="mentMoneyInput(this); mentUpdateSpecial();"></div>
+            </div>
+            <input type="hidden" id="ment_special_includePartner" value="0">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="page_quoteHagam" class="typePage">
     <div class="quoteEmbedWrap">
@@ -5022,97 +6258,231 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
   </section>
 
 
+
+
   <section id="page_feeOnly" class="typePage">
-    <div class="feeOnlyLayout">
-      <section class="card feeOnlyCard">
-        <div class="sectionTitle"><span class="badge">계산기</span> 수수료 요율 계산기</div>
-        <div class="field">
-          <label>평가금액 전체 입력</label>
-          <input id="feeOnlyEvalAmount" class="userInput" placeholder="예: 236000000" oninput="feeOnlyCalcRates()">
-          <div class="help">평가금액을 원 단위 숫자로 입력하면 기존 일반 페이지 요율표 기준으로 하한/기준/상한 수수료를 계산합니다.</div>
-        </div>
-        <div class="feeOnlyCalcGrid">
-          <div class="feeOnlyRateBox"><div class="name">하한요율</div><div class="val" id="feeOnlyLowerRateView">-</div></div>
-          <div class="feeOnlyRateBox"><div class="name">기준요율</div><div class="val" id="feeOnlyBaseRateView">-</div></div>
-          <div class="feeOnlyRateBox"><div class="name">상한요율</div><div class="val" id="feeOnlyUpperRateView">-</div></div>
-        </div>
+    <div class="feeModernWrap">
+      <div class="feeModernHeader">
+        <h2>수수료계산</h2>
+        <button class="feeResetAll" onclick="feeOnlyReset()">전체 초기화</button>
+      </div>
 
-        <hr class="feeOnlyMiniDivider">
-
-        <div class="sectionTitle"><span class="badge">1</span> 수수료 입력</div>
-        <div class="formGrid">
-          <div class="field">
-            <label>순수수료</label>
-            <input id="feeOnlyPure" class="userInput" placeholder="예: 158000" oninput="feeOnlyCalculate()">
-            <div class="help">입력한 숫자를 원 단위 금액으로 계산합니다.</div>
-          </div>
-          <div class="field">
-            <label>할증</label>
-            <select id="feeOnlyMarkup" class="userInput" onchange="feeOnlyCalculate()"></select>
-          </div>
-          <div class="field fullField">
-            <label>지역 / 여비</label>
-            <input id="feeOnlyRegion" class="userInput" list="regionList" placeholder="예: 서울, 부산, 세종, 영통, 대구 중구" oninput="feeOnlyApplyTravel()">
-            <input id="feeOnlyTravel" readonly placeholder="지역을 입력하면 여비가 자동 반영됩니다." style="margin-top:6px;">
-          </div>
-          <div class="field">
-            <label>실비</label>
-            <input id="feeOnlyActual" class="userInput" placeholder="필요시 입력" oninput="feeOnlyCalculate()">
-          </div>
-          <div class="field">
-            <label>추가비용 1</label>
-            <input id="feeOnlyExtra" class="userInput" placeholder="필요시 입력" oninput="feeOnlyCalculate()">
-          </div>
-          <div class="field">
-            <label>추가비용 2</label>
-            <input id="feeOnlyExtra2" class="userInput" placeholder="필요시 입력" oninput="feeOnlyCalculate()">
-          </div>
-        </div>
-        <div class="btns">
-          <button class="dark" onclick="feeOnlyCalculate()">계산</button>
-          <button class="light" onclick="feeOnlyReset()">초기화</button>
+      <section class="feePanel">
+        <div class="feePanelTitle"><span class="num">1</span> 평가금액</div>
+        <div class="feeTableScroll">
+          <table class="feeTable compactRate">
+            <thead>
+              <tr>
+                <th class="moneyCol">평가금액</th>
+                <th class="moneyCol">하한요율</th>
+                <th class="moneyCol">기준요율</th>
+                <th class="moneyCol">상한요율</th>
+                <th class="moneyCol">기준-하한</th>
+                <th class="moneyCol">상한-기준</th>
+                <th class="moneyCol">상한-하한</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input id="feeOnlyEvalAmount" class="feeInput" oninput="feeOnlyUpdateRates()"></td>
+                <td><div class="feeOutputCell" id="feeOnlyLowerRateView">-</div></td>
+                <td><div class="feeOutputCell" id="feeOnlyBaseRateView">-</div></td>
+                <td><div class="feeOutputCell" id="feeOnlyUpperRateView">-</div></td>
+                <td><div class="feeOutputCell" id="feeOnlyDiffBaseLower">-</div></td>
+                <td><div class="feeOutputCell" id="feeOnlyDiffUpperBase">-</div></td>
+                <td><div class="feeOutputCell" id="feeOnlyDiffUpperLower">-</div></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <section class="card feeOnlyCard">
-        <div class="sectionTitle"><span class="badge">2</span> 계산 결과</div>
-        <div class="feeOnlyKpis">
-          <div class="feeOnlyKpi"><div class="name">총 수수료</div><div class="val" id="feeOnlyTotalView">-</div></div>
-          <div class="feeOnlyKpi feeOnlyVatKpi"><div class="name">VAT 포함 총 수수료</div><div class="val" id="feeOnlyVatView">-</div></div>
+      <section class="feePanel">
+        <div class="feePanelTitle"><span class="num">2</span> 계산기</div>
+        <div class="feeTableScroll">
+          <table class="feeTable compactCalc feeCalcTable">
+            <colgroup>
+              <col class="labelCol">
+              <col class="btnCol">
+              <col class="inputCol">
+            </colgroup>
+            <tbody>
+              <tr>
+                <th class="feeRowHead">수식</th>
+                <td><button class="feeBtn primary" onclick="feeOnlyRunFormula()">계산</button></td>
+                <td><textarea id="feeOnlyFormulaInput" class="feeTextarea" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); feeOnlyRunFormula();}"></textarea></td>
+              </tr>
+              <tr>
+                <th class="feeRowHead">결과</th>
+                <td><button class="feeBtn" onclick="feeOnlySetVal('feeOnlyFormulaInput',''); feeOnlySetText('feeOnlyFormulaResult','');">초기화</button></td>
+                <td><div id="feeOnlyFormulaResult" class="feeOutputBox feeFormulaResult"></div></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div id="feeOnlyResult" class="feeOnlyResultBox">수수료를 입력하면 계산 결과가 표시됩니다.</div>
-        <div class="btns">
-          <button onclick="feeOnlyCopyResult()">결과 복사</button>
+      </section>
+
+      <section class="feePanel">
+        <div class="feePanelTitle"><span class="num">3</span> 수동계산</div>
+        <div class="feeTableScroll">
+          <table class="feeTable">
+            <thead>
+              <tr>
+                <th class="resetCol">초기화</th>
+                <th class="moneyCol">순수수료1</th>
+                <th class="moneyCol">순수수료2</th>
+                <th class="smallCol">할증</th>
+                <th class="moneyCol">추가비용</th>
+                <th class="regionCol">지역명</th>
+                <th class="travelCol">여비</th>
+                <th class="moneyCol">실비</th>
+                <th class="resultCol">최종수수료<br>(VAT 포함)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><button class="feeBtn" onclick="feeOnlyResetManual(1)">초기화</button></td>
+                <td><input id="feeManual1_pure1" class="feeInput" oninput="feeOnlyUpdateManual(1)"></td>
+                <td><input id="feeManual1_pure2" class="feeInput" oninput="feeOnlyUpdateManual(1)"></td>
+                <td><input id="feeManual1_markup" class="feeInput" value="1" oninput="feeOnlyUpdateManual(1)"></td>
+                <td><input id="feeManual1_extra" class="feeInput" oninput="feeOnlyUpdateManual(1)"></td>
+                <td><input id="feeManual1_region" class="feeInput regionInput" list="regionList" oninput="feeOnlyUpdateManual(1)"></td>
+                <td><div class="feeOutputCell" id="feeManual1_travel"></div></td>
+                <td><input id="feeManual1_actual" class="feeInput" value="30000" oninput="feeOnlyUpdateManual(1)"></td>
+                <td><div id="feeManual1_final" class="feeOutputBox feeResultStrong"></div></td>
+              </tr>
+              <tr>
+                <td><button class="feeBtn" onclick="feeOnlyResetManual(2)">초기화</button></td>
+                <td><input id="feeManual2_pure1" class="feeInput" oninput="feeOnlyUpdateManual(2)"></td>
+                <td><input id="feeManual2_pure2" class="feeInput" oninput="feeOnlyUpdateManual(2)"></td>
+                <td><input id="feeManual2_markup" class="feeInput" value="1" oninput="feeOnlyUpdateManual(2)"></td>
+                <td><input id="feeManual2_extra" class="feeInput" oninput="feeOnlyUpdateManual(2)"></td>
+                <td><input id="feeManual2_region" class="feeInput regionInput" list="regionList" oninput="feeOnlyUpdateManual(2)"></td>
+                <td><div class="feeOutputCell" id="feeManual2_travel"></div></td>
+                <td><input id="feeManual2_actual" class="feeInput" value="30000" oninput="feeOnlyUpdateManual(2)"></td>
+                <td><div id="feeManual2_final" class="feeOutputBox feeResultStrong"></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="feePanel">
+        <div class="feePanelTitle"><span class="num">4</span> 자동계산</div>
+        <div class="feeTableScroll">
+          <table class="feeTable">
+            <thead>
+              <tr>
+                <th class="resetCol">초기화</th>
+                <th class="moneyCol">평가금액</th>
+                <th class="smallCol">할증</th>
+                <th class="moneyCol">추가비용</th>
+                <th class="regionCol">지역명</th>
+                <th class="travelCol">여비</th>
+                <th class="moneyCol">실비</th>
+                <th class="resultCol">최종수수료<br>(VAT 포함)</th>
+                <th class="resultCol">특용비<br>(기준-하한)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><button class="feeBtn" onclick="feeOnlyResetAuto(1)">초기화</button></td>
+                <td><input id="feeAuto1_amount" class="feeInput" oninput="feeOnlyUpdateAuto(1)"></td>
+                <td><input id="feeAuto1_markup" class="feeInput" value="1" oninput="feeOnlyUpdateAuto(1)"></td>
+                <td><input id="feeAuto1_extra" class="feeInput" oninput="feeOnlyUpdateAuto(1)"></td>
+                <td><input id="feeAuto1_region" class="feeInput regionInput" list="regionList" oninput="feeOnlyUpdateAuto(1)"></td>
+                <td><div class="feeOutputCell" id="feeAuto1_travel"></div></td>
+                <td><input id="feeAuto1_actual" class="feeInput" value="30000" oninput="feeOnlyUpdateAuto(1)"></td>
+                <td><div id="feeAuto1_final" class="feeOutputBox feeResultStrong"></div></td>
+                <td><div id="feeAuto1_special" class="feeOutputBox feeResultStrong"></div></td>
+              </tr>
+              <tr>
+                <td><button class="feeBtn" onclick="feeOnlyResetAuto(2)">초기화</button></td>
+                <td><input id="feeAuto2_amount" class="feeInput" oninput="feeOnlyUpdateAuto(2)"></td>
+                <td><input id="feeAuto2_markup" class="feeInput" value="1" oninput="feeOnlyUpdateAuto(2)"></td>
+                <td><input id="feeAuto2_extra" class="feeInput" oninput="feeOnlyUpdateAuto(2)"></td>
+                <td><input id="feeAuto2_region" class="feeInput regionInput" list="regionList" oninput="feeOnlyUpdateAuto(2)"></td>
+                <td><div class="feeOutputCell" id="feeAuto2_travel"></div></td>
+                <td><input id="feeAuto2_actual" class="feeInput" value="30000" oninput="feeOnlyUpdateAuto(2)"></td>
+                <td><div id="feeAuto2_final" class="feeOutputBox feeResultStrong"></div></td>
+                <td><div id="feeAuto2_special" class="feeOutputBox feeResultStrong"></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="feePanel">
+        <div class="feePanelTitle"><span class="num">5</span> 희망금액</div>
+        <div class="feeTableScroll">
+          <table class="feeTable compactGoal feeGoalMainTable">
+            <thead>
+              <tr>
+                <th class="moneyCol">순수수료</th>
+                <th class="smallCol">할증</th>
+                <th class="moneyCol">추가비용</th>
+                <th class="regionCol">지역명</th>
+                <th class="travelCol">여비</th>
+                <th class="moneyCol">실비</th>
+                <th class="resultCol">최종수수료<br>(VAT 포함)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input id="feeGoal_pure" class="feeInput" oninput="feeOnlyUpdateGoal()"></td>
+                <td><input id="feeGoal_markup" class="feeInput" value="1" oninput="feeOnlyUpdateGoal()"></td>
+                <td><input id="feeGoal_extra" class="feeInput" oninput="feeOnlyUpdateGoal()"></td>
+                <td><input id="feeGoal_region" class="feeInput regionInput" list="regionList" oninput="feeOnlyUpdateGoal()"></td>
+                <td><div class="feeOutputCell" id="feeGoal_travel"></div></td>
+                <td><input id="feeGoal_actual" class="feeInput" value="30000" oninput="feeOnlyUpdateGoal()"></td>
+                <td><div id="feeGoal_final" class="feeOutputBox feeResultStrong"></div></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="feeOnlyGoalBox">
-          <div class="sectionTitle" style="margin-bottom:10px;"><span class="badge">3</span> 희망금액 맞추기</div>
-          <div class="field">
-            <label>희망 수수료(VAT 포함)</label>
-            <input id="feeOnlyTargetVat" class="userInput" placeholder="예: 3000000" oninput="feeOnlyCalculate()">
-          </div>
-          <div class="feeOnlyNeededBox">필요금액: <span id="feeOnlyNeededView">-</span></div>
-          <div class="help" style="margin-top:8px;">현재 1번 입력값을 기준으로, VAT 포함 총 수수료가 희망금액을 넘지 않도록 가장 가까운 추가 필요금액을 계산합니다.</div>
+        <div class="feeTableScroll">
+          <table class="feeTable feeGoalTargetTable">
+            <colgroup>
+              <col class="labelCol">
+              <col class="valueCol">
+              <col class="labelCol">
+              <col class="valueCol">
+            </colgroup>
+            <tbody>
+              <tr>
+                <th class="feeRowHead">희망금액</th>
+                <td><input id="feeGoal_targetVat" class="feeInput" oninput="feeOnlyUpdateGoal()"></td>
+                <th class="feeRowHead">필요금액</th>
+                <td><div id="feeGoal_needed" class="feeOutputBox"></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="feeTableScroll">
+          <table class="feeTable compactCalc feeCalcTable">
+            <colgroup>
+              <col class="labelCol">
+              <col class="btnCol">
+              <col class="inputCol">
+            </colgroup>
+            <tbody>
+              <tr>
+                <th class="feeRowHead">수식</th>
+                <td><button class="feeBtn primary" onclick="feeOnlyRunGoalFormula()">계산</button></td>
+                <td><input id="feeGoal_formula" class="feeInput" onkeydown="if(event.key==='Enter'){event.preventDefault(); feeOnlyRunGoalFormula();}"></td>
+              </tr>
+              <tr>
+                <th class="feeRowHead">결과</th>
+                <td><button class="feeBtn" onclick="feeOnlySetVal('feeGoal_formula',''); feeOnlySetText('feeGoal_formulaResult','');">초기화</button></td>
+                <td><div id="feeGoal_formulaResult" class="feeOutputBox"></div></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
     </div>
-
-    <details class="modeNotice feeOnlyNoticeDetails" style="margin-top:16px;">
-      <summary>[수수료] 안내 열기</summary>
-      <div style="margin-top:8px;">
-        급하게 수수료만 계산할 때 사용하는 단독 계산 페이지입니다. 기존 [일반] 페이지의 지역/여비표와 요율표를 그대로 사용합니다.
-      </div>
-    </details>
-    <details class="feeOnlyFormulaDetails">
-      <summary>계산 방식 보기</summary>
-      <div class="feeOnlyHelpBox">
-        총 수수료 = (순수수료 × 할증) + 여비 + 실비 + 추가비용1 + 추가비용2<br>
-        VAT 포함 총 수수료 = 총 수수료 × 1.1<br>
-        희망금액 맞추기는 VAT 포함 금액을 넘지 않는 선에서 가장 가까운 원 단위 필요금액을 계산합니다.<br>
-        하한/기준/상한 요율은 감정평가수수료계산기 앱 방식에 맞춰 구간별 하한·기준·상한 표를 각각 적용하고, 천원 미만은 버림 표시합니다.<br>
-        계산 결과의 총 수수료와 VAT 포함 총 수수료는 올림/내림/반올림 없이 실제 계산값을 숫자로만 표시합니다.
-      </div>
-    </details>
   </section>
 
   <section id="page_property" class="typePage active">
@@ -10241,130 +11611,253 @@ function receiveMultiHighlightOutput(plain){
 }
 
 
-/* 수수료 단독 계산 페이지 전용 스크립트: 기존 일반 페이지 함수/ID 미수정 */
-function feeOnlyInitMarkup(){
-  const sel = document.getElementById('feeOnlyMarkup');
-  if(!sel || sel.options.length) return;
-  for(let v=100; v<=200; v+=5){
-    const value = (v/100).toFixed(2).replace(/0$/,'').replace(/\.0$/,'');
-    const opt = document.createElement('option');
-    opt.value = String(v/100);
-    opt.textContent = value;
-    if(v === 100) opt.selected = true;
-    sel.appendChild(opt);
-  }
-}
+
+/* 수수료 페이지 v3 전용 스크립트 */
 function feeOnlyParseMoney(value){
-  let raw = String(value || '').trim();
+  const raw = String(value || '').trim();
   if(!raw) return 0;
-  raw = raw.replace(/,/g,'').replace(/\s+/g,'');
-  const numMatch = raw.match(/-?\d+(?:\.\d+)?/);
-  if(!numMatch) return 0;
-  const num = Number(numMatch[0]) || 0;
-  if(/억/.test(raw)) return num * 100000000;
-  if(/만원|만/.test(raw)) return num * 10000;
+  const cleaned = raw.replace(/,/g,'').replace(/원/g,'').replace(/\s+/g,'');
+  const m = cleaned.match(/-?\d+(?:\.\d+)?/);
+  if(!m) return 0;
+  const num = Number(m[0]) || 0;
+  if(/억/.test(cleaned)) return num * 100000000;
+  if(/만원|만/.test(cleaned)) return num * 10000;
   return num;
 }
-function feeOnlyFormatWon(n){
-  return (Math.round(Number(n)||0)).toLocaleString('ko-KR') + '원';
+function feeOnlyCeilIfDecimal(n){
+  const num = Number(n) || 0;
+  if(!Number.isFinite(num) || !num) return 0;
+
+  // JS 부동소수점 계산 꼬리(예: 33000.000000000004)는 정수로 봅니다.
+  const nearest = Math.round(num);
+  if(Math.abs(num - nearest) < 1e-8) return nearest;
+
+  // 실제 소수점이 하나라도 있으면 무조건 1원 단위로 올림합니다.
+  return Math.ceil(num);
 }
 function feeOnlyFormatNumberOnly(n){
-  const num = Number(n) || 0;
-  const clean = Math.abs(num - Math.round(num)) < 0.000001 ? Math.round(num) : Number(num.toFixed(6));
-  return clean.toLocaleString('ko-KR', {maximumFractionDigits:6});
+  const num = feeOnlyCeilIfDecimal(n);
+  if(!Number.isFinite(num) || !num) return '';
+  const sign = num < 0 ? '-' : '';
+  const intPart = String(Math.abs(num));
+  const grouped = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return sign + grouped;
 }
-function feeOnlyFormatMan(n){
-  const man = Math.ceil((Number(n)||0)/1000)*1000/10000;
-  const txt = (Math.round(man*10)/10).toLocaleString('ko-KR', {maximumFractionDigits:1});
-  return txt + '만원';
+function feeOnlyFormatWon(n){
+  const v = Number(n)||0;
+  return v ? feeOnlyFormatNumberOnly(v) + '원' : '-';
+}
+function feeOnlyShouldCommaInput(el){
+  if(!el || el.tagName !== 'INPUT') return false;
+  if(!el.closest || !el.closest('#page_feeOnly')) return false;
+  if(!el.classList.contains('feeInput')) return false;
+  if(el.classList.contains('regionInput')) return false;
+  if(el.id === 'feeGoal_formula') return false;
+  return true;
+}
+function feeOnlyFormatEditableNumber(value){
+  const original = String(value ?? '');
+  const raw = original.replace(/,/g,'').trim();
+  if(!raw) return '';
+  // 한글 단위(억/만/원)나 수식 기호가 섞인 값은 사용자가 적은 그대로 두고 계산 함수에서만 해석합니다.
+  if(/[ㄱ-ㅎ가-힣A-Za-z+*/()]/.test(raw)) return original;
+  if(!/^-?\d*\.?\d*$/.test(raw)) return original;
+  if(raw === '-' || raw === '.' || raw === '-.') return raw;
+
+  const negative = raw.startsWith('-');
+  const body = negative ? raw.slice(1) : raw;
+  const hasDot = body.includes('.');
+  let [intPart, decPart = ''] = body.split('.');
+
+  if(intPart){
+    intPart = intPart.replace(/^0+(?=\d)/, '');
+    intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  return (negative ? '-' : '') + intPart + (hasDot ? '.' + decPart : '');
+}
+function feeOnlyFormatInputCommas(el){
+  if(!feeOnlyShouldCommaInput(el)) return;
+  const before = el.value;
+  const after = feeOnlyFormatEditableNumber(before);
+  if(before === after) return;
+
+  const start = el.selectionStart;
+  const end = el.selectionEnd;
+  const fromEnd = before.length - (start == null ? before.length : start);
+  el.value = after;
+
+  if(document.activeElement === el && typeof el.setSelectionRange === 'function'){
+    const pos = Math.max(0, Math.min(after.length, after.length - fromEnd));
+    try{ el.setSelectionRange(pos, pos); }catch(e){}
+  }
+}
+function feeOnlySetupCommaInputs(){
+  const page = document.getElementById('page_feeOnly');
+  if(!page || page.dataset.commaSetup === '1') return;
+  page.dataset.commaSetup = '1';
+
+  page.addEventListener('input', function(event){
+    feeOnlyFormatInputCommas(event.target);
+  }, true);
+
+  page.querySelectorAll('input.feeInput').forEach(el => {
+    if(feeOnlyShouldCommaInput(el)){
+      el.setAttribute('inputmode', 'decimal');
+      feeOnlyFormatInputCommas(el);
+    }
+  });
 }
 function feeOnlySetText(id, value){
   const el = document.getElementById(id);
-  if(el) el.textContent = value;
+  if(el) el.textContent = value == null ? '' : String(value);
 }
-function feeOnlyCalcRates(){
-  const amount = feeOnlyParseMoney(document.getElementById('feeOnlyEvalAmount')?.value || '');
-  if(!amount){
-    feeOnlySetText('feeOnlyLowerRateView','-');
-    feeOnlySetText('feeOnlyBaseRateView','-');
-    feeOnlySetText('feeOnlyUpperRateView','-');
-    return;
+function feeOnlyVal(id){ return document.getElementById(id)?.value || ''; }
+function feeOnlySetVal(id, value){
+  const el = document.getElementById(id);
+  if(el){
+    el.value = value == null ? '' : String(value);
+    feeOnlyFormatInputCommas(el);
   }
-  const lower = typeof appRateFee === 'function' ? appRateFee(amount, 'lower', 1) : 0;
-  const base = typeof appRateFee === 'function' ? appRateFee(amount, 'base', 1) : 0;
-  const upper = typeof appRateFee === 'function' ? appRateFee(amount, 'upper', 1) : 0;
-  feeOnlySetText('feeOnlyLowerRateView', `${feeOnlyFormatMan(lower)} (${feeOnlyFormatWon(lower)})`);
-  feeOnlySetText('feeOnlyBaseRateView', `${feeOnlyFormatMan(base)} (${feeOnlyFormatWon(base)})`);
-  feeOnlySetText('feeOnlyUpperRateView', `${feeOnlyFormatMan(upper)} (${feeOnlyFormatWon(upper)})`);
 }
-function feeOnlyApplyTravel(){
-  const regionEl = document.getElementById('feeOnlyRegion');
-  const travelEl = document.getElementById('feeOnlyTravel');
-  if(!regionEl || !travelEl) return 0;
-  const hit = typeof findTravelRow === 'function' ? findTravelRow(regionEl.value) : null;
-  const travel = hit ? (Number(hit.cost)||0) : 0;
-  const hitName = hit ? (hit.full || hit.city || hit.label || '') : '';
-  travelEl.value = hitName ? `${hitName} / ${feeOnlyFormatWon(travel)}` : '';
-  feeOnlyCalculate();
-  return travel;
+function feeOnlyMarkup(id){ return Number(String(feeOnlyVal(id) || 1).replace(/,/g,'')) || 1; }
+function feeOnlyTravelFor(region){
+  const hit = typeof findTravelRow === 'function' ? findTravelRow(region || '') : null;
+  return hit ? (Number(hit.cost) || 0) : 0;
 }
-function feeOnlyCurrentTravel(){
-  const hit = typeof findTravelRow === 'function' ? findTravelRow(document.getElementById('feeOnlyRegion')?.value || '') : null;
-  return hit ? (Number(hit.cost)||0) : 0;
+function feeOnlyEvalFeeRaw(amount, kind, markup=1){
+  if(!amount) return 0;
+  if(typeof appRateFeeRaw === 'function') return appRateFeeRaw(amount, kind, markup);
+  if(typeof interp === 'function') return interp(amount, kind) * (Number(markup)||1);
+  return 0;
 }
-function feeOnlyCurrentBaseRaw(){
-  const pure = feeOnlyParseMoney(document.getElementById('feeOnlyPure')?.value || '');
-  const markup = Number(document.getElementById('feeOnlyMarkup')?.value || 1) || 1;
-  const travel = feeOnlyCurrentTravel();
-  const actual = feeOnlyParseMoney(document.getElementById('feeOnlyActual')?.value || '');
-  const extra = feeOnlyParseMoney(document.getElementById('feeOnlyExtra')?.value || '');
-  const extra2 = feeOnlyParseMoney(document.getElementById('feeOnlyExtra2')?.value || '');
-  return { pure, markup, travel, actual, extra, extra2, raw:(pure * markup) + travel + actual + extra + extra2 };
+function feeOnlyEvalFee(amount, kind, markup=1){
+  return feeOnlyEvalFeeRaw(amount, kind, markup);
 }
-function feeOnlyCalcNeeded(baseRaw){
-  const target = feeOnlyParseMoney(document.getElementById('feeOnlyTargetVat')?.value || '');
-  const view = document.getElementById('feeOnlyNeededView');
-  if(!view) return;
-  if(!target){ view.textContent = '-'; return; }
-
-  // 희망 VAT 포함 총액을 넘지 않는 선에서 가장 가까운 원 단위 추가금액을 계산합니다.
-  // 필요금액 = floor(희망 VAT포함금액 / 1.1 - 현재 VAT전 총액)
-  const maxPreVat = target / 1.1;
-  const needed = Math.max(0, Math.floor((maxPreVat - baseRaw) + 0.000001));
-  view.textContent = needed > 0 ? feeOnlyFormatWon(needed) : '0원';
+function feeOnlyFinalVat(preVat){ return (Number(preVat)||0) * 1.1; }
+function feeOnlyShow(id, n){ feeOnlySetText(id, n ? feeOnlyFormatNumberOnly(n) : ''); }
+function feeOnlyShowMoney(id, n){ feeOnlySetText(id, n ? feeOnlyFormatWon(n) : '-'); }
+function feeOnlyShowSpecial(id, n){
+  const v = Number(n)||0;
+  feeOnlySetText(id, v ? feeOnlyFormatNumberOnly(v) : '');
 }
-function feeOnlyCalculate(){
-  feeOnlyInitMarkup();
-  const v = feeOnlyCurrentBaseRaw();
-  const total = v.raw;
-  const vatTotal = total * 1.1;
-
-  const totalView = document.getElementById('feeOnlyTotalView');
-  const vatView = document.getElementById('feeOnlyVatView');
-  const result = document.getElementById('feeOnlyResult');
-  if(totalView) totalView.textContent = feeOnlyFormatNumberOnly(total);
-  if(vatView) vatView.textContent = feeOnlyFormatNumberOnly(vatTotal);
-  if(result) {
-    result.textContent = `순수수료: ${feeOnlyFormatMan(v.pure)} (${feeOnlyFormatWon(v.pure)})\n할증: ${v.markup}\n여비: ${feeOnlyFormatMan(v.travel)}\n실비: ${v.actual ? feeOnlyFormatMan(v.actual) : '-'}\n추가비용 1: ${v.extra ? feeOnlyFormatMan(v.extra) : '-'}\n추가비용 2: ${v.extra2 ? feeOnlyFormatMan(v.extra2) : '-'}\n\n총 수수료: ${feeOnlyFormatNumberOnly(total)}\nVAT 포함 총 수수료: ${feeOnlyFormatNumberOnly(vatTotal)}`;
+function feeOnlyUpdateRates(){
+  const amount = feeOnlyParseMoney(feeOnlyVal('feeOnlyEvalAmount'));
+  const lower = feeOnlyEvalFee(amount, 'lower', 1);
+  const base = feeOnlyEvalFee(amount, 'basis', 1);
+  const upper = feeOnlyEvalFee(amount, 'upper', 1);
+  feeOnlyShowMoney('feeOnlyLowerRateView', lower);
+  feeOnlyShowMoney('feeOnlyBaseRateView', base);
+  feeOnlyShowMoney('feeOnlyUpperRateView', upper);
+  feeOnlyShowMoney('feeOnlyDiffBaseLower', base - lower);
+  feeOnlyShowMoney('feeOnlyDiffBaseLower2', base - lower);
+  feeOnlyShowMoney('feeOnlyDiffUpperBase', upper - base);
+  feeOnlyShowMoney('feeOnlyDiffUpperLower', upper - lower);
+}
+function feeOnlyUpdateManual(row){
+  const p1 = feeOnlyParseMoney(feeOnlyVal(`feeManual${row}_pure1`));
+  const p2 = feeOnlyParseMoney(feeOnlyVal(`feeManual${row}_pure2`));
+  const markup = feeOnlyMarkup(`feeManual${row}_markup`);
+  const extra = feeOnlyParseMoney(feeOnlyVal(`feeManual${row}_extra`));
+  const travel = feeOnlyTravelFor(feeOnlyVal(`feeManual${row}_region`));
+  const actual = feeOnlyParseMoney(feeOnlyVal(`feeManual${row}_actual`));
+  const preVat = ((p1 + p2) * markup) + extra + travel + actual;
+  feeOnlyShow(`feeManual${row}_travel`, travel);
+  feeOnlyShow(`feeManual${row}_final`, preVat ? feeOnlyFinalVat(preVat) : 0);
+}
+function feeOnlyResetManual(row){
+  ['pure1','pure2','extra','region'].forEach(k => feeOnlySetVal(`feeManual${row}_${k}`, ''));
+  feeOnlySetVal(`feeManual${row}_markup`, '1');
+  feeOnlySetVal(`feeManual${row}_actual`, '30000');
+  feeOnlySetText(`feeManual${row}_travel`, '');
+  feeOnlySetText(`feeManual${row}_final`, '');
+}
+function feeOnlyUpdateAuto(row){
+  const amount = feeOnlyParseMoney(feeOnlyVal(`feeAuto${row}_amount`));
+  const markup = feeOnlyMarkup(`feeAuto${row}_markup`);
+  const extra = feeOnlyParseMoney(feeOnlyVal(`feeAuto${row}_extra`));
+  const travel = feeOnlyTravelFor(feeOnlyVal(`feeAuto${row}_region`));
+  const actual = feeOnlyParseMoney(feeOnlyVal(`feeAuto${row}_actual`));
+  const base = feeOnlyEvalFeeRaw(amount, 'basis', markup);
+  const lower = feeOnlyEvalFeeRaw(amount, 'lower', markup);
+  const preVat = base + extra + travel + actual;
+  feeOnlyShow(`feeAuto${row}_travel`, travel);
+  feeOnlyShow(`feeAuto${row}_final`, amount ? feeOnlyFinalVat(preVat) : 0);
+  feeOnlyShowSpecial(`feeAuto${row}_special`, amount ? Math.max(base - lower, 0) : 0);
+}
+function feeOnlyResetAuto(row){
+  ['amount','extra','region'].forEach(k => feeOnlySetVal(`feeAuto${row}_${k}`, ''));
+  feeOnlySetVal(`feeAuto${row}_markup`, '1');
+  feeOnlySetVal(`feeAuto${row}_actual`, '30000');
+  feeOnlySetText(`feeAuto${row}_travel`, '');
+  feeOnlySetText(`feeAuto${row}_final`, '');
+  feeOnlySetText(`feeAuto${row}_special`, '');
+}
+function feeOnlyUpdateGoal(){
+  const pure = feeOnlyParseMoney(feeOnlyVal('feeGoal_pure'));
+  const markup = feeOnlyMarkup('feeGoal_markup');
+  const extra = feeOnlyParseMoney(feeOnlyVal('feeGoal_extra'));
+  const travel = feeOnlyTravelFor(feeOnlyVal('feeGoal_region'));
+  const actual = feeOnlyParseMoney(feeOnlyVal('feeGoal_actual'));
+  const preVat = (pure * markup) + extra + travel + actual;
+  const finalVat = feeOnlyFinalVat(preVat);
+  const target = feeOnlyParseMoney(feeOnlyVal('feeGoal_targetVat'));
+  feeOnlyShow('feeGoal_travel', travel);
+  feeOnlyShow('feeGoal_final', preVat ? finalVat : 0);
+  if(target){
+    const needed = Math.max(0, (target / 1.1) - preVat);
+    feeOnlyShow('feeGoal_needed', needed);
+  }else{
+    feeOnlySetText('feeGoal_needed', '');
   }
-  feeOnlyCalcNeeded(v.raw);
+}
+function feeOnlySafeEvalOne(expr){
+  const s = String(expr || '').replace(/,/g,'').trim();
+  if(!s) return '';
+  if(!/^[0-9+\-*/().\s]+$/.test(s)) throw new Error('숫자와 + - * / ( ) 만 사용할 수 있어요.');
+  const result = Function('"use strict"; return (' + s + ');')();
+  if(!Number.isFinite(result)) throw new Error('계산 결과가 올바르지 않아요.');
+  return feeOnlyFormatNumberOnly(result);
+}
+function feeOnlyRunFormula(){
+  const box = document.getElementById('feeOnlyFormulaInput');
+  const out = document.getElementById('feeOnlyFormulaResult');
+  if(!box || !out) return;
+  try{
+    const lines = String(box.value || '').split(/\n+/).map(v=>v.trim()).filter(Boolean);
+    out.textContent = lines.length ? lines.map(v => `${v} = ${feeOnlySafeEvalOne(v)}`).join('\n') : '';
+  }catch(e){ out.textContent = '오류'; alert(e.message); }
+}
+function feeOnlyRunGoalFormula(){
+  const out = document.getElementById('feeGoal_formulaResult');
+  try{ feeOnlySetText('feeGoal_formulaResult', feeOnlySafeEvalOne(feeOnlyVal('feeGoal_formula'))); }
+  catch(e){ if(out) out.textContent='오류'; alert(e.message); }
 }
 function feeOnlyReset(){
-  ['feeOnlyEvalAmount','feeOnlyPure','feeOnlyRegion','feeOnlyTravel','feeOnlyActual','feeOnlyExtra','feeOnlyExtra2','feeOnlyTargetVat'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.value = '';
-  });
-  const markup = document.getElementById('feeOnlyMarkup');
-  if(markup) markup.value = '1';
-  ['feeOnlyLowerRateView','feeOnlyBaseRateView','feeOnlyUpperRateView','feeOnlyTotalView','feeOnlyVatView','feeOnlyNeededView'].forEach(id => feeOnlySetText(id,'-'));
-  const result = document.getElementById('feeOnlyResult');
-  if(result) result.textContent = '수수료를 입력하면 계산 결과가 표시됩니다.';
+  feeOnlySetVal('feeOnlyEvalAmount','');
+  ['feeOnlyLowerRateView','feeOnlyBaseRateView','feeOnlyUpperRateView','feeOnlyDiffBaseLower','feeOnlyDiffBaseLower2','feeOnlyDiffUpperBase','feeOnlyDiffUpperLower'].forEach(id=>feeOnlySetText(id, id.includes('Rate') || id.includes('Diff') ? '-' : ''));
+  feeOnlySetVal('feeOnlyFormulaInput',''); feeOnlySetText('feeOnlyFormulaResult','');
+  feeOnlyResetManual(1); feeOnlyResetManual(2); feeOnlyResetAuto(1); feeOnlyResetAuto(2);
+  ['pure','extra','region','targetVat','formula'].forEach(k => feeOnlySetVal(`feeGoal_${k}`,''));
+  feeOnlySetVal('feeGoal_markup','1'); feeOnlySetVal('feeGoal_actual','30000');
+  ['feeGoal_travel','feeGoal_final','feeGoal_needed','feeGoal_formulaResult'].forEach(id=>feeOnlySetText(id,''));
 }
 function feeOnlyCopyResult(){
-  const txt = document.getElementById('feeOnlyResult')?.textContent || '';
-  navigator.clipboard.writeText(txt).then(() => alert('복사되었습니다.'));
+  const parts = [
+    '수수료 페이지 계산 결과',
+    '자동1 최종: ' + (document.getElementById('feeAuto1_final')?.textContent || ''),
+    '자동1 특용비: ' + (document.getElementById('feeAuto1_special')?.textContent || ''),
+    '자동2 최종: ' + (document.getElementById('feeAuto2_final')?.textContent || ''),
+    '자동2 특용비: ' + (document.getElementById('feeAuto2_special')?.textContent || '')
+  ].join('\n');
+  navigator.clipboard.writeText(parts).then(() => alert('복사되었습니다.'));
 }
-feeOnlyInitMarkup();
+function feeOnlyInitMarkup(){ }
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', () => { try{ feeOnlySetupCommaInputs(); feeOnlyReset(); }catch(e){} });
+}else{
+  try{ feeOnlySetupCommaInputs(); feeOnlyReset(); }catch(e){}
+}
 
 /* 일반접수 자동 높이 보정 */
 function receiveAutoResizeTextarea(el){
@@ -10553,6 +12046,342 @@ function receiveRightsExtractBottomInfo(raw, target, type){
   if(!client) client = receiveRightsStripTypeFromTarget(target, type);
   return {client, amount, amountText};
 }
+
+
+/* 멘트 페이지 전용 스크립트: 다른 페이지와 함수/ID 충돌 방지 */
+function mentGet(id){ return document.getElementById(id); }
+function mentVal(id){ return (mentGet(id)?.value || '').trim(); }
+function mentSet(id, text){ const el = mentGet(id); if(el) el.value = text; }
+function mentDigits(text){ return String(text || '').replace(/[^0-9]/g, ''); }
+function mentComma(numText){
+  const raw = mentDigits(numText);
+  if(!raw) return '';
+  return raw.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function mentMoneyInput(el){
+  if(!el) return;
+  el.value = mentComma(el.value);
+}
+function mentSyncStickyOffset(){
+  const root = document.getElementById('page_ment');
+  const topMenu = document.getElementById('typeIndex');
+  if(!root || !topMenu) return;
+  const h = Math.ceil(topMenu.getBoundingClientRect().height || 54);
+  root.style.setProperty('--mentStickyTop', Math.max(0, h + 1) + 'px');
+}
+function mentShowSub(key, btn){
+  mentSyncStickyOffset();
+  const root = document.getElementById('page_ment');
+  if(!root) return;
+  root.querySelectorAll('.mentSubTab').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  root.querySelectorAll('.mentSubPage').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('ment_sub_' + key);
+  if(page) page.classList.add('active');
+}
+function mentKoreanList(items){
+  const arr = (items || []).filter(Boolean);
+  if(arr.length === 0) return '';
+  if(arr.length === 1) return arr[0];
+  if(arr.length === 2) return arr[0] + '과 ' + arr[1];
+  return arr.slice(0, -1).join(', ') + ' 그리고 ' + arr[arr.length - 1];
+}
+function mentGroupDefault(group){
+  const defaults = {
+    doneCustomer:'대표님', donePartner:'세무사님', finish:'대표님', takgam:'세무사님',
+    firstContact:'대표님', rightsTakgam:'세무사님'
+  };
+  return defaults[group] || '대표님';
+}
+function mentRole(group){ return mentVal('ment_' + group + '_role') || mentGroupDefault(group); }
+function mentChooseRole(group, role){
+  const custom = mentGet('ment_' + group + '_customCheck');
+  if(custom) custom.checked = false;
+  const input = mentGet('ment_' + group + '_role');
+  if(input) input.value = role;
+  mentUpdateByGroup(group);
+}
+function mentUseCustomRole(group){
+  const custom = mentGet('ment_' + group + '_customCheck');
+  if(custom && custom.checked){
+    document.querySelectorAll('input[name="mentRole_' + group + '"]').forEach(i => i.checked = false);
+  }
+  mentUpdateByGroup(group);
+}
+function mentCheckCustomRole(group){
+  const custom = mentGet('ment_' + group + '_customCheck');
+  if(custom) custom.checked = true;
+  document.querySelectorAll('input[name="mentRole_' + group + '"]').forEach(i => i.checked = false);
+}
+function mentUpdateByGroup(group){
+  const map = {
+    doneCustomer: mentUpdateDoneCustomer,
+    donePartner: mentUpdateDonePartner,
+    finish: mentUpdateFinish,
+    takgam: mentUpdateTakgam,
+    firstContact: mentUpdateFirstContact,
+    rightsTakgam: mentUpdateRightsTakgam
+  };
+  if(map[group]) map[group]();
+}
+function mentCopy(id, btn){
+  const el = mentGet(id);
+  if(!el) return;
+  const text = ('value' in el) ? el.value : el.innerText;
+  const done = () => {
+    if(btn){
+      const old = btn.textContent;
+      btn.textContent = '복사완료';
+      setTimeout(() => btn.textContent = old, 900);
+    }
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(() => mentFallbackCopy(el, done));
+  } else {
+    mentFallbackCopy(el, done);
+  }
+}
+function mentFallbackCopy(el, done){
+  if('select' in el){ el.focus(); el.select(); document.execCommand('copy'); if(done) done(); return; }
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const sel = window.getSelection();
+  sel.removeAllRanges(); sel.addRange(range);
+  document.execCommand('copy'); sel.removeAllRanges(); if(done) done();
+}
+function mentToggleDoneCustomerMulti(btn){
+  const input = mentGet('ment_doneCustomer_multiMode');
+  const next = input?.value !== '1';
+  if(input) input.value = next ? '1' : '0';
+  if(btn) btn.classList.toggle('active', next);
+  mentUpdateDoneCustomer();
+}
+function mentUpdateDoneCustomer(){
+  const role = mentRole('doneCustomer');
+  const ht = mentVal('ment_doneCustomer_ht');
+  const partner = mentVal('ment_doneCustomer_partner');
+  const includePartner = mentVal('ment_doneCustomer_multiMode') === '1';
+  let text = `안녕하세요 ${role}!😊
+평가금액 확정되어 확인용 청구서와 괄호감정표 바로 전달드립니다:)
+보시고 아래 내용 회신 부탁드립니다!
+
+🔸세금계산서/현금영수증 중 어떤걸 발행해드릴까요?
+세계- 사업자 사본, 메일 필요
+현영- 성함, 연락처 필요
+
+🔸실물평가서 배송받으실 [주소, 성함, 번호] 요청드립니다
+
+🔸 하이테크 잔금 
+${ht} 아래 계좌로 입금 부탁드립니다!
+
+➡️ 잔금 입금 계좌
+국민은행 532001-01-294849
+하이테크감정평가법인(주)`;
+  if(includePartner){
+    text += `
+
+🔹 복수업체 잔금  
+${partner} 아래 계좌로 입금 부탁드립니다☺️
+
+➡️ 복수업체 잔금 입금 계좌
+국민은행 529401-01-292371
+(주)바름감정평가법인
+
+‼️복수업체와 하이테크 계좌가 별도이니 
+꼭 각각의 계좌로 입금 부탁드립니다:)`;
+  }
+  mentSet('ment_doneCustomer_output', text);
+}
+function mentUpdateDonePartner(){
+  const role = mentRole('donePartner');
+  mentSet('ment_donePartner_output', `안녕하세요 ${role}!
+방금 평가금액 확정되어 확인 연락드립니다^^
+
+위 금액으로 의뢰인 대표님과 연락하여 마무리 진행하고 다시 회신 드리도록 하겠습니다!
+감사합니다:)`);
+}
+function mentFinishItems(){
+  const root = document.getElementById('ment_sub_finish');
+  return Array.from(root?.querySelectorAll('.mentCheckPill input[type="checkbox"]:checked') || []).map(i => i.value).filter(Boolean);
+}
+function mentUpdateFinish(){
+  const role = mentRole('finish');
+  const phrase = mentKoreanList(mentFinishItems());
+  mentSet('ment_finish_1', `마지막으로 ${phrase} 전달드립니다!ㅎㅎ
+믿고 맡겨주셔서 감사합니다 ${role}^^
+언제든 또 무료탁감, 평가 필요하시면 편하게 연락 주세요!
+
+건강하시고 오늘도 좋은하루 보내셔용😊
+감사합니다:)`);
+  mentSet('ment_finish_2', `안녕하세요 ${role}!
+${phrase} 전달드립니다!
+
+믿고 맡겨주셔서 감사합니다^^
+언제든 또 무료탁감, 평가 필요하시면 편하게 연락 주세요!
+
+건강하시고 오늘도 좋은하루 보내셔용😊
+감사합니다:)
+
+
+-하이테크 감정평가법인 김가민 이사 배상-`);
+  mentSet('ment_finish_3', `믿고 맡겨주셔서 감사합니다 ${role}!ㅎㅎ
+
+매일 행복한 나날 되시고,
+언제든 ${role}이나 주위에 감정평가 필요하시면 무료탁감 도와드리겠습니다! 
+편하게 연락 부탁드립니다:) 
+감사합니다!!😊`);
+}
+function mentSetStartCount(company, n){
+  const type = company === 'partner' ? 'partner' : 'ht';
+  const count = Math.max(1, Math.min(5, Number(n) || 2));
+  const input = mentGet('ment_start_' + type + '_count');
+  if(input) input.value = String(count);
+  document.querySelectorAll('#ment_start_' + type + '_countBtns button').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === String(count)));
+  mentUpdateStart();
+}
+function mentToggleStartMulti(btn){
+  const input = mentGet('ment_start_multiMode');
+  const next = input?.value !== '1';
+  if(input) input.value = next ? '1' : '0';
+  if(btn) btn.classList.toggle('active', next);
+  mentUpdateStart();
+}
+function mentStartPhrase(company){
+  const type = company === 'partner' ? 'partner' : 'ht';
+  const count = mentVal('ment_start_' + type + '_count') || '2';
+  const checked = mentGet(type === 'ht' ? 'ment_start_ht_multi' : 'ment_start_partner_multi')?.checked;
+  if(checked) return `평가 ${count}건이므로 50만원씩 ${count}번 입금 부탁드립니다☺️`;
+  return type === 'ht' ? '하이테크로 50만원 입금 부탁드립니다☺️' : '복수업체로 50만원 입금 부탁드립니다☺️';
+}
+function mentUpdateStart(){
+  const htPhrase = mentStartPhrase('ht');
+  const partnerPhrase = mentStartPhrase('partner');
+  const multiMode = mentVal('ment_start_multiMode') === '1';
+  const partnerBlock = multiMode ? `
+
+🔹복수업체 착수금
+${partnerPhrase}
+
+🔹복수업체 착수금 입금 계좌
+국민은행 529401-01-292371
+(주)바름감정평가법인
+
+‼️복수업체와 하이테크 계좌가 별도이니 
+꼭 각각의 계좌로 입금 부탁드립니다:)` : '';
+  mentSet('ment_start_output', `평가위한 안내내용 전달드리며, 
+착수금 입금 후 평가 시작 하겠습니다☺️
+
+🔸진행순서&안내
+착수금 입금 > 평가 진행&완료 > 잔금 입금 > 평가서 PDF 선제공 및 택배사 발송
+*입금 후 누락 방지 위해 입금자명 말씀 부탁드립니다
+
+⚠️평가 시작~실물평가서 도착까지 영업일 기준 총 9일정도 예상 부탁드립니다!⚠️
+1️⃣평가는 영업일 기준 5~6일 소요되며, 평가서가 완료되는 대로 평가서 pdf 파일 먼저 전달드립니다
+2️⃣실물평가서 택배사 배송에는 보통 2-4일 소요된다고 합니다
+3️⃣평가하는 물건의 내부 방문X
+
+🔸평가서 의뢰인 칸에 기입될 정보 요청드립니다
+-성함 or 상호:
+
+🔸하이테크 착수금
+${htPhrase}
+
+🔸하이테크 착수금 입금 계좌
+국민은행 532001-01-294849
+하이테크감정평가법인(주)${partnerBlock}`);
+}
+function mentUpdateTakgam(){
+  const role = mentRole('takgam');
+  const extra = [];
+  if(mentGet('ment_takgam_extra1')?.checked) extra.push('*기타 저희가 참고해야 할 서류 있으면 전달 부탁드립니다:)');
+  if(mentGet('ment_takgam_extra2')?.checked) extra.push('*입주권/분양권의 경우 해당 계약서 및 관련서류 사본 함께 전달 부탁드립니다!');
+  mentSet('ment_takgam_output', `안녕하세요 ${role}! 문의 주셔서 감사합니다:) 
+
+아래 내용 전달해 주시면 꼼꼼히 검토해서 회신 드리겠습니다!
+
+🔸적어주실 항목
+1) 소재지: 
+2) 평가목적: 
+3) 기준시점: 
+4) 희망금액: 높게/낮게/적정가/특정금액
+5) 기타 고려사항:${extra.length ? '\n\n' + extra.join('\n') : ''}`);
+}
+function mentUpdateFirstContact(){
+  const role = mentRole('firstContact');
+  mentSet('ment_firstContact_output', `안녕하세요! ${role}:)
+세무사님께 번호 받아 연락드립니다!
+
+감정평가 도와드릴 하이테크 감정평가법인의 김가민 이사입니다😊`);
+}
+function mentUpdateRightsTakgam(){
+  const role = mentRole('rightsTakgam');
+  mentSet('ment_rightsTakgam_output', `안녕하세요 ${role}:)
+문의 주셔서 감사합니다! 
+
+탁감으로 금액 알아보고 수수료도 같이 정리드리도록 하겠습니다!^^
+
+탁감에 필요한 내용은 사진과 같고, 서류 사본 외에는 카톡으로 간단히 적어주시면 주시면 됩니다!`);
+}
+function mentToggleSpecialMulti(btn){
+  const input = mentGet('ment_special_includePartner');
+  const next = input?.value !== '1';
+  if(input) input.value = next ? '1' : '0';
+  if(btn) btn.classList.toggle('active', next);
+  mentUpdateSpecial();
+}
+function mentUpdateSpecial(){
+  const ht = mentVal('ment_special_ht');
+  const partner = mentVal('ment_special_partner');
+  const includePartner = mentVal('ment_special_includePartner') === '1';
+  const partnerLine = includePartner ? `\n🔹복수업체 특용비 : ${partner}` : '';
+  const lastLine = includePartner ? `\n\n‼️하이테크/복수업체 별도로 입금되오니 세계도 각 업체 따로따로 발급 부탁드립니다😊` : '';
+  mentSet('ment_special_1', `감사합니다:) 마지막으로 요번 특용비는 어떤 방법으로 드릴까용?😊
+🔸하이테크 특용비 : ${ht}${partnerLine}
+
+1️⃣ 사업소득
+특용비에서 3.3% 공제 후 계좌로 지급 (친가족 가능)
+• 받으실 분의 [성함, 주민번호, 입금계좌] 필요
+
+
+2️⃣ 세금계산서
+저희로 세금계산서 발행 후, 세계 사본과 아래 정보 전달 필요
+• 받으실 분의 [성함, 사업자번호, 입금계좌] 필요
+• 특용비 금액에서 부가세 별도로 세계 발급${lastLine}`);
+  mentSet('ment_special_2', `요기로 부가세 별도 발행 후 
+발행한 세금계산서 캡쳐본과 위의 정보들 같이 전달주시면 됩니다!!😊`);
+  mentSet('ment_special_3', `특용비는 오늘 접수되면 3~10일 안에 이체될 예정입니다:)
+이체 완료 후 추가로 회신 드리겠습니다!
+
+믿고 맡겨주셔서 감사합니다😊
+언제든 편하게 문의주세요!ㅎㅎ`);
+  mentSet('ment_special_4', `특용비는 저희 회사에서 믿고 맡겨주신 감사함에 챙겨드리는 금액입니다!
+
+평가 마무리 후 다시 안내드리며 3.3% 또는 세금계산서 발급 후 이체드리는 방식입니다^^
+
+사정이 있으신 경우 특용비 대신 해당 금액만큼 수수료 차감도 가능하고,
+반대로 총 수수료를 올리면서 특용비를 희망하시는 금액만큼 조율도 가능합니다!😊
+
+회사 수익에서 일부 챙겨드리는 비용이라 고객님 및 외부에만 유출 되지 않도록 부탁드립니다:)`);
+}
+function mentInit(){
+  mentSyncStickyOffset();
+  ['ment_start_multiMode','ment_doneCustomer_multiMode','ment_special_includePartner'].forEach(id => { const el = mentGet(id); if(el) el.value = '0'; });
+  ['ment_start_multiBtn','ment_doneCustomer_multiBtn','ment_special_multiBtn'].forEach(id => mentGet(id)?.classList.remove('active'));
+  document.querySelectorAll('#page_ment [data-ment-money]').forEach(el => mentMoneyInput(el));
+  mentUpdateTakgam();
+  mentUpdateRightsTakgam();
+  mentUpdateStart();
+  mentUpdateFirstContact();
+  mentUpdateDoneCustomer();
+  mentUpdateDonePartner();
+  mentUpdateFinish();
+  mentUpdateSpecial();
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mentInit);
+else mentInit();
+window.addEventListener('resize', mentSyncStickyOffset);
+window.addEventListener('orientationchange', mentSyncStickyOffset);
+setTimeout(mentSyncStickyOffset, 250);
 
 </script>
 </body>
