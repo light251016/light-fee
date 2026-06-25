@@ -7824,6 +7824,8 @@ let regions = loadRegions();
 let lastRows = [];
 let extraManual = {low:false, mid:false, high:false};
 let autoFilling = false;
+let quickAmountTitleOverrides = {};
+let quickQuoteModeTitleOverride = '';
 
 const rowMeta = [
   {key:'low', label:'최저'},
@@ -8314,7 +8316,7 @@ function makeMsg(){
   if(purpose || base || fa || memo) lines.push('');
 
   function titleFor(r){
-    return r.key === 'mid' ? '중간 금액(유사시세)' : `${r.label} 금액`;
+    return propertyAmountTitleForKey(r.key, r.label);
   }
   function pushFullAmount(r){
     lines.push(`🔸 [ ${titleFor(r)} ]`);
@@ -8351,10 +8353,9 @@ function makeMsg(){
   const selected = getSelectedRows();
   const hasSpecial = selected.some(r=>r.special>0);
   if(hasSpecial){
-    lines.push('*특용비는 고객님 및 외부 유출 주의 부탁드립니다:)');
+    lines.push('*특용비는 고객님 및 외부 유출 주의 부탁드립니다 :)');
     lines.push('*수수료 조율로 특용비 할증/할인 가능합니다.');
   }
-  lines.push('*추가 조율이 필요한 부분은 편하게 말씀해주세요!');
   let text = lines.join('\n').trimEnd();
   if(document.getElementById('excludeSpecialCheck')?.checked){
     text = removeSpecialFeeLines(text);
@@ -8371,6 +8372,8 @@ async function copyNums(){
   alert('계산값을 복사했습니다.');
 }
 function resetAll(){
+  quickAmountTitleOverrides = {};
+  quickQuoteModeTitleOverride = '';
   ['target','floor','area','memo','purposeCustom','amount_low','amount_mid','amount_high'].forEach(id=>document.getElementById(id).value='');
   ['extra_low','extra_mid','extra_high'].forEach(id=>document.getElementById(id).value='0');
   extraManual = {low:false, mid:false, high:false};
@@ -8490,6 +8493,8 @@ const multiFlagList = ['조합원 입주권','분양권','토지만 평가','건
 let multiSelectedPurpose = '';
 let multiSelectedFlags = new Set();
 let multiRows = [];
+let multiAmountTitleOverrides = {};
+let multiQuoteModeTitleOverride = '';
 let multiExtraManual = {
   ht:{low:false, mid:false, high:false},
   partner:{low:false, mid:false, high:false}
@@ -8532,7 +8537,7 @@ function multiFormatAutoEok(n){
 }
 
 function parseMultiCompanyAmounts(lines){
-  const result = {ht:{}, partner:{}, blanks:{ht:{}, partner:{}}};
+  const result = {ht:{}, partner:{}, blanks:{ht:{}, partner:{}}, labelOverrides:{ht:{}, partner:{}}};
   let current = '';
   lines.forEach(line => {
     const original = String(line || '').trim();
@@ -8552,19 +8557,22 @@ function parseMultiCompanyAmounts(lines){
     if(!current) return;
 
     const keyOf = (label) => {
+      if(/희망/.test(label)) return 'low';
       if(/하한|최저|최소/.test(label)) return 'low';
       if(/최고|상한|최상|최대/.test(label)) return 'high';
       return 'mid';
     };
 
-    const m = working.match(/(하한|최저가?|최소|기준|시세|적정가|중간값?|현재|최고|상한|최상|최대가?|최대)\s*[:：]?\s*(\d+(?:\.\d+)?)\s*(?:억|억원)?/);
+    const m = working.match(/((?:희망\s*금액)|희망가?|하한|최저가?|최소|기준|시세|적정가|중간값?|현재|최고|상한|최상|최대가?|최대)\s*[:：]?\s*(\d+(?:\.\d+)?)\s*(?:억|억원)?/);
     if(m){
-      result[current][keyOf(m[1])] = m[2];
+      const parsedKey = keyOf(m[1]);
+      result[current][parsedKey] = m[2];
+      if(isHopeAmountText(m[1])) result.labelOverrides[current][parsedKey] = 'hope';
       return;
     }
 
     // "최저"처럼 라벨만 있고 금액이 비어있는 경우 표시해둔 뒤, 상대 업체 금액 기준 ±10%로 1차 자동기입
-    const blank = working.replace(/[\/|,，:：\s]/g,'').match(/^(하한|최저가?|최소|기준|시세|적정가|중간값?|현재|최고|상한|최상|최대가?|최대)$/);
+    const blank = working.replace(/[\/|,，:：\s]/g,'').match(/^((?:희망금액)|희망가?|희망|하한|최저가?|최소|기준|시세|적정가|중간값?|현재|최고|상한|최상|최대가?|최대)$/);
     if(blank){
       result.blanks[current][keyOf(blank[1])] = true;
     }
@@ -8595,6 +8603,8 @@ function parseMultiQuickInput(){
   let area = '';
   let useType = '';
   const memoParts = [];
+  multiAmountTitleOverrides = {};
+  multiQuoteModeTitleOverride = '';
   const amounts = parseMultiCompanyAmounts(lines);
 
   const firstParts = splitQuickMetaLine(lines[0]);
@@ -8604,12 +8614,17 @@ function parseMultiQuickInput(){
     const d = normalizeQuickDate(part);
     if((!purpose && p && p !== part) || /상속|증여|양수도|양도|매매|저가|특관|주식|법인|현물|자산/.test(part)) purpose = p;
     if(!quoteMode && m) quoteMode = m;
+    if(m === 'low' && isHopeAmountText(part)) multiQuoteModeTitleOverride = 'hope';
     if(!baseDate && (d === '현재' || /\d{2}\.\d{2}\.\d{2}/.test(d))) baseDate = d;
   });
   if(!quoteMode){
     for(const line of lines){
       const m = mapQuickMode(line);
-      if(m) { quoteMode = m; break; }
+      if(m) {
+        quoteMode = m;
+        if(m === 'low' && isHopeAmountText(line)) multiQuoteModeTitleOverride = 'hope';
+        break;
+      }
     }
   }
 
@@ -8673,8 +8688,10 @@ function parseMultiQuickInput(){
   ['ht','partner'].forEach(company => {
     ['low','mid','high'].forEach(key => {
       if(amounts[company][key]) multiSetAmountEok(company, key, amounts[company][key]);
+      if(amounts.labelOverrides?.[company]?.[key]) multiAmountTitleOverrides[key] = amounts.labelOverrides[company][key];
     });
   });
+  if(multiAmountTitleOverrides.low === 'hope') multiQuoteModeTitleOverride = 'hope';
 
   multiApplyAutoExtras();
   multiCalculate();
@@ -8684,12 +8701,12 @@ function parseMultiQuickInput(){
     '',
     '평가목적: ' + (purpose || ''),
     '기준시점: ' + (baseDate || ''),
-    '희망금액: ' + labelQuickMode(quoteMode),
+    '희망금액: ' + labelQuickMode(quoteMode, multiQuoteModeTitleOverride),
     '주소:',
     (addressLines.join('\n') || ''),
     '층 / 전용면적 / 용도: ' + [floor ? floor + '층' : '', area ? area + '㎡' : '', useType || ''].filter(Boolean).join(' / '),
-    '하이테크: ' + ['low','mid','high'].filter(k=>amounts.ht[k]).map(k=>({low:'최저',mid:'중간',high:'최고'}[k]) + ' ' + amounts.ht[k] + '억').join(' / '),
-    '복수업체: ' + ['low','mid','high'].filter(k=>amounts.partner[k]).map(k=>({low:'최저',mid:'중간',high:'최고'}[k]) + ' ' + amounts.partner[k] + '억').join(' / '),
+    '하이테크: ' + ['low','mid','high'].filter(k=>amounts.ht[k]).map(k=>(multiAmountDisplayLabel(k)) + ' ' + amounts.ht[k] + '억').join(' / '),
+    '복수업체: ' + ['low','mid','high'].filter(k=>amounts.partner[k]).map(k=>(multiAmountDisplayLabel(k)) + ' ' + amounts.partner[k] + '억').join(' / '),
     document.getElementById('multiMemo').value ? '안내멘트 기타사항: ' + document.getElementById('multiMemo').value : '안내멘트 기타사항: 없음'
   ].filter(v => v !== '').join('\n');
   document.getElementById('multiQuickParsePreview').textContent = preview;
@@ -8824,6 +8841,10 @@ function multiGetMessageMainKeys(){
   if(mode === 'range') return ['low','mid','high'];
   return [mode];
 }
+function multiAmountDisplayLabel(key){
+  if(key === 'low' && (multiAmountTitleOverrides.low === 'hope' || multiQuoteModeTitleOverride === 'hope')) return '희망';
+  return {low:'최저', mid:'중간', high:'최고'}[key] || '중간';
+}
 function multiCalculate(){
   const actual = multiGetActualTotal();
   const hit = findTravelRow(document.getElementById('multiRegion')?.value);
@@ -8837,7 +8858,7 @@ function multiCalculate(){
   if(mi) mi.textContent = hitName ? `매칭된 지역: ${hitName} / 여비 ${won(travel)}` : '매칭된 지역 없음';
 
   const keys = multiGetKeysForMode();
-  const labelMap = {low:'최저', mid:'중간', high:'최고'};
+  const labelMap = {low:multiAmountDisplayLabel('low'), mid:multiAmountDisplayLabel('mid'), high:multiAmountDisplayLabel('high')};
   multiRows = [];
   keys.forEach(key => {
     ['ht','partner'].forEach(company => {
@@ -8851,7 +8872,7 @@ function multiCalculate(){
 function multiRenderDiffs(){
   const body = document.getElementById('multiDiffBody');
   if(!body) return;
-  const labels = {low:'최저', mid:'중간', high:'최고'};
+  const labels = {low:multiAmountDisplayLabel('low'), mid:multiAmountDisplayLabel('mid'), high:multiAmountDisplayLabel('high')};
   const rows = ['low','mid','high'].map(key => {
     const ht = multiAmountWon('ht', key);
     const partner = multiAmountWon('partner', key);
@@ -8941,7 +8962,7 @@ function multiFormatFloorArea(){
   if(useType) return `• 용도 : ${useType}`;
   return '';
 }
-function multiTitleFor(key){ return key === 'mid' ? '중간 금액' : ({low:'최저 금액', high:'최고 금액'}[key] || '중간 금액'); }
+function multiTitleFor(key){ return key === 'mid' ? '중간 금액' : (multiAmountDisplayLabel(key) + ' 금액'); }
 function eokRangeFromRows(rows){
   const vals = rows.map(r => r?.w).filter(Boolean);
   if(!vals.length) return '';
@@ -8960,7 +8981,7 @@ function multiMakeMsg(){
   if(memoRaw) memoParts.push(memoRaw);
   const memo = memoParts.join(', ');
   const mode = document.getElementById('multiQuoteMode')?.value || 'low';
-  const labelMap = {low:'최저', mid:'중간', high:'최고'};
+  const labelMap = {low:multiAmountDisplayLabel('low'), mid:multiAmountDisplayLabel('mid'), high:multiAmountDisplayLabel('high')};
   const mainKeys = multiGetMessageMainKeys();
 
   const lines = [];
@@ -9024,7 +9045,7 @@ function multiMakeMsg(){
   lines.push('');
 
   lines.push('*특용비는 의뢰인 및 외부에 유출 주의 부탁드립니다');
-  lines.push('*복수 여부는 세무상 판단사항이며, 요청시 복수로 진행됩니다');
+  lines.push('*복수평가 여부는 세법상의 판단이 필요하니 검토 부탁드립니다!');
   lines.push('*본평가 후 평가금액, 수수료 및 특용비에 일부 변동이 생길 수 있습니다');
   let text = lines.join('\n').trimEnd();
   if(document.getElementById('multiExcludeSpecialCheck')?.checked){
@@ -9038,6 +9059,8 @@ async function multiCopyMsg(){
   alert('멘트를 복사했습니다.');
 }
 function multiReset(){
+  multiAmountTitleOverrides = {};
+  multiQuoteModeTitleOverride = '';
   ['multiQuickInput','multiTarget','multiFloor','multiArea','multiUseType','multiPurposeCustom','multiMemo'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
   ['ht','partner'].forEach(c => ['low','mid','high'].forEach(k => {
     const a=document.getElementById(`multi_${c}_amount_${k}`); if(a) a.value='';
@@ -9109,12 +9132,17 @@ function mapQuickPurpose(s){
   if(/주식/.test(t)) return '주식평가';
   return s.trim();
 }
+function isHopeAmountText(s){
+  return /희망/.test(String(s || '').replace(/\s+/g,''));
+}
+
 function mapQuickMode(s){
   const t = String(s || '').replace(/\s+/g,'');
   if(!t) return '';
 
   // 구체적인 희망 문구 포함 시 우선순위
   if(/범위|구간|최저.*최고|하한.*상한/.test(t)) return 'range';
+  if(isHopeAmountText(t)) return 'low';
   if(/최고|상한|높은|높게|최대|상단/.test(t)) return 'high';
   if(/최저|하한|낮은|낮게|최소|하단/.test(t)) return 'low';
   if(/중간|중간값|시세|유사시세|기본값|기준|적정가/.test(t)) return 'mid';
@@ -9148,7 +9176,7 @@ function splitQuickMetaLine(line){
     const rest = temp.slice(i+1).trim();
     const nextToken = rest.split(/[§,.]/)[0].trim();
     const spaced = /\s/.test(prev) || /\s/.test(next);
-    const nextLooksMeta = /^(현재|오늘|금일|최저|하한|최소|중간|중간값|시세|기준|적정가|최고|상한|최상|최대|\d|__QDATE_)/.test(nextToken);
+    const nextLooksMeta = /^(현재|오늘|금일|희망|희망금액|최저|하한|최소|중간|중간값|시세|기준|적정가|최고|상한|최상|최대|\d|__QDATE_)/.test(nextToken);
     slashHandled += (spaced || nextLooksMeta) ? '§' : '/';
   }
 
@@ -9159,8 +9187,16 @@ function splitQuickMetaLine(line){
     .filter(Boolean);
 }
 
-function labelQuickMode(v){
+function labelQuickMode(v, titleOverride){
+  if(v === 'low' && titleOverride === 'hope') return '희망';
   return {low:'최저', mid:'중간', high:'최고', range:'범위'}[v] || '';
+}
+
+function propertyAmountTitleForKey(key, fallbackLabel){
+  if(key === 'low' && (quickAmountTitleOverrides.low === 'hope' || quickQuoteModeTitleOverride === 'hope')) return '희망 금액';
+  if(key === 'mid') return '중간 금액(유사시세)';
+  const label = fallbackLabel || ({low:'최저', high:'최고'}[key] || '중간');
+  return `${label} 금액`;
 }
 function selectPurposeByText(purpose){
   purpose = String(purpose || '').trim();
@@ -9184,7 +9220,7 @@ function extractExpectedAmountFromText(raw){
   const text = String(raw || '');
 
   // 명시 표현 우선: "예상평가금액 5.867", "평가금액: 5.867억", "시세 12.3억"
-  let m = text.match(/(?:예상\s*)?(?:평가금액|평가액|예상가|희망가|시세|중간값)\s*[:：]?\s*(\d+(?:\.\d+)?)\s*(억|억원)?/);
+  let m = text.match(/(?:예상\s*)?(?:평가금액|평가액|예상가|희망금액|희망가|시세|중간값)\s*[:：]?\s*(\d+(?:\.\d+)?)\s*(억|억원)?/);
   if(m) return m[1];
 
   const lines = text.split(/\n+/).map(v => v.trim()).filter(Boolean);
@@ -9288,7 +9324,8 @@ function updateAutoCalcSummary(){
   ].join('<br>');
 }
 
-function quickAutoCalcGuide(mode){
+function quickAutoCalcGuide(mode, titleOverride){
+  if(mode === 'low' && titleOverride === 'hope') return '멘트는 희망+중간 기준으로 생성';
   if(mode === 'low') return '멘트는 최저+중간 기준으로 생성';
   if(mode === 'high') return '멘트는 최고+중간 기준으로 생성';
   if(mode === 'range') return '멘트는 최저+중간+최고 기준으로 생성';
@@ -9304,8 +9341,8 @@ function parseQuickAmountLine(line){
   const raw = String(line || '').trim();
   if(!raw) return null;
 
-  // "중간 6.64", "최고가 8", "시세 7.2억", "적정가: 5.3" 등 라벨이 맨 앞에 있는 경우만 인식
-  const m = raw.match(/^\s*(중간값?|기준|시세|적정가?|적정금액|유사시세|현재|최저가?|최소|하한|최고가?|최대가?|최상|상한)\s*(?:금액|평가금액|평가액|가액|가)?\s*[:：=\-]?[\s]*(\d+(?:\.\d+)?)\s*(억|억원|원)?\b/);
+  // "희망 5.65", "희망금액 5.65", "중간 6.64", "최고가 8" 등 라벨이 맨 앞에 있는 경우만 인식
+  const m = raw.match(/^\s*((?:희망\s*금액)|희망가?|중간값?|기준|시세|적정가?|적정금액|유사시세|현재|최저가?|최소|하한|최고가?|최대가?|최상|상한)\s*(?:금액|평가금액|평가액|가액|가)?\s*[:：=\-]?[\s]*(\d+(?:\.\d+)?)\s*(억|억원|원)?\b/);
   if(!m) return null;
 
   // 층/면적 라인과 업체명 라인은 혹시라도 오인식되지 않도록 제외
@@ -9314,12 +9351,13 @@ function parseQuickAmountLine(line){
 
   const label = m[1].replace(/\s+/g,'');
   let key = '';
-  if(/중간|기준|시세|적정|유사시세|현재/.test(label)) key = 'mid';
+  if(/희망/.test(label)) key = 'low';
+  else if(/중간|기준|시세|적정|유사시세|현재/.test(label)) key = 'mid';
   else if(/최저|최소|하한/.test(label)) key = 'low';
   else if(/최고|최대|최상|상한/.test(label)) key = 'high';
   if(!key) return null;
 
-  return { key, amount: m[2], unit: m[3] || '억', original: raw };
+  return { key, amount: m[2], unit: m[3] || '억', original: raw, titleOverride: isHopeAmountText(label) ? 'hope' : '' };
 }
 
 function extractQuickAmountLines(lines){
@@ -9354,6 +9392,11 @@ function setQuickAmountToInput(parsed){
 
 function applyQuickAmountsToInputs(amountMap, quoteMode){
   if(!hasExplicitQuickAmounts(amountMap)) return false;
+  quickAmountTitleOverrides = {};
+  Object.values(amountMap || {}).forEach(parsed => {
+    if(parsed?.key && parsed.titleOverride) quickAmountTitleOverrides[parsed.key] = parsed.titleOverride;
+  });
+  if(quickAmountTitleOverrides.low === 'hope') quickQuoteModeTitleOverride = 'hope';
   autoFilling = true;
   ['low','mid','high'].forEach(key => setQuickAmountToInput(amountMap[key]));
   autoFilling = false;
@@ -9430,12 +9473,14 @@ function parseQuickInput(){
   let useType = '';
   let expectedAmount = '';
   const memoParts = [];
+  quickAmountTitleOverrides = {};
+  quickQuoteModeTitleOverride = '';
   const quickAmountMap = extractQuickAmountLines(lines);
   const hasQuickAmounts = hasExplicitQuickAmounts(quickAmountMap);
   const keepCalcInputs = hasPropertyCalcInputs() && !hasQuickAmounts;
 
   const addressRegex = /(서울|경기|인천|부산|대구|광주|대전|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주|특별자치시|특별시|광역시|시|군|구|동|읍|면|리|로|길).*[0-9]/;
-  const amountLabelRegex = /^(최저|하한|최소|최저가|중간|중간값|시세|적정가|기준|현재|최고|상한|최상|최대|최대가)\b/i;
+  const amountLabelRegex = /^(희망|희망금액|희망가|최저|하한|최소|최저가|중간|중간값|시세|적정가|기준|현재|최고|상한|최상|최대|최대가)\b/i;
 
   function isAddressLikeLine(line){ return addressRegex.test(String(line || '')); }
   function isFloorAreaOnlyLine(line){ return /층/.test(line) && /\d/.test(line) && !isAddressLikeLine(line.replace(/층/g,'')); }
@@ -9466,6 +9511,7 @@ function parseQuickInput(){
     baseDate = d || firstParts[1];
   }
   if(firstParts[2]) quoteMode = mapQuickMode(firstParts[2]) || '';
+  if(firstParts.some(part => mapQuickMode(part) === 'low' && isHopeAmountText(part))) quickQuoteModeTitleOverride = 'hope';
 
   // 혹시 첫 줄 항목 순서가 조금 흔들려도 기준시점/희망금액은 보완 인식합니다.
   firstParts.forEach((part, idx) => {
@@ -9480,7 +9526,11 @@ function parseQuickInput(){
   if(!quoteMode){
     for(const line of lines){
       const m = mapQuickMode(line);
-      if(m) { quoteMode = m; break; }
+      if(m) {
+        quoteMode = m;
+        if(m === 'low' && isHopeAmountText(line)) quickQuoteModeTitleOverride = 'hope';
+        break;
+      }
     }
   }
 
@@ -9543,12 +9593,12 @@ function parseQuickInput(){
     '✅ 자동반영 결과','',
     '평가목적: ' + (purpose || ''),
     '기준시점: ' + (baseDate || ''),
-    '희망금액: ' + labelQuickMode(quoteMode),
-    '멘트 생성 기준: ' + quickAutoCalcGuide(quoteMode),
+    '희망금액: ' + labelQuickMode(quoteMode, quickQuoteModeTitleOverride),
+    '멘트 생성 기준: ' + quickAutoCalcGuide(quoteMode, quickQuoteModeTitleOverride),
     '지역 여비 검색어: ' + ((document.getElementById('manualRegionOverride')?.value || '').trim() || extractRegionFromAddressLines(addressLines) || ''),
     '주소:', (addressLines.join('\n') || ''),
     '층 / 전용면적 / 용도: ' + [floor ? floor + '층' : '', area ? area + '㎡' : '', useType || ''].filter(Boolean).join(' / '),
-    hasQuickAmounts ? '자동입력 평가금액: ' + Object.values(quickAmountMap).map(v => (({low:'최저', mid:'중간', high:'최고'})[v.key] + ' ' + v.amount + (v.unit === '원' ? '원' : '억'))).join(' / ') : (expectedAmount ? '예상평가금액: ' + expectedAmount + '억' : ''),
+    hasQuickAmounts ? '자동입력 평가금액: ' + Object.values(quickAmountMap).map(v => ((v.titleOverride === 'hope' ? '희망' : ({low:'최저', mid:'중간', high:'최고'})[v.key]) + ' ' + v.amount + (v.unit === '원' ? '원' : '억'))).join(' / ') : (expectedAmount ? '예상평가금액: ' + expectedAmount + '억' : ''),
     memoParts.length ? '안내멘트 기타사항: ' + memoParts.join(', ') : '안내멘트 기타사항: 없음',
     internalMemo ? '내부 참고용 메모(멘트 제외): ' + internalMemo : ''
   ].filter(v => v !== '').join('\n');
@@ -10004,12 +10054,12 @@ function receiveExtractMoneyMan(raw){
 }
 function receiveParseSections(text){
   const result = {};
-  const sectionRe = /🔸\s*\[\s*([^\]]*?(최저|중간|최고)[^\]]*?)\s*\]([\s\S]*?)(?=\n\s*🔸\s*\[|\n\s*\*|$)/g;
+  const sectionRe = /🔸\s*\[\s*([^\]]*?(최저|중간|최고|희망\s*금액|희망가?|희망)[^\]]*?)\s*\]([\s\S]*?)(?=\n\s*🔸\s*\[|\n\s*\*|$)/g;
   let m;
   while((m = sectionRe.exec(text))){
     const title = m[1];
     const body = m[3] || '';
-    let key = title.includes('최저') ? 'low' : title.includes('최고') ? 'high' : 'mid';
+    let key = /희망|최저/.test(title) ? 'low' : title.includes('최고') ? 'high' : 'mid';
     const amountLine = (body.match(/예상평가액\s*[:：]\s*([^\n]+)/) || [,''])[1];
     const feeLine = (body.match(/예상수수료[^:：]*[:：]\s*([^\n]+)/) || [,''])[1];
     const specialLine = (body.match(/예상특용비\s*[:：]\s*([^\n]+)/) || [,''])[1];
@@ -10448,12 +10498,12 @@ function receiveMultiExtractMoneyMan(raw){
 }
 function receiveMultiParseSections(text){
   const result = {};
-  const sectionRe = /🔸\s*\[\s*([^\]]*?(최저|중간|최고)[^\]]*?)\s*\]([\s\S]*?)(?=\n\s*🔸\s*\[|\n\s*\*|$)/g;
+  const sectionRe = /🔸\s*\[\s*([^\]]*?(최저|중간|최고|희망\s*금액|희망가?|희망)[^\]]*?)\s*\]([\s\S]*?)(?=\n\s*🔸\s*\[|\n\s*\*|$)/g;
   let m;
   while((m = sectionRe.exec(text))){
     const title = m[1];
     const body = m[3] || '';
-    let key = title.includes('최저') ? 'low' : title.includes('최고') ? 'high' : 'mid';
+    let key = /희망|최저/.test(title) ? 'low' : title.includes('최고') ? 'high' : 'mid';
     const amountLine = (body.match(/예상평가액\s*[:：]\s*([^\n]+)/) || [,''])[1];
     const feeLine = (body.match(/예상수수료[^:：]*[:：]\s*([^\n]+)/) || [,''])[1];
     const specialLine = (body.match(/예상특용비\s*[:：]\s*([^\n]+)/) || [,''])[1];
@@ -10648,14 +10698,14 @@ function receiveMultiReceiptNo(prefix='HI'){
 }
 function receiveMultiParseCompanySections(text){
   const result = { ht:{}, partner:{} };
-  const sectionRe = /🔸+\s*\[\s*((?:하이테크|복수평가)(?!\s*시)[^\]]*?(최저|중간|최고)[^\]]*)\s*\]([\s\S]*?)(?=\n\s*🔸+\s*\[|\n\s*\*|$)/g;
+  const sectionRe = /🔸+\s*\[\s*((?:하이테크|복수평가)(?!\s*시)[^\]]*?(최저|중간|최고|희망\s*금액|희망가?|희망)[^\]]*)\s*\]([\s\S]*?)(?=\n\s*🔸+\s*\[|\n\s*\*|$)/g;
   let m;
   while((m = sectionRe.exec(text))){
     const title = m[1] || '';
     const tierWord = m[2] || '';
     const body = m[3] || '';
     const company = title.includes('하이테크') ? 'ht' : 'partner';
-    const key = tierWord.includes('최저') ? 'low' : tierWord.includes('최고') ? 'high' : 'mid';
+    const key = /희망|최저/.test(tierWord) ? 'low' : tierWord.includes('최고') ? 'high' : 'mid';
     const amountLine = (body.match(/예상평가액\s*[:：]\s*([^\n]+)/) || [,''])[1];
     const feeLine = (body.match(/예상수수료[^:：]*[:：]\s*([^\n]+)/) || [,''])[1];
     const specialLine = (body.match(/예상특용비\s*[:：]\s*([^\n]+)/) || [,''])[1];
@@ -10669,6 +10719,11 @@ function receiveMultiParseCompanySections(text){
       rawFee: feeLine.trim(),
       rawSpecial: specialLine.trim()
     };
+  }
+  // 복수접수에 일반 전달문구(예: 🔸 [ 희망 금액 ])를 붙여넣어도 하이테크 금액으로 인식되도록 보완합니다.
+  if(!Object.keys(result.ht || {}).length && !Object.keys(result.partner || {}).length && typeof receiveMultiParseSections === 'function'){
+    const genericSections = receiveMultiParseSections(text);
+    if(Object.keys(genericSections || {}).length) result.ht = genericSections;
   }
   return result;
 }
@@ -11114,7 +11169,7 @@ function receiveRightsHighlightOutput(plain){
       const m = line.match(/^(-\s*평가서\s+)(\d{1,2}\/\d{1,2})(.*)$/);
       if(m) return receiveRightsEscapeHtml(m[1]) + receiveRightsHighlightText(m[2]) + receiveRightsEscapeHtml(m[3]);
     }
-    if(line.startsWith('- 특용 ')){
+    if(line.startsWith('- 특용 ') || line.startsWith('- 순수수료 ')){
       return receiveRightsHighlightText(line);
     }
     return receiveRightsEscapeHtml(line);
@@ -11171,6 +11226,15 @@ function receiveRightsExtractBottomInfo(raw, target, type){
   if(!client) client = receiveRightsStripTypeFromTarget(target, type);
   return {client, amount, amountText};
 }
+function receiveRightsExtractRightsWishInfo(raw){
+  const text = String(raw || '').replace(/\u00a0/g, ' ');
+  const sectionMatch = text.match(/🔸\s*예상평가액([\s\S]*?)(?=\n\s*🔸|\n\s*━|$)/);
+  const scope = sectionMatch ? sectionMatch[1] : text;
+  const m = scope.match(/희망\s*(?:금액|가)?\s*[:：]?\s*([0-9]+(?:\.[0-9]+)?\s*(?:억|천|만원|만)?)/);
+  if(!m) return {amountValue:null, amountText:''};
+  const parsed = receiveRightsParseAmountText(m[1]);
+  return {amountValue:parsed.value, amountText:parsed.text};
+}
 function receiveRightsFeeRow(type, amountValue){
   if(amountValue == null || isNaN(amountValue)) return null;
   let table = null;
@@ -11184,6 +11248,17 @@ function receiveRightsBuildMessage(parsed){
   const row = receiveRightsFeeRow(parsed.type, parsed.progressAmount);
   const feeShort = row ? receiveRightsFeeShort(row.fee) : '---만';
   const specialShort = row ? receiveRightsFeeShort(row.extra) : '---만';
+  const amountValue = parsed.progressAmount;
+  const guideFeeText = parsed.selectedFeeText || '';
+  const isUnderOrEqual51 = amountValue != null && amountValue <= 5.1;
+  const feeLine = guideFeeText
+    ? (isUnderOrEqual51
+      ? `순수수료 기준요율 / 특용 +10만 / vat 포함 총 수수료 [하감: ${guideFeeText}] 맞추거나 살짝 안으로`
+      : `순수수료 하한요율 / 특용 기준-하한 / vat 포함 총 수수료 [하감: ${guideFeeText}] 맞추거나 살짝 안으로`)
+    : `특용 ${specialShort} / VAT 별도 총 수수료 ${feeShort}`;
+  const fixGuide = parsed.selectedKey === 'high'
+    ? '딱 요 금액이나 살짝 높게 부탁드려요!! 낮아지면 안됩니당!'
+    : (parsed.selectedKey === 'low' ? '딱 요 금액이나 살짝 아래로 부탁드려요!! 올라가면 안됩니당!' : '딱 요 금액으로 부탁드려요!');
   return `접수번호 : ${receiveRightsReceiptNo()}
 의뢰인 : ${parsed.client || ''}
 평가대상 : ${parsed.target || ''}
@@ -11193,26 +11268,65 @@ function receiveRightsBuildMessage(parsed){
 조사일자, 작성일자, 확약서, 발송도장 : 현재
 
 특이사항
-- 하이테크 ${parsed.progressAmountText || '--억'} 픽스 (딱 요 금액으로 부탁드려요!)
+- 하이테크 ${parsed.progressAmountText || '--억'} 픽스 (${fixGuide})
 - 평가서 ${receiveRightsFormatMD(deadline)}까지 업로드 완료 (단축수수료 없음)
-- 특용 ${specialShort} / VAT 별도 총 수수료 ${feeShort}
+- ${feeLine}
 - 착수금 50만원 입금ㅇ
 
 - 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!
 - [청구서 있는 엑셀 파일]은 폴더에 같이 업로드 부탁드려요! (추후 청구서 수정가능성)`;
 }
+function receiveRightsParseSections(text){
+  const result = {};
+  const sectionRe = /🔸\s*\[\s*([^\]]*?(최저|중간|최고|희망\s*금액|희망가?|희망)[^\]]*?)\s*\]([\s\S]*?)(?=\n\s*🔸\s*\[|\n\s*\*|$)/g;
+  let m;
+  while((m = sectionRe.exec(text))){
+    const title = m[1] || '';
+    const body = m[3] || '';
+    const key = /희망|최저/.test(title) ? 'low' : title.includes('최고') ? 'high' : 'mid';
+    const amountLine = (body.match(/예상평가액\s*[:：]\s*([^\n]+)/) || [,''])[1];
+    const feeLine = (body.match(/예상수수료[^:：]*[:：]\s*([^\n]+)/) || [,''])[1];
+    const specialLine = (body.match(/예상특용비\s*[:：]\s*([^\n]+)/) || [,''])[1];
+    const parsedAmount = receiveRightsParseAmountText(amountLine);
+    result[key] = {
+      amountText: parsedAmount.text,
+      amountValue: parsedAmount.value,
+      feeText: (typeof receiveExtractMoneyMan === 'function') ? receiveExtractMoneyMan(feeLine) : (feeLine || '').trim(),
+      specialText: (typeof receiveExtractMoneyMan === 'function') ? receiveExtractMoneyMan(specialLine) : (specialLine || '').trim(),
+      rawAmount: amountLine.trim(),
+      rawFee: feeLine.trim(),
+      rawSpecial: specialLine.trim()
+    };
+  }
+  return result;
+}
+function receiveRightsPickAmount(sections){
+  if(sections.low && sections.mid) return {key:'low', item:sections.low};
+  if(sections.high && sections.mid) return {key:'high', item:sections.high};
+  if(sections.low) return {key:'low', item:sections.low};
+  if(sections.high) return {key:'high', item:sections.high};
+  if(sections.mid) return {key:'mid', item:sections.mid};
+  return {key:'', item:null};
+}
 function receiveRightsParseInput(raw){
-  const target = receiveRightsExtractField(raw, '평가대상\/종류') || receiveRightsExtractField(raw, '평가대상');
+  const targetLine = String(raw || '').split(/\r?\n/).find(l => /^\s*✅/.test(l)) || '';
+  const target = receiveRightsExtractField(raw, '평가대상\/종류') || receiveRightsExtractField(raw, '평가대상') || receiveRightsCleanLine(targetLine);
   const type = receiveRightsDetectTypeFromTarget(target);
   const bottom = receiveRightsExtractBottomInfo(raw, target, type);
+  const rightsWish = receiveRightsExtractRightsWishInfo(raw);
+  const sections = receiveRightsParseSections(raw);
+  const picked = receiveRightsPickAmount(sections);
   return {
     target,
     type,
     purpose: receiveRightsExtractField(raw, '평가목적'),
     baseDate: receiveRightsExtractField(raw, '기준시점'),
     client: bottom.client,
-    progressAmount: bottom.amount,
-    progressAmountText: bottom.amountText
+    progressAmount: picked.item?.amountValue ?? rightsWish.amountValue ?? bottom.amount,
+    progressAmountText: picked.item?.amountText || rightsWish.amountText || bottom.amountText,
+    selectedKey: picked.key || (rightsWish.amountValue != null ? 'wish' : ''),
+    selectedFeeText: picked.item?.feeText || '',
+    selectedSpecialText: picked.item?.specialText || ''
   };
 }
 function receiveRightsGenerate(){
@@ -11386,24 +11500,45 @@ function rightsParseItem(headerLine, amountLine){
     amountPart = idx >= 0 ? headerClean.slice(idx + header.token.length).replace(/^[.。,:，/\s]+/g,'').trim() : '';
   }
   const rangeMatch = amountPart.match(/(.+?)-(.+)/);
-  if(!rangeMatch) return { error:'amount', original:String(headerLine || '').trim(), name:header.name, type:header.type, purpose:header.purpose, baseDate:header.baseDate };
+  if(rangeMatch){
+    let left = rangeMatch[1].trim();
+    let right = rangeMatch[2].trim();
+    const rightUnit = (right.match(/[억천만]/) || ['억'])[0];
+    const min = rightsAmountToEok(left, rightUnit);
+    const max = rightsAmountToEok(right, rightUnit);
+    if(!isFinite(min) || !isFinite(max)) return { error:'amount', original:String(headerLine || '').trim(), name:header.name, type:header.type, purpose:header.purpose, baseDate:header.baseDate };
+    return {
+      name:header.name,
+      type:header.type,
+      purpose:header.purpose,
+      baseDate:header.baseDate,
+      min:Math.min(min,max),
+      max:Math.max(min,max),
+      minText:rightsFormatAmount(Math.min(min,max)),
+      maxText:rightsFormatAmount(Math.max(min,max)),
+      isSingleAmount:false
+    };
+  }
 
-  let left = rangeMatch[1].trim();
-  let right = rangeMatch[2].trim();
-  const rightUnit = (right.match(/[억천만]/) || ['억'])[0];
-  const min = rightsAmountToEok(left, rightUnit);
-  const max = rightsAmountToEok(right, rightUnit);
-  if(!isFinite(min) || !isFinite(max)) return { error:'amount', original:String(headerLine || '').trim(), name:header.name, type:header.type, purpose:header.purpose, baseDate:header.baseDate };
-  return {
-    name:header.name,
-    type:header.type,
-    purpose:header.purpose,
-    baseDate:header.baseDate,
-    min:Math.min(min,max),
-    max:Math.max(min,max),
-    minText:rightsFormatAmount(Math.min(min,max)),
-    maxText:rightsFormatAmount(Math.max(min,max))
-  };
+  const singleMatch = amountPart.match(/^(?:희망\s*(?:금액|가)?\s*)?([0-9]+(?:\.[0-9]+)?\s*(?:억|천|만원|만)?)$/);
+  if(singleMatch){
+    const amount = rightsAmountToEok(singleMatch[1].trim(), '억');
+    if(!isFinite(amount)) return { error:'amount', original:String(headerLine || '').trim(), name:header.name, type:header.type, purpose:header.purpose, baseDate:header.baseDate };
+    return {
+      name:header.name,
+      type:header.type,
+      purpose:header.purpose,
+      baseDate:header.baseDate,
+      min:amount,
+      max:amount,
+      minText:rightsFormatAmount(amount),
+      maxText:rightsFormatAmount(amount),
+      wishText:rightsFormatAmount(amount),
+      isSingleAmount:true
+    };
+  }
+
+  return { error:'amount', original:String(headerLine || '').trim(), name:header.name, type:header.type, purpose:header.purpose, baseDate:header.baseDate };
 }
 function rightsParseLine(line){
   return rightsParseItem(line, '');
@@ -11446,16 +11581,16 @@ function rightsBuildMessage(item){
   const rows = rightsRowsFor(item.type, item.min, item.max);
   const feeLines = rows.map(r => `•${r.label}: ${rightsFeeLabel(r.fee)}`).join('\n');
   const extraLines = rows.map(r => `•${r.label}: ${rightsFeeLabel(r.extra)}`).join('\n');
+  const amountBlock = item.isSingleAmount
+    ? `🔸예상평가액\n•희망금액 ${item.wishText || item.minText}`
+    : `🔸예상평가액\n•최저 ${item.minText}\n•최대 ${item.maxText}\n*최저~최대 사이 금액 모두 진행 가능합니다 :)`;
   return `세무사님:) 탁감 결과 전달드립니다ㅎㅎ
 
 • 평가대상/종류: ${item.name} ${item.type}
 • 평가목적 : ${item.purpose || ''}
 • 기준시점 : ${item.baseDate || ''}
 
-🔸예상평가액
-•최저 ${item.minText}
-•최대 ${item.maxText}
-*최저~최대 사이 금액 모두 진행 가능합니다 :)
+${amountBlock}
 
 🔸${item.type} 예상 수수료(vat 별도)
 ${feeLines}
@@ -11536,7 +11671,7 @@ function receiveMultiGetPartnerSectionBounds(text){
   return { start:m.index, end:re.lastIndex, headerTail:(m[1]||'').trim(), body:m[2]||'', all:m[0]||'' };
 }
 function receiveMultiFindNameLoose(text){
-  const blacklist = new Set(['예상평가액','예상수수료','예상특용비','평가액','수수료','특용비','복수평가','하이테크','바름','최저','중간','최고','금액','평가','내외','만원','포함','증여','상속','양도','현재','시세','범위','기준시점','평가목적']);
+  const blacklist = new Set(['예상평가액','예상수수료','예상특용비','평가액','수수료','특용비','복수평가','하이테크','바름','최저','중간','최고','희망','금액','평가','내외','만원','포함','증여','상속','양도','현재','시세','범위','기준시점','평가목적']);
   const candidates = String(text || '').match(/[가-힣]{2,4}/g) || [];
   for(const name of candidates){
     if(blacklist.has(name)) continue;
@@ -11641,7 +11776,7 @@ function receiveMultiGetPartnerSectionBounds(text){
   return { start, end:bodyEnd, headerTail, body, all:src.slice(start, bodyEnd) };
 }
 function receiveMultiFindNameLoose(text){
-  const blacklist = new Set(['예상평가액','예상수수료','예상특용비','평가액','수수료','특용비','복수평가','하이테크','바름','최저','중간','최고','금액','평가','내외','만원','포함','증여','상속','양도','현재','시세','범위','기준시점','평가목적','서울시','서울특별시']);
+  const blacklist = new Set(['예상평가액','예상수수료','예상특용비','평가액','수수료','특용비','복수평가','하이테크','바름','최저','중간','최고','희망','금액','평가','내외','만원','포함','증여','상속','양도','현재','시세','범위','기준시점','평가목적','서울시','서울특별시']);
   const lines = String(text || '').split(/\r?\n/).map(v => v.trim()).filter(Boolean);
   for(const rawLine of lines){
     let line = rawLine.replace(/^[•\-*\s]+/, '').trim();
