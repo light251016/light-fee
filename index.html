@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" name="viewport"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
 <title>하이테크 수수료 자동화 계산기 - 한칸입력 층면적금액 추출버전</title>
 <style>
 :root {
@@ -12,7 +12,7 @@
   --purple:#f5f3ff; --purpleLine:#ddd6fe;
 }
 * { box-sizing:border-box; }
-html, body { width:100%; max-width:100%; overflow-x:hidden; }
+html, body { width:100%; max-width:100%; overflow-x:hidden; touch-action:pan-x pan-y; }
 body {
   margin:0; background:var(--bg); color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',Arial,sans-serif;
@@ -358,29 +358,65 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
   border:1px solid #bfdbfe;
   background:#eff6ff;
   border-radius:14px;
-  padding:12px;
+  padding:10px;
 }
 .amountGuideTitle {
   font-size:13px;
   font-weight:900;
   color:#1e3a8a;
-  margin-bottom:8px;
+  margin-bottom:7px;
 }
 .amountGuideGrid {
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
 }
 .amountGuideItem {
+  min-width:0;
   background:#fff;
   border:1px solid #dbeafe;
-  border-radius:11px;
-  padding:9px 10px;
+  border-radius:10px;
+  padding:7px 8px;
 }
-.amountGuideItem .label { font-size:12px; color:#475569; font-weight:800; }
-.amountGuideItem .value { margin-top:4px; font-size:15px; color:#111827; font-weight:900; }
-.amountGuideItem.rangeRed .value { color:#dc2626; }
-.amountGuideItem.rangeGreen .value { color:#22c55e; }
+.amountGuideItem .label {
+  font-size:11px;
+  line-height:1.2;
+  color:#475569;
+  font-weight:900;
+  text-align:center;
+  margin-bottom:4px;
+}
+.amountGuideRangeValues {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:2px;
+}
+.amountGuideValueRow {
+  display:grid;
+  grid-template-columns:13px minmax(0,1fr);
+  align-items:center;
+  gap:3px;
+  min-width:0;
+  font-size:12px;
+  line-height:1.25;
+  font-weight:900;
+}
+.amountGuideValueRow .sign { text-align:center; color:#64748b; }
+.amountGuideValueRow .value {
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  color:#111827;
+}
+.amountGuideItem.range10 { border-color:#bfdbfe; }
+.amountGuideItem.range15 { border-color:#c4b5fd; }
+.amountGuideItem.range18 { border-color:#86efac; }
+.amountGuideItem.range20 { border-color:#fca5a5; }
+.amountGuideItem.range10 .label { color:#1d4ed8; }
+.amountGuideItem.range15 .label { color:#6d28d9; }
+.amountGuideItem.range18 .label { color:#15803d; }
+.amountGuideItem.range20 .label { color:#dc2626; }
 .amountRangeOk {
   background:#ecfdf5 !important;
   border-color:#86efac !important;
@@ -397,11 +433,9 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
 .specialToggleBtn { background:#f97316; }
 .specialToggleBtn.active { background:#991b1b; }
 @media(max-width:640px){
-  .amountGuideGrid { grid-template-columns:1fr 1fr; }
-  .amountGuideGrid .amountGuideItem:nth-child(1){ order:2; }
-  .amountGuideGrid .amountGuideItem:nth-child(2){ order:1; }
-  .amountGuideGrid .amountGuideItem:nth-child(3){ order:3; }
-  .amountGuideGrid .amountGuideItem:nth-child(4){ order:4; }
+  .amountGuideGrid { grid-template-columns:1fr 1fr; gap:5px; }
+  .amountGuideItem { padding:6px 7px; }
+  .amountGuideValueRow { font-size:11px; }
 }
 
 
@@ -1552,7 +1586,7 @@ input, textarea, [contenteditable="true"] {
 #page_quoteBareum .quoteEmbedFrame,
 #page_hagamRequest .quoteEmbedFrame,
 #page_bareumRequest .quoteEmbedFrame {
-  touch-action: pan-x pan-y pinch-zoom !important;
+  touch-action: pan-x pan-y !important;
 }
 @media(max-width:640px){
   #page_quoteHagam .quoteEmbedWrap,
@@ -1983,7 +2017,7 @@ input, textarea, [contenteditable="true"] {
 /* 수수료 페이지 v4-1: 더 촘촘한 계산기/희망금액 + 모바일 확대 허용 */
 #page_feeOnly,
 #page_feeOnly *{
-  touch-action:pan-x pan-y pinch-zoom;
+  touch-action:pan-x pan-y;
 }
 #page_feeOnly .feeCalcTable{
   min-width:520px !important;
@@ -2434,6 +2468,24 @@ input, textarea, [contenteditable="true"] {
 #page_ment .mentCompactTitleBtn{
   padding:7px 10px !important;
 }
+#page_ment .mentTitleCheck{
+  margin:0 !important;
+  padding:6px 9px !important;
+  border-color:#94a3b8 !important;
+  background:#fff !important;
+  color:#111827 !important;
+  white-space:nowrap;
+}
+#page_ment .mentTitleCheck input{
+  width:auto !important;
+  margin:0 !important;
+  accent-color:#2563eb !important;
+}
+#page_ment .mentTitleCheck:has(input:checked){
+  background:#111827 !important;
+  color:#fff !important;
+  border-color:#111827 !important;
+}
 @media(min-width:981px){
   #page_ment .mentControlCard{
     top:calc(var(--mentStickyTop) + 40px) !important;
@@ -2709,7 +2761,7 @@ input, textarea, [contenteditable="true"] {
   margin:0 auto !important;
   overflow:auto !important;
   -webkit-overflow-scrolling:touch !important;
-  touch-action:pan-x pan-y pinch-zoom !important;
+  touch-action:pan-x pan-y !important;
   position:relative !important;
   z-index:1 !important;
 }
@@ -2723,7 +2775,7 @@ input, textarea, [contenteditable="true"] {
   min-height:1420px !important;
   border:0 !important;
   display:block !important;
-  touch-action:pan-x pan-y pinch-zoom !important;
+  touch-action:pan-x pan-y !important;
   position:relative !important;
   z-index:1 !important;
 }
@@ -2841,7 +2893,7 @@ input, textarea, [contenteditable="true"] {
 <div class="mentSubPage" id="ment_sub_start">
 <div class="mentGrid">
 <div class="mentCard mentOutputCard">
-<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">착수</span><button class="mentCopyBtn mentCompactTitleBtn" onclick="mentCopy('ment_start_output', this)">복사</button><button class="mentLightBtn mentCompactTitleBtn" id="ment_start_multiBtn" onclick="mentToggleStartMulti(this)">복수진행</button></div>
+<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">착수</span><button class="mentCopyBtn mentCompactTitleBtn" onclick="mentCopy('ment_start_output', this)">복사</button><label class="mentCheckPill mentTitleCheck" title="체크하면 복수업체 착수금 내용이 함께 표시됩니다"><input id="ment_start_multiCheck" onchange="mentToggleStartMulti(this)" type="checkbox"/> 복수진행</label></div>
 <textarea class="mentOutput" id="ment_start_output"></textarea>
 </div>
 <div class="mentCard mentControlCard">
@@ -2849,26 +2901,24 @@ input, textarea, [contenteditable="true"] {
 <div class="mentOptionBox">
 <b>하이테크 평가 건수</b>
 <div class="mentCountBtns" id="ment_start_ht_countBtns">
-<button onclick="mentSetStartCount('ht', 1)" type="button">1</button>
-<button class="active" onclick="mentSetStartCount('ht', 2)" type="button">2</button>
+<button class="active" onclick="mentSetStartCount('ht', 1)" type="button">1</button>
+<button onclick="mentSetStartCount('ht', 2)" type="button">2</button>
 <button onclick="mentSetStartCount('ht', 3)" type="button">3</button>
 <button onclick="mentSetStartCount('ht', 4)" type="button">4</button>
 <button onclick="mentSetStartCount('ht', 5)" type="button">5</button>
 </div>
-<input id="ment_start_ht_count" type="hidden" value="2"/>
-<label class="mentCheckPill"><input id="ment_start_ht_multi" onchange="mentUpdateStart()" type="checkbox"/> 하이테크: 평가 N건</label>
+<input id="ment_start_ht_count" type="hidden" value="1"/>
 </div>
 <div class="mentOptionBox">
 <b>복수업체 평가 건수</b>
 <div class="mentCountBtns" id="ment_start_partner_countBtns">
-<button onclick="mentSetStartCount('partner', 1)" type="button">1</button>
-<button class="active" onclick="mentSetStartCount('partner', 2)" type="button">2</button>
+<button class="active" onclick="mentSetStartCount('partner', 1)" type="button">1</button>
+<button onclick="mentSetStartCount('partner', 2)" type="button">2</button>
 <button onclick="mentSetStartCount('partner', 3)" type="button">3</button>
 <button onclick="mentSetStartCount('partner', 4)" type="button">4</button>
 <button onclick="mentSetStartCount('partner', 5)" type="button">5</button>
 </div>
-<input id="ment_start_partner_count" type="hidden" value="2"/>
-<label class="mentCheckPill"><input id="ment_start_partner_multi" onchange="mentUpdateStart()" type="checkbox"/> 복수업체: 평가 N건</label>
+<input id="ment_start_partner_count" type="hidden" value="1"/>
 </div>
 <input id="ment_start_multiMode" type="hidden" value="0"/>
 </div>
@@ -2997,7 +3047,7 @@ input, textarea, [contenteditable="true"] {
 &lt;html lang=&quot;ko&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
 &lt;title&gt;견적서 자동생성기 하감/바름 v7&lt;/title&gt;
 &lt;style&gt;
 :root{
@@ -3838,7 +3888,7 @@ input, textarea, [contenteditable=&quot;true&quot;] {
 
 /* 모바일 견적서 문서 확대 허용 */
 html, body, .stage, .paper, .overlay {
-  touch-action: pan-x pan-y pinch-zoom !important;
+  touch-action: pan-x pan-y !important;
 }
 @media(max-width:850px){
   html, body {
@@ -3850,8 +3900,8 @@ html, body, .stage, .paper, .overlay {
     -webkit-overflow-scrolling:touch !important;
   }
   .paper{
-    /* 기존 A4 비율은 유지하되, 브라우저 확대/핀치줌을 막지 않음 */
-    touch-action: pan-x pan-y pinch-zoom !important;
+    /* 기존 A4 비율은 유지하되, 브라우저 확대/핀치줌을 허용하지 않음 */
+    touch-action: pan-x pan-y !important;
   }
 }
 
@@ -4007,7 +4057,7 @@ html, body, .stage, .paper, .overlay {
     overflow-x:auto !important;
     overflow-y:auto !important;
     -webkit-overflow-scrolling:touch !important;
-    touch-action:pan-x pan-y pinch-zoom !important;
+    touch-action:pan-x pan-y !important;
     align-items:flex-start !important;
     justify-content:flex-start !important;
     min-height:1145px !important;
@@ -4737,7 +4787,7 @@ quoteApplyZoom();
 &lt;html lang=&quot;ko&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
 &lt;title&gt;견적서 자동생성기 하감/바름 v7&lt;/title&gt;
 &lt;style&gt;
 :root{
@@ -5578,7 +5628,7 @@ input, textarea, [contenteditable=&quot;true&quot;] {
 
 /* 모바일 견적서 문서 확대 허용 */
 html, body, .stage, .paper, .overlay {
-  touch-action: pan-x pan-y pinch-zoom !important;
+  touch-action: pan-x pan-y !important;
 }
 @media(max-width:850px){
   html, body {
@@ -5590,8 +5640,8 @@ html, body, .stage, .paper, .overlay {
     -webkit-overflow-scrolling:touch !important;
   }
   .paper{
-    /* 기존 A4 비율은 유지하되, 브라우저 확대/핀치줌을 막지 않음 */
-    touch-action: pan-x pan-y pinch-zoom !important;
+    /* 기존 A4 비율은 유지하되, 브라우저 확대/핀치줌을 허용하지 않음 */
+    touch-action: pan-x pan-y !important;
   }
 }
 
@@ -5693,7 +5743,7 @@ html, body, .stage, .paper, .overlay {
     overflow-x:auto !important;
     overflow-y:auto !important;
     -webkit-overflow-scrolling:touch !important;
-    touch-action:pan-x pan-y pinch-zoom !important;
+    touch-action:pan-x pan-y !important;
     align-items:flex-start !important;
     justify-content:flex-start !important;
     min-height:1145px !important;
@@ -6410,7 +6460,7 @@ quoteApplyZoom();
 &lt;html lang=&quot;ko&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
 &lt;title&gt;하감 의뢰서&lt;/title&gt;
 &lt;style&gt;
 :root{--bg:#f4f6f8;--line:#d8dde6;--ink:#111827;--blue:#2563eb;--paperW:794px;--paperH:1123px;--displayScale:1;}
@@ -6420,7 +6470,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-
 h1{font-size:18px;margin:0 0 4px} .sub{font-size:12px;color:#6b7280;line-height:1.45} .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 button{appearance:none;border:0;border-radius:10px;padding:10px 12px;background:#e8eef7;font-weight:800;cursor:pointer;color:#1f2937}
 button.primary{background:var(--blue);color:#fff} button.ghost{background:#fff;border:1px solid var(--line)}
-.stage{padding:18px;display:flex;justify-content:center;align-items:flex-start;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;width:100%;max-width:100%;}
+.stage{padding:18px;display:flex;justify-content:center;align-items:flex-start;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;width:100%;max-width:100%;}
 .paper{width:var(--paperW);height:var(--paperH);background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.13);position:relative;color:#000;padding:94px 60px 0;transform-origin:top center;transform:scale(var(--displayScale));}
 html,body{width:100%;max-width:100%;overflow-x:hidden;}
 @supports (zoom:1){.paper{transform:none!important;zoom:var(--displayScale);transform-origin:top center!important;}}
@@ -6506,7 +6556,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;}
     overflow-x:auto !important;
     overflow-y:auto !important;
     -webkit-overflow-scrolling:touch !important;
-    touch-action:pan-x pan-y pinch-zoom !important;
+    touch-action:pan-x pan-y !important;
     align-items:flex-start !important;
     justify-content:flex-start !important;
     min-height:1145px !important;
@@ -6671,7 +6721,7 @@ window.addEventListener('resize',applyZoom);
 &lt;html lang=&quot;ko&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no&quot;&gt;
 &lt;title&gt;바름 의뢰서&lt;/title&gt;
 &lt;style&gt;
 :root{--bg:#f4f6f8;--line:#d8dde6;--ink:#111827;--blue:#2563eb;--paperW:794px;--paperH:1123px;--displayScale:1;}
@@ -6680,7 +6730,7 @@ html,body{margin:0;background:var(--bg);font-family:Arial,'Malgun Gothic','Apple
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);padding:11px 14px;backdrop-filter:blur(10px)}
 h1{font-size:18px;margin:0 0 4px}.sub{font-size:12px;color:#6b7280;line-height:1.45}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 button{appearance:none;border:0;border-radius:10px;padding:10px 12px;background:#e8eef7;font-weight:800;cursor:pointer;color:#1f2937}button.primary{background:var(--blue);color:#fff}button.ghost{background:#fff;border:1px solid var(--line)}
-.stage{padding:18px;display:flex;justify-content:center;align-items:flex-start;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y pinch-zoom;}
+.stage{padding:18px;display:flex;justify-content:center;align-items:flex-start;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;}
 .paper{width:var(--paperW);height:var(--paperH);background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.13);position:relative;color:#000;padding:64px 60px 0;transform-origin:top center;transform:scale(var(--displayScale));}
 .paper *{font-family:Arial,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;}
 .requestBox{width:674px;height:1000px;border:1.5px solid #111;position:relative;background:#fff;display:flex;flex-direction:column;}
@@ -6721,7 +6771,7 @@ table{border-collapse:collapse;width:100%;table-layout:fixed}.mainTable{height:6
     overflow-x:auto !important;
     overflow-y:auto !important;
     -webkit-overflow-scrolling:touch !important;
-    touch-action:pan-x pan-y pinch-zoom !important;
+    touch-action:pan-x pan-y !important;
     align-items:flex-start !important;
     justify-content:flex-start !important;
     min-height:1145px !important;
@@ -6872,13 +6922,22 @@ window.addEventListener('resize',applyZoom);
 </thead>
 <tbody>
 <tr>
-<td><input class="feeInput" id="feeOnlyEvalAmount" oninput="feeOnlyUpdateRates()"/></td>
+<td><input class="feeInput" id="feeOnlyEvalAmount" oninput="feeOnlyUpdateRates()" placeholder="평가금액"/></td>
 <td><div class="feeOutputCell" id="feeOnlyLowerRateView">-</div></td>
 <td><div class="feeOutputCell" id="feeOnlyBaseRateView">-</div></td>
 <td><div class="feeOutputCell" id="feeOnlyUpperRateView">-</div></td>
 <td><div class="feeOutputCell" id="feeOnlyDiffBaseLower">-</div></td>
 <td><div class="feeOutputCell" id="feeOnlyDiffUpperBase">-</div></td>
 <td><div class="feeOutputCell" id="feeOnlyDiffUpperLower">-</div></td>
+</tr>
+<tr>
+<td><input class="feeInput" id="feeOnlyRateMarkup" oninput="feeOnlyUpdateRates()" value="1" placeholder="할증" aria-label="할증"/></td>
+<td><div class="feeOutputCell" id="feeOnlyMarkupLowerRateView">-</div></td>
+<td><div class="feeOutputCell" id="feeOnlyMarkupBaseRateView">-</div></td>
+<td><div class="feeOutputCell" id="feeOnlyMarkupUpperRateView">-</div></td>
+<td><div class="feeOutputCell" id="feeOnlyMarkupDiffBaseLower">-</div></td>
+<td><div class="feeOutputCell" id="feeOnlyMarkupDiffUpperBase">-</div></td>
+<td><div class="feeOutputCell" id="feeOnlyMarkupDiffUpperLower">-</div></td>
 </tr>
 </tbody>
 </table>
@@ -7250,12 +7309,12 @@ window.addEventListener('resize',applyZoom);
 <div class="amountGuideBox" id="midRangeGuideBox">
 <div class="amountGuideTitle">중간값 기준 적정 조율 참고범위</div>
 <div class="amountGuideGrid">
-<div class="amountGuideItem rangeRed"><div class="label">-20%</div><div class="value" id="midRangeMinus20">-</div></div>
-<div class="amountGuideItem rangeGreen"><div class="label">-18%</div><div class="value" id="midRangeMinus18">-</div></div>
-<div class="amountGuideItem rangeGreen"><div class="label">+18%</div><div class="value" id="midRangePlus18">-</div></div>
-<div class="amountGuideItem rangeRed"><div class="label">+20%</div><div class="value" id="midRangePlus20">-</div></div>
+<div class="amountGuideItem range10"><div class="label">±10%</div><div class="amountGuideRangeValues"><div class="amountGuideValueRow"><span class="sign">−</span><span class="value" id="midRangeMinus10">-</span></div><div class="amountGuideValueRow"><span class="sign">＋</span><span class="value" id="midRangePlus10">-</span></div></div></div>
+<div class="amountGuideItem range15"><div class="label">±15%</div><div class="amountGuideRangeValues"><div class="amountGuideValueRow"><span class="sign">−</span><span class="value" id="midRangeMinus15">-</span></div><div class="amountGuideValueRow"><span class="sign">＋</span><span class="value" id="midRangePlus15">-</span></div></div></div>
+<div class="amountGuideItem range18"><div class="label">±18%</div><div class="amountGuideRangeValues"><div class="amountGuideValueRow"><span class="sign">−</span><span class="value" id="midRangeMinus18">-</span></div><div class="amountGuideValueRow"><span class="sign">＋</span><span class="value" id="midRangePlus18">-</span></div></div></div>
+<div class="amountGuideItem range20"><div class="label">±20%</div><div class="amountGuideRangeValues"><div class="amountGuideValueRow"><span class="sign">−</span><span class="value" id="midRangeMinus20">-</span></div><div class="amountGuideValueRow"><span class="sign">＋</span><span class="value" id="midRangePlus20">-</span></div></div></div>
 </div>
-<div class="help" style="margin-top:8px;">중간 평가금액을 기준으로 ±18%, ±20% 금액을 자동 계산합니다. 이 칸은 참고용이며 계산 입력값으로 반영되지 않습니다.</div>
+<div class="help" style="margin-top:6px;">중간 평가금액 기준 ±10%·±15%·±18%·±20% 참고금액입니다. 실제 계산 입력값에는 반영되지 않습니다.</div>
 </div>
 <div class="btns">
 <button class="dark" onclick="calculate()">계산하기</button>
@@ -7506,12 +7565,12 @@ window.addEventListener('resize',applyZoom);
 <div class="amountGuideBox" id="copy_midRangeGuideBox">
 <div class="amountGuideTitle">중간값 기준 적정 조율 참고범위</div>
 <div class="amountGuideGrid">
-<div class="amountGuideItem rangeRed"><div class="label">-20%</div><div class="value" id="copy_midRangeMinus20">-</div></div>
-<div class="amountGuideItem rangeGreen"><div class="label">-18%</div><div class="value" id="copy_midRangeMinus18">-</div></div>
-<div class="amountGuideItem rangeGreen"><div class="label">+18%</div><div class="value" id="copy_midRangePlus18">-</div></div>
-<div class="amountGuideItem rangeRed"><div class="label">+20%</div><div class="value" id="copy_midRangePlus20">-</div></div>
+<div class="amountGuideItem range10"><div class="label">±10%</div><div class="amountGuideRangeValues"><div class="amountGuideValueRow"><span class="sign">−</span><span class="value" id="copy_midRangeMinus10">-</span></div><div class="amountGuideValueRow"><span class="sign">＋</span><span class="value" id="copy_midRangePlus10">-</span></div></div></div>
+<div class="amountGuideItem range15"><div class="label">±15%</div><div class="amountGuideRangeValues"><div class="amountGuideValueRow"><span class="sign">−</span><span class="value" id="copy_midRangeMinus15">-</span></div><div class="amountGuideValueRow"><span class="sign">＋</span><span class="value" id="copy_midRangePlus15">-</span></div></div></div>
+<div class="amountGuideItem range18"><div class="label">±18%</div><div class="amountGuideRangeValues"><div class="amountGuideValueRow"><span class="sign">−</span><span class="value" id="copy_midRangeMinus18">-</span></div><div class="amountGuideValueRow"><span class="sign">＋</span><span class="value" id="copy_midRangePlus18">-</span></div></div></div>
+<div class="amountGuideItem range20"><div class="label">±20%</div><div class="amountGuideRangeValues"><div class="amountGuideValueRow"><span class="sign">−</span><span class="value" id="copy_midRangeMinus20">-</span></div><div class="amountGuideValueRow"><span class="sign">＋</span><span class="value" id="copy_midRangePlus20">-</span></div></div></div>
 </div>
-<div class="help" style="margin-top:8px;">중간 평가금액을 기준으로 ±18%, ±20% 금액을 자동 계산합니다. 이 칸은 참고용이며 계산 입력값으로 반영되지 않습니다.</div>
+<div class="help" style="margin-top:6px;">중간 평가금액 기준 ±10%·±15%·±18%·±20% 참고금액입니다. 실제 계산 입력값에는 반영되지 않습니다.</div>
 </div>
 <div class="btns">
 <button class="dark" onclick="copy_calculate()">계산하기</button>
@@ -9847,9 +9906,13 @@ function updateMidRangeGuide(){
   const minus18 = mid ? mid * 0.82 : 0;
   const plus18 = mid ? mid * 1.18 : 0;
   const vals = {
-    midRangeMinus20: mid ? mid * 0.80 : 0,
+    midRangeMinus10: mid ? mid * 0.90 : 0,
+    midRangePlus10: mid ? mid * 1.10 : 0,
+    midRangeMinus15: mid ? mid * 0.85 : 0,
+    midRangePlus15: mid ? mid * 1.15 : 0,
     midRangeMinus18: minus18,
     midRangePlus18: plus18,
+    midRangeMinus20: mid ? mid * 0.80 : 0,
     midRangePlus20: mid ? mid * 1.20 : 0
   };
   Object.entries(vals).forEach(([id, value]) => {
@@ -11958,13 +12021,27 @@ function rightsFindType(line){
   if(insuranceToken) return { type: insuranceTypeLabel, token: insuranceToken };
   return { type:'', token:'' };
 }
+function rightsNormalizeHeaderSeparators(line){
+  let src = rightsNormalizeText(line);
+  const protectedTokens = [];
+  const protect = (value) => {
+    const key = `§RIGHTS${protectedTokens.length}§`;
+    protectedTokens.push(String(value).replace(/\s+/g, ''));
+    return key;
+  };
+  // 날짜(26.4.11 / 26/4/11)와 소수 금액(1.5억)의 점·슬래시는 구분자로 바꾸지 않는다.
+  src = src.replace(/\b\d{2,4}\s*[.\/-]\s*\d{1,2}\s*[.\/-]\s*\d{1,2}\b/g, protect);
+  src = src.replace(/\b\d+\s*\.\s*\d+\b/g, protect);
+  src = src.replace(/\s*[，,\/。.]\s*/g, ',').replace(/,+/g, ',');
+  src = src.replace(/§RIGHTS(\d+)§/g, (_, idx) => protectedTokens[Number(idx)] || '');
+  return src.replace(/^,+|,+$/g, '').trim();
+}
 function rightsStripMemo(line){
-  return String(line || '').split('/')[0].trim();
+  return String(line || '').trim();
 }
 function rightsParseHeader(headerLine){
   const original = String(headerLine || '').trim();
-  const clean = rightsStripMemo(original);
-  const normalized = rightsNormalizeText(clean);
+  const normalized = rightsNormalizeHeaderSeparators(original);
   const found = rightsFindType(normalized);
   const type = found.type;
   const token = found.token;
@@ -11985,7 +12062,7 @@ function rightsParseItem(headerLine, amountLine){
 
   let amountPart = rightsNormalizeText(amountLine || '');
   if(!amountPart){
-    const headerClean = rightsNormalizeText(rightsStripMemo(headerLine));
+    const headerClean = rightsNormalizeHeaderSeparators(headerLine);
     const idx = headerClean.indexOf(header.token);
     amountPart = idx >= 0 ? headerClean.slice(idx + header.token.length).replace(/^[.。,:，/\s]+/g,'').trim() : '';
   }
@@ -12044,7 +12121,7 @@ function rightsParseInputBlocks(text){
       items.push({ error:'type', original:line });
       continue;
     }
-    const headerClean = rightsNormalizeText(rightsStripMemo(line));
+    const headerClean = rightsNormalizeHeaderSeparators(line);
     const hasInlineRange = /\d+(?:\.\d+)?\s*(?:억|천|만)?\s*-\s*\d+(?:\.\d+)?\s*(?:억|천|만)?/.test(headerClean);
     if(hasInlineRange){
       items.push(rightsParseItem(line, ''));
@@ -12466,16 +12543,27 @@ function feeOnlyShowSpecial(id, n){
 }
 function feeOnlyUpdateRates(){
   const amount = feeOnlyParseMoney(feeOnlyVal('feeOnlyEvalAmount'));
+  const markup = feeOnlyMarkup('feeOnlyRateMarkup');
   const lower = feeOnlyEvalFee(amount, 'lower', 1);
   const base = feeOnlyEvalFee(amount, 'basis', 1);
   const upper = feeOnlyEvalFee(amount, 'upper', 1);
+
   feeOnlyShowMoney('feeOnlyLowerRateView', lower);
   feeOnlyShowMoney('feeOnlyBaseRateView', base);
   feeOnlyShowMoney('feeOnlyUpperRateView', upper);
   feeOnlyShowMoney('feeOnlyDiffBaseLower', base - lower);
-  feeOnlyShowMoney('feeOnlyDiffBaseLower2', base - lower);
   feeOnlyShowMoney('feeOnlyDiffUpperBase', upper - base);
   feeOnlyShowMoney('feeOnlyDiffUpperLower', upper - lower);
+
+  const markupLower = lower * markup;
+  const markupBase = base * markup;
+  const markupUpper = upper * markup;
+  feeOnlyShowMoney('feeOnlyMarkupLowerRateView', markupLower);
+  feeOnlyShowMoney('feeOnlyMarkupBaseRateView', markupBase);
+  feeOnlyShowMoney('feeOnlyMarkupUpperRateView', markupUpper);
+  feeOnlyShowMoney('feeOnlyMarkupDiffBaseLower', markupBase - markupLower);
+  feeOnlyShowMoney('feeOnlyMarkupDiffUpperBase', markupUpper - markupBase);
+  feeOnlyShowMoney('feeOnlyMarkupDiffUpperLower', markupUpper - markupLower);
 }
 function feeOnlyUpdateManual(row){
   const p1 = feeOnlyParseMoney(feeOnlyVal(`feeManual${row}_pure1`));
@@ -12558,7 +12646,8 @@ function feeOnlyRunGoalFormula(){
 }
 function feeOnlyReset(){
   feeOnlySetVal('feeOnlyEvalAmount','');
-  ['feeOnlyLowerRateView','feeOnlyBaseRateView','feeOnlyUpperRateView','feeOnlyDiffBaseLower','feeOnlyDiffBaseLower2','feeOnlyDiffUpperBase','feeOnlyDiffUpperLower'].forEach(id=>feeOnlySetText(id, id.includes('Rate') || id.includes('Diff') ? '-' : ''));
+  feeOnlySetVal('feeOnlyRateMarkup','1');
+  ['feeOnlyLowerRateView','feeOnlyBaseRateView','feeOnlyUpperRateView','feeOnlyDiffBaseLower','feeOnlyDiffUpperBase','feeOnlyDiffUpperLower','feeOnlyMarkupLowerRateView','feeOnlyMarkupBaseRateView','feeOnlyMarkupUpperRateView','feeOnlyMarkupDiffBaseLower','feeOnlyMarkupDiffUpperBase','feeOnlyMarkupDiffUpperLower'].forEach(id=>feeOnlySetText(id, '-'));
   feeOnlySetVal('feeOnlyFormulaInput',''); feeOnlySetText('feeOnlyFormulaResult','');
   feeOnlyResetManual(1); feeOnlyResetManual(2); feeOnlyResetAuto(1); feeOnlyResetAuto(2);
   ['pure','extra','region','targetVat','formula'].forEach(k => feeOnlySetVal(`feeGoal_${k}`,''));
@@ -12959,24 +13048,23 @@ ${phrase} 전달드립니다!
 }
 function mentSetStartCount(company, n){
   const type = company === 'partner' ? 'partner' : 'ht';
-  const count = Math.max(1, Math.min(5, Number(n) || 2));
+  const count = Math.max(1, Math.min(5, Number(n) || 1));
   const input = mentGet('ment_start_' + type + '_count');
   if(input) input.value = String(count);
   document.querySelectorAll('#ment_start_' + type + '_countBtns button').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === String(count)));
   mentUpdateStart();
 }
-function mentToggleStartMulti(btn){
+function mentToggleStartMulti(control){
   const input = mentGet('ment_start_multiMode');
-  const next = input?.value !== '1';
+  const next = control?.type === 'checkbox' ? !!control.checked : input?.value !== '1';
   if(input) input.value = next ? '1' : '0';
-  if(btn) btn.classList.toggle('active', next);
+  if(control && control.type !== 'checkbox') control.classList.toggle('active', next);
   mentUpdateStart();
 }
 function mentStartPhrase(company){
   const type = company === 'partner' ? 'partner' : 'ht';
-  const count = mentVal('ment_start_' + type + '_count') || '2';
-  const checked = mentGet(type === 'ht' ? 'ment_start_ht_multi' : 'ment_start_partner_multi')?.checked;
-  if(checked) return `평가 ${count}건이므로 50만원씩 ${count}번 입금 부탁드립니다☺️`;
+  const count = Math.max(1, Number(mentVal('ment_start_' + type + '_count')) || 1);
+  if(count > 1) return `평가 ${count}건이므로 50만원씩 ${count}번 입금 부탁드립니다☺️`;
   return type === 'ht' ? '하이테크로 50만원 입금 부탁드립니다☺️' : '복수업체로 50만원 입금 부탁드립니다☺️';
 }
 function mentUpdateStart(){
@@ -13011,6 +13099,7 @@ ${partnerPhrase}
 
 🔸하이테크 착수금
 ${htPhrase}
+*추후 증빙 고려시 상속인/수증인 성함으로 입금을 추천드립니다
 
 🔸하이테크 착수금 입금 계좌
 국민은행 532001-01-294849
@@ -13092,7 +13181,9 @@ function mentUpdateSpecial(){
 function mentInit(){
   mentSyncStickyOffset();
   ['ment_start_multiMode','ment_doneCustomer_multiMode','ment_special_includePartner'].forEach(id => { const el = mentGet(id); if(el) el.value = '0'; });
-  ['ment_start_multiBtn','ment_doneCustomer_multiBtn','ment_special_multiBtn'].forEach(id => mentGet(id)?.classList.remove('active'));
+  const startMultiCheck = mentGet('ment_start_multiCheck');
+  if(startMultiCheck) startMultiCheck.checked = false;
+  ['ment_doneCustomer_multiBtn','ment_special_multiBtn'].forEach(id => mentGet(id)?.classList.remove('active'));
   document.querySelectorAll('#page_ment [data-ment-money]').forEach(el => mentMoneyInput(el));
   mentUpdateTakgam();
   mentUpdateRightsTakgam();
