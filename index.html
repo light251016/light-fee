@@ -1187,7 +1187,7 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
   overflow:visible;
 }
 #page_receiveProperty .receiveSheetTable {
-  min-width:1740px !important;
+  min-width:1580px !important;
   table-layout:auto;
 }
 #page_receiveProperty .receiveSheetTable th,
@@ -1202,14 +1202,15 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
   text-overflow:clip;
 }
 #page_receiveProperty #receiveSheet_reportNo { min-width:150px; }
+#page_receiveProperty #receiveSheet_assignedDate,
 #page_receiveProperty #receiveSheet_deadline,
-#page_receiveProperty #receiveSheet_depositDate,
-#page_receiveProperty #receiveSheet_doneDate { min-width:120px; }
+#page_receiveProperty #receiveSheet_depositDate { min-width:120px; }
+#page_receiveProperty #receiveSheet_armUsePeriod { min-width:145px; }
 #page_receiveProperty #receiveSheet_customerManager,
 #page_receiveProperty #receiveSheet_appraiser { min-width:120px; }
 #page_receiveProperty #receiveSheet_client { min-width:150px; }
 #page_receiveProperty #receiveSheet_region { min-width:120px; }
-#page_receiveProperty #receiveSheet_depositStatus { min-width:170px; }
+#page_receiveProperty #receiveSheet_depositStatus { min-width:190px; }
 #page_receiveProperty .receiveRegionGuide {
   margin-top:16px;
 }
@@ -1284,13 +1285,13 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
 #page_receiveMulti .receiveMultiSheetTable input[id$="_reportNo"] { min-width:155px; }
 #page_receiveMulti .receiveMultiSheetTable input[id$="_deadline"],
 #page_receiveMulti .receiveMultiSheetTable input[id$="_depositDate"],
-#page_receiveMulti .receiveMultiSheetTable input[id$="_assignedDate"],
-#page_receiveMulti .receiveMultiSheetTable input[id$="_doneDate"] { min-width:120px; }
+#page_receiveMulti .receiveMultiSheetTable input[id$="_assignedDate"] { min-width:120px; }
+#page_receiveMulti .receiveMultiSheetTable input[id$="_armUsePeriod"] { min-width:145px; }
 #page_receiveMulti .receiveMultiSheetTable input[id$="_client"] { min-width:150px; }
 #page_receiveMulti .receiveMultiSheetTable input[id$="_appraiser"],
 #page_receiveMulti .receiveMultiSheetTable input[id$="_customerManager"] { min-width:120px; }
 #page_receiveMulti .receiveMultiSheetTable input[id$="_region"] { min-width:120px; }
-#page_receiveMulti .receiveMultiSheetTable input[id$="_depositStatus"] { min-width:150px; }
+#page_receiveMulti .receiveMultiSheetTable input[id$="_depositStatus"] { min-width:190px; }
 #page_receiveMulti .receiveMultiSheetPaste {
   margin-top:8px;
   width:100%;
@@ -1300,6 +1301,35 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
 }
 @media(max-width:980px) and (pointer:coarse){
   #page_receiveMulti .receiveMultiSheetTitle { align-items:flex-start; flex-direction:column; }
+}
+
+
+/* 복수접수: 스프레드시트용_하이테크만 접수글과 같은 연노랑 계열 */
+#page_receiveMulti .receiveMultiHtOutputCard .receiveMultiSheetBox {
+  border-color:#facc15;
+  background:#fffdf0;
+}
+#page_receiveMulti .receiveMultiHtOutputCard .receiveMultiSheetTitle {
+  color:#854d0e;
+}
+#page_receiveMulti .receiveMultiHtOutputCard .receiveMultiSheetScroll {
+  border:1px solid #fde68a;
+  border-radius:12px;
+  background:#fffef8;
+}
+#page_receiveMulti .receiveMultiHtOutputCard .receiveMultiSheetTable th {
+  background:#fef3c7;
+  border-color:#fde68a;
+  color:#713f12;
+}
+#page_receiveMulti .receiveMultiHtOutputCard .receiveMultiSheetTable td {
+  background:#fffef8;
+  border-color:#fde68a;
+}
+#page_receiveMulti .receiveMultiHtOutputCard .receiveMultiSheetTable input,
+#page_receiveMulti .receiveMultiHtOutputCard .receiveMultiSheetPaste {
+  background:#fffdf0;
+  border-color:#facc15;
 }
 
 
@@ -1345,12 +1375,12 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
 #page_receiveRights #receiveRightsSheet_reportNo { min-width:155px; }
 #page_receiveRights #receiveRightsSheet_deadline,
 #page_receiveRights #receiveRightsSheet_depositDate,
-#page_receiveRights #receiveRightsSheet_assignedDate,
-#page_receiveRights #receiveRightsSheet_doneDate { min-width:120px; }
+#page_receiveRights #receiveRightsSheet_assignedDate { min-width:120px; }
+#page_receiveRights #receiveRightsSheet_armUsePeriod { min-width:145px; }
 #page_receiveRights #receiveRightsSheet_client { min-width:150px; }
 #page_receiveRights #receiveRightsSheet_targetType { min-width:160px; }
 #page_receiveRights #receiveRightsSheet_region { min-width:110px; }
-#page_receiveRights #receiveRightsSheet_depositStatus { min-width:150px; }
+#page_receiveRights #receiveRightsSheet_depositStatus { min-width:190px; }
 #page_receiveRights .receiveRightsSheetPaste {
   width:100%;
   min-height:58px;
@@ -2814,6 +2844,53 @@ input, textarea, [contenteditable="true"] {
 #page_bareumRequest.active .quoteEmbedFrame{
   position:relative !important;
   z-index:1 !important;
+}
+
+
+/* 멘트 페이지 v7: 마무리·특용비 멘트 블록을 세로 스크롤 구조로 변경 */
+#ment_sub_finish .mentBlockScroll,
+#ment_sub_special .mentBlockScroll {
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+  width:100% !important;
+  max-width:100% !important;
+  overflow-x:hidden !important;
+  overflow-y:visible !important;
+  padding:2px 2px 10px !important;
+  scroll-snap-type:none !important;
+}
+
+#ment_sub_finish .mentBlock,
+#ment_sub_special .mentBlock {
+  flex:0 0 auto !important;
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  scroll-snap-align:none !important;
+}
+
+#ment_sub_finish .mentBlock + .mentBlock,
+#ment_sub_special .mentBlock + .mentBlock {
+  margin-top:10px !important;
+}
+
+@media(max-width:640px), (max-width:980px) and (pointer:coarse) {
+  #ment_sub_finish .mentBlock,
+  #ment_sub_special .mentBlock {
+    flex-basis:auto !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+}
+
+@media(max-width:420px) {
+  #ment_sub_finish .mentBlock,
+  #ment_sub_special .mentBlock {
+    flex-basis:auto !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
 }
 </style>
 </head>
@@ -7711,24 +7788,23 @@ window.addEventListener('resize',applyZoom);
 <thead>
 <tr>
 <th>감정서번호</th>
-<th>배정일<br/>(yyy/mm/dd)</th>
-<th>마감일<br/>(yyy/mm/dd)</th>
+<th>배정일<br/>(yyyy/mm/dd)</th>
+<th>ARM사용여부<br/>(기본)<br/>&amp;<br/>평가기한<br/>(일수)</th>
+<th>마감일<br/>(yyyy/mm/dd)</th>
 <th>고객담당자명</th>
 <th>평가담당자명</th>
 <th>업체명<br/>or 의뢰인명</th>
-<th>착수금입금날짜<br/>(yyy/mm/dd)</th>
+<th>착수금입금날짜<br/>(yyyy/mm/dd)</th>
 <th>평가대상</th>
 <th>평가지역</th>
-<th>착수금 금전진행<br/>/완료/미수금/취소</th>
-<th>처리완료날짜<br/>(yyy/mm/dd)</th>
-<th>평가금액<br/>(금액입력)</th>
-<th>잔금입금<br/>여부</th>
+<th>착수금입금전/진행<br/>/완료/홀딩/반려<br/>/취소</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><input id="receiveSheet_reportNo"/></td>
 <td><input id="receiveSheet_assignedDate"/></td>
+<td><input id="receiveSheet_armUsePeriod"/></td>
 <td><input id="receiveSheet_deadline"/></td>
 <td><input id="receiveSheet_customerManager"/></td>
 <td><input id="receiveSheet_appraiser"/></td>
@@ -7737,9 +7813,6 @@ window.addEventListener('resize',applyZoom);
 <td><input id="receiveSheet_targetType"/></td>
 <td><input id="receiveSheet_region"/></td>
 <td><input id="receiveSheet_depositStatus"/></td>
-<td><input id="receiveSheet_doneDate"/></td>
-<td><input id="receiveSheet_amount"/></td>
-<td><input id="receiveSheet_balance"/></td>
 </tr>
 </tbody>
 </table>
@@ -7833,7 +7906,34 @@ window.addEventListener('resize',applyZoom);
 </div>
 </div>
 <div class="receiveMultiSheetScroll">
-<table class="receiveMultiSheetTable"><thead><tr><th>감정서번호</th><th>배정일</th><th>마감일</th><th>고객담당자명</th><th>평가담당자명</th><th>업체명or의뢰인명</th><th>착수금입금날짜</th><th>평가대상</th><th>평가지역</th><th>착수금 입금~</th><th>처리완료날짜</th><th>평가금액</th><th>잔금입금여부</th></tr></thead><tbody><tr><td><input id="receiveMultiSheet_ht_reportNo"/></td><td><input id="receiveMultiSheet_ht_assignedDate"/></td><td><input id="receiveMultiSheet_ht_deadline"/></td><td><input id="receiveMultiSheet_ht_customerManager"/></td><td><input id="receiveMultiSheet_ht_appraiser"/></td><td><input id="receiveMultiSheet_ht_client"/></td><td><input id="receiveMultiSheet_ht_depositDate"/></td><td><input id="receiveMultiSheet_ht_targetType"/></td><td><input id="receiveMultiSheet_ht_region"/></td><td><input id="receiveMultiSheet_ht_depositStatus"/></td><td><input id="receiveMultiSheet_ht_doneDate"/></td><td><input id="receiveMultiSheet_ht_amount"/></td><td><input id="receiveMultiSheet_ht_balance"/></td></tr></tbody></table>
+<table class="receiveMultiSheetTable">
+<thead><tr>
+<th>감정서번호</th>
+<th>배정일<br/>(yyyy/mm/dd)</th>
+<th>ARM사용여부<br/>(기본)<br/>&amp;<br/>평가기한<br/>(일수)</th>
+<th>마감일<br/>(yyyy/mm/dd)</th>
+<th>고객담당자명</th>
+<th>평가담당자명</th>
+<th>업체명<br/>or 의뢰인명</th>
+<th>착수금입금날짜<br/>(yyyy/mm/dd)</th>
+<th>평가대상</th>
+<th>평가지역</th>
+<th>착수금입금전/진행<br/>/완료/홀딩/반려<br/>/취소</th>
+</tr></thead>
+<tbody><tr>
+<td><input id="receiveMultiSheet_ht_reportNo"/></td>
+<td><input id="receiveMultiSheet_ht_assignedDate"/></td>
+<td><input id="receiveMultiSheet_ht_armUsePeriod"/></td>
+<td><input id="receiveMultiSheet_ht_deadline"/></td>
+<td><input id="receiveMultiSheet_ht_customerManager"/></td>
+<td><input id="receiveMultiSheet_ht_appraiser"/></td>
+<td><input id="receiveMultiSheet_ht_client"/></td>
+<td><input id="receiveMultiSheet_ht_depositDate"/></td>
+<td><input id="receiveMultiSheet_ht_targetType"/></td>
+<td><input id="receiveMultiSheet_ht_region"/></td>
+<td><input id="receiveMultiSheet_ht_depositStatus"/></td>
+</tr></tbody>
+</table>
 </div>
 <textarea class="receiveMultiSheetPaste" id="receiveMultiSheet_ht_tsv" placeholder="행 복사 버튼을 누르면 이 내용이 탭 구분으로 복사됩니다." readonly=""></textarea>
 </div>
@@ -7857,7 +7957,34 @@ window.addEventListener('resize',applyZoom);
 </div>
 </div>
 <div class="receiveMultiSheetScroll">
-<table class="receiveMultiSheetTable"><thead><tr><th>감정서번호</th><th>배정일</th><th>마감일</th><th>고객담당자명</th><th>평가담당자명</th><th>업체명or의뢰인명</th><th>착수금입금날짜</th><th>평가대상</th><th>평가지역</th><th>착수금 입금~</th><th>처리완료날짜</th><th>평가금액</th><th>잔금입금여부</th></tr></thead><tbody><tr><td><input id="receiveMultiSheet_partner_reportNo"/></td><td><input id="receiveMultiSheet_partner_assignedDate"/></td><td><input id="receiveMultiSheet_partner_deadline"/></td><td><input id="receiveMultiSheet_partner_customerManager"/></td><td><input id="receiveMultiSheet_partner_appraiser"/></td><td><input id="receiveMultiSheet_partner_client"/></td><td><input id="receiveMultiSheet_partner_depositDate"/></td><td><input id="receiveMultiSheet_partner_targetType"/></td><td><input id="receiveMultiSheet_partner_region"/></td><td><input id="receiveMultiSheet_partner_depositStatus"/></td><td><input id="receiveMultiSheet_partner_doneDate"/></td><td><input id="receiveMultiSheet_partner_amount"/></td><td><input id="receiveMultiSheet_partner_balance"/></td></tr></tbody></table>
+<table class="receiveMultiSheetTable">
+<thead><tr>
+<th>감정서번호</th>
+<th>배정일<br/>(yyyy/mm/dd)</th>
+<th>ARM사용여부<br/>(기본)<br/>&amp;<br/>평가기한<br/>(일수)</th>
+<th>마감일<br/>(yyyy/mm/dd)</th>
+<th>고객담당자명</th>
+<th>평가담당자명</th>
+<th>업체명<br/>or 의뢰인명</th>
+<th>착수금입금날짜<br/>(yyyy/mm/dd)</th>
+<th>평가대상</th>
+<th>평가지역</th>
+<th>착수금입금전/진행<br/>/완료/홀딩/반려<br/>/취소</th>
+</tr></thead>
+<tbody><tr>
+<td><input id="receiveMultiSheet_partner_reportNo"/></td>
+<td><input id="receiveMultiSheet_partner_assignedDate"/></td>
+<td><input id="receiveMultiSheet_partner_armUsePeriod"/></td>
+<td><input id="receiveMultiSheet_partner_deadline"/></td>
+<td><input id="receiveMultiSheet_partner_customerManager"/></td>
+<td><input id="receiveMultiSheet_partner_appraiser"/></td>
+<td><input id="receiveMultiSheet_partner_client"/></td>
+<td><input id="receiveMultiSheet_partner_depositDate"/></td>
+<td><input id="receiveMultiSheet_partner_targetType"/></td>
+<td><input id="receiveMultiSheet_partner_region"/></td>
+<td><input id="receiveMultiSheet_partner_depositStatus"/></td>
+</tr></tbody>
+</table>
 </div>
 <textarea class="receiveMultiSheetPaste" id="receiveMultiSheet_partner_tsv" placeholder="행 복사 버튼을 누르면 이 내용이 탭 구분으로 복사됩니다." readonly=""></textarea>
 </div>
@@ -7925,13 +8052,24 @@ window.addEventListener('resize',applyZoom);
 <table class="receiveRightsSheetTable">
 <thead>
 <tr>
-<th>감정서번호</th><th>배정일</th><th>마감일</th><th>고객담당자명</th><th>평가담당자명</th><th>업체명or의뢰인명</th><th>착수금입금날짜</th><th>평가대상</th><th>평가지역</th><th>착수금 입금~</th><th>처리완료날짜</th><th>평가금액</th><th>잔금입금여부</th>
+<th>감정서번호</th>
+<th>배정일<br/>(yyyy/mm/dd)</th>
+<th>ARM사용여부<br/>(기본)<br/>&amp;<br/>평가기한<br/>(일수)</th>
+<th>마감일<br/>(yyyy/mm/dd)</th>
+<th>고객담당자명</th>
+<th>평가담당자명</th>
+<th>업체명<br/>or 의뢰인명</th>
+<th>착수금입금날짜<br/>(yyyy/mm/dd)</th>
+<th>평가대상</th>
+<th>평가지역</th>
+<th>착수금입금전/진행<br/>/완료/홀딩/반려<br/>/취소</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><input id="receiveRightsSheet_reportNo"/></td>
 <td><input id="receiveRightsSheet_assignedDate"/></td>
+<td><input id="receiveRightsSheet_armUsePeriod"/></td>
 <td><input id="receiveRightsSheet_deadline"/></td>
 <td><input id="receiveRightsSheet_customerManager"/></td>
 <td><input id="receiveRightsSheet_appraiser"/></td>
@@ -7940,9 +8078,6 @@ window.addEventListener('resize',applyZoom);
 <td><input id="receiveRightsSheet_targetType"/></td>
 <td><input id="receiveRightsSheet_region"/></td>
 <td><input id="receiveRightsSheet_depositStatus"/></td>
-<td><input id="receiveRightsSheet_doneDate"/></td>
-<td><input id="receiveRightsSheet_amount"/></td>
-<td><input id="receiveRightsSheet_balance"/></td>
 </tr>
 </tbody>
 </table>
@@ -10812,7 +10947,7 @@ function receiveSheetSet(id, value){
   if(el) el.value = value || '';
 }
 function receiveSheetIds(){
-  return ['reportNo','assignedDate','deadline','customerManager','appraiser','client','depositDate','targetType','region','depositStatus','doneDate','amount','balance'];
+  return ['reportNo','assignedDate','armUsePeriod','deadline','customerManager','appraiser','client','depositDate','targetType','region','depositStatus'];
 }
 function receiveSheetBuildTsvFromInputs(){
   const vals = receiveSheetIds().map(k => document.getElementById('receiveSheet_' + k)?.value || '');
@@ -10828,9 +10963,11 @@ function receiveSheetApplyFromCurrent(){
   const client = hasReceiptText ? receiveSheetExtractLine(text, '의뢰인') : '';
   const target = hasReceiptText ? receiveSheetExtractLine(text, '평가대상') : '';
 
+  // 배정일·ARM/평가기한·마감일·평가담당자명은 접수글 내용과 관계없이 비워둡니다.
   receiveSheetSet('reportNo', reportNo);
   receiveSheetSet('assignedDate', '');
-  receiveSheetSet('deadline', hasReceiptText ? receiveSheetExtractDeadline(text, reportNo) : '');
+  receiveSheetSet('armUsePeriod', '');
+  receiveSheetSet('deadline', '');
   receiveSheetSet('customerManager', hasReceiptText ? '김가민' : '');
   receiveSheetSet('appraiser', '');
   receiveSheetSet('client', client);
@@ -10838,9 +10975,6 @@ function receiveSheetApplyFromCurrent(){
   receiveSheetSet('targetType', target ? receiveSheetTargetType(target) : '');
   receiveSheetSet('region', target ? receiveSheetRegionFromTarget(target) : '');
   receiveSheetSet('depositStatus', hasReceiptText ? '진행' : '');
-  receiveSheetSet('doneDate', '');
-  receiveSheetSet('amount', '');
-  receiveSheetSet('balance', '');
   receiveSheetBuildTsvFromInputs();
 }
 function receiveSheetCopyRow(){
@@ -10900,8 +11034,7 @@ function receiveBuildMessage(parsed){
 - ${feePhrase}
 - 착수금 50만원 입금ㅇ
 
-- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!
-- [청구서 있는 엑셀 파일]은 폴더에 같이 업로드 부탁드려요! (추후 청구서 수정가능성)`;
+- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!`;
 }
 function receiveParseInput(raw){
   const lines = raw.split(/\r?\n/);
@@ -11155,8 +11288,7 @@ function receiveMultiBuildMessage(parsed, firmName='하이테크'){
 - ${feePhrase}
 - 착수금 50만원 입금ㅇ
 
-- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!
-- [청구서 있는 엑셀 파일]은 폴더에 같이 업로드 부탁드려요! (추후 청구서 수정가능성)`;
+- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!`;
 }
 function receiveMultiParseInput(raw){
   const lines = raw.split(/\r?\n/);
@@ -11352,8 +11484,7 @@ function receiveMultiBuildDualMessage(parsed, prefix='HI'){
 - ${feePhrase}
 - 착수금 각각 50만원 입금ㅇ
 
-- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!
-- [청구서 있는 엑셀 파일]은 폴더에 같이 업로드 부탁드려요! (추후 청구서 수정가능성)`;
+- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!`;
 }
 function receiveMultiParseInput(raw){
   const lines = raw.split(/\r?\n/);
@@ -11498,8 +11629,7 @@ function receiveMultiBuildDualMessage(parsed, prefix='HI'){
 - ${feePhrase}
 - 착수금 각각 50만원 입금ㅇ
 
-- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!
-- [청구서 있는 엑셀 파일]은 폴더에 같이 업로드 부탁드려요! (추후 청구서 수정가능성)`;
+- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!`;
 }
 function receiveMultiSetBothOutputs(htText, partnerText, highlight=true){
   receiveMultiSetOutput('receiveMultiHtOutput', htText, highlight);
@@ -11539,7 +11669,7 @@ function receiveMultiReset(){
 
 /* 복수접수 스프레드시트 붙여넣기용: 일반접수 규칙 기반, 하이테크/복수업체 2행 */
 function receiveMultiSheetIds(){
-  return ['reportNo','assignedDate','deadline','customerManager','appraiser','client','depositDate','targetType','region','depositStatus','doneDate','amount','balance'];
+  return ['reportNo','assignedDate','armUsePeriod','deadline','customerManager','appraiser','client','depositDate','targetType','region','depositStatus'];
 }
 function receiveMultiSheetSet(prefix, id, value){
   const el = document.getElementById(prefix + '_' + id);
@@ -11566,19 +11696,18 @@ function receiveMultiSheetFill(prefix, text, type){
   const client = hasReceiptText ? receiveSheetExtractLine(text, '의뢰인') : '';
   const target = hasReceiptText ? receiveSheetExtractLine(text, '평가대상') : '';
   const today = receiveSheetFormatDate(new Date());
+  // 하이테크/복수업체 모두 직접 관리하는 배정일·ARM/평가기한·마감일·평가담당자명은 자동입력하지 않습니다.
   receiveMultiSheetSet(prefix, 'reportNo', reportNo);
-  receiveMultiSheetSet(prefix, 'assignedDate', hasReceiptText && type === 'partner' ? today : '');
-  receiveMultiSheetSet(prefix, 'deadline', hasReceiptText ? receiveSheetExtractDeadline(text, reportNo) : '');
+  receiveMultiSheetSet(prefix, 'assignedDate', '');
+  receiveMultiSheetSet(prefix, 'armUsePeriod', '');
+  receiveMultiSheetSet(prefix, 'deadline', '');
   receiveMultiSheetSet(prefix, 'customerManager', hasReceiptText ? '김가민' : '');
-  receiveMultiSheetSet(prefix, 'appraiser', hasReceiptText && type === 'partner' ? receiveMultiSheetExtractTitleAssignee() : '');
+  receiveMultiSheetSet(prefix, 'appraiser', '');
   receiveMultiSheetSet(prefix, 'client', client);
   receiveMultiSheetSet(prefix, 'depositDate', hasReceiptText ? today : '');
   receiveMultiSheetSet(prefix, 'targetType', target ? receiveSheetTargetType(target) : '');
   receiveMultiSheetSet(prefix, 'region', target ? receiveSheetRegionFromTarget(target) : '');
   receiveMultiSheetSet(prefix, 'depositStatus', hasReceiptText ? '진행' : '');
-  receiveMultiSheetSet(prefix, 'doneDate', '');
-  receiveMultiSheetSet(prefix, 'amount', '');
-  receiveMultiSheetSet(prefix, 'balance', '');
   receiveMultiSheetBuildTsv(prefix);
 }
 function receiveMultiSheetApplyAll(){
@@ -11836,8 +11965,7 @@ function receiveRightsBuildMessage(parsed){
 - ${feeLine}
 - 착수금 50만원 입금ㅇ
 
-- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!
-- [청구서 있는 엑셀 파일]은 폴더에 같이 업로드 부탁드려요! (추후 청구서 수정가능성)`;
+- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!`;
 }
 function receiveRightsParseSections(text){
   const result = {};
@@ -12722,7 +12850,7 @@ if(document.readyState === 'loading'){
 
 /* 무형접수 스프레드시트 붙여넣기용: 일반접수 규칙 기반, 무형 평가대상만 별도 처리 */
 function receiveRightsSheetIds(){
-  return ['reportNo','assignedDate','deadline','customerManager','appraiser','client','depositDate','targetType','region','depositStatus','doneDate','amount','balance'];
+  return ['reportNo','assignedDate','armUsePeriod','deadline','customerManager','appraiser','client','depositDate','targetType','region','depositStatus'];
 }
 function receiveRightsSheetSet(id, value){
   const el = document.getElementById('receiveRightsSheet_' + id);
@@ -12756,9 +12884,11 @@ function receiveRightsSheetApplyFromCurrent(){
   const target = hasReceiptText ? receiveSheetExtractLine(text, '평가대상') : '';
   const today = hasReceiptText ? receiveSheetFormatDate(new Date()) : '';
 
+  // 배정일·ARM/평가기한·마감일·평가담당자명은 접수글 내용과 관계없이 비워둡니다.
   receiveRightsSheetSet('reportNo', reportNo);
   receiveRightsSheetSet('assignedDate', '');
-  receiveRightsSheetSet('deadline', hasReceiptText ? receiveSheetExtractDeadline(text, reportNo) : '');
+  receiveRightsSheetSet('armUsePeriod', '');
+  receiveRightsSheetSet('deadline', '');
   receiveRightsSheetSet('customerManager', hasReceiptText ? '김가민' : '');
   receiveRightsSheetSet('appraiser', '');
   receiveRightsSheetSet('client', client);
@@ -12766,9 +12896,6 @@ function receiveRightsSheetApplyFromCurrent(){
   receiveRightsSheetSet('targetType', target ? receiveRightsSheetTargetType(target) : '');
   receiveRightsSheetSet('region', '');
   receiveRightsSheetSet('depositStatus', hasReceiptText ? '진행' : '');
-  receiveRightsSheetSet('doneDate', '');
-  receiveRightsSheetSet('amount', '');
-  receiveRightsSheetSet('balance', '');
   receiveRightsSheetBuildTsvFromInputs();
 }
 function receiveRightsSheetCopyRow(){
