@@ -11696,13 +11696,14 @@ function receiveMultiSheetFill(prefix, text, type){
   const client = hasReceiptText ? receiveSheetExtractLine(text, '의뢰인') : '';
   const target = hasReceiptText ? receiveSheetExtractLine(text, '평가대상') : '';
   const today = receiveSheetFormatDate(new Date());
-  // 하이테크/복수업체 모두 직접 관리하는 배정일·ARM/평가기한·마감일·평가담당자명은 자동입력하지 않습니다.
+  // 배정일·ARM/평가기한·마감일은 직접 관리하고, 복수업체 평가담당자명은 제목의 담당자명을 자동 반영합니다.
+  const appraiser = type === 'partner' ? receiveMultiSheetExtractTitleAssignee() : '';
   receiveMultiSheetSet(prefix, 'reportNo', reportNo);
   receiveMultiSheetSet(prefix, 'assignedDate', '');
   receiveMultiSheetSet(prefix, 'armUsePeriod', '');
   receiveMultiSheetSet(prefix, 'deadline', '');
   receiveMultiSheetSet(prefix, 'customerManager', hasReceiptText ? '김가민' : '');
-  receiveMultiSheetSet(prefix, 'appraiser', '');
+  receiveMultiSheetSet(prefix, 'appraiser', appraiser);
   receiveMultiSheetSet(prefix, 'client', client);
   receiveMultiSheetSet(prefix, 'depositDate', hasReceiptText ? today : '');
   receiveMultiSheetSet(prefix, 'targetType', target ? receiveSheetTargetType(target) : '');
@@ -13111,6 +13112,8 @@ function mentToggleDoneCustomerMulti(btn){
 function mentUpdateDoneCustomer(){
   const role = mentRole('doneCustomer');
   const includePartner = mentVal('ment_doneCustomer_multiMode') === '1';
+  const htBalance = mentVal('ment_doneCustomer_ht');
+  const partnerBalance = mentVal('ment_doneCustomer_partner');
   let text = `안녕하세요 ${role}!😊
 평가금액 확정되어 확인용 청구서와 괄호감정표 바로 전달드립니다:)
 
@@ -13125,7 +13128,7 @@ function mentUpdateDoneCustomer(){
 [주소, 성함, 번호] 요청드립니다
 
 🔸 하이테크 잔금 
-아래 계좌로 입금 부탁드립니다! 
+${htBalance ? htBalance + '원 ' : ''}아래 계좌로 입금 부탁드립니다! 
 (상속/증여 평가: 상속인/수증인 성함으로 입금 추천)
 
 ➡️ 잔금 입금 계좌
@@ -13135,7 +13138,7 @@ function mentUpdateDoneCustomer(){
     text += `
 
 🔹 복수업체 잔금
-아래 계좌로 입금 부탁드립니다! 
+${partnerBalance ? partnerBalance + '원 ' : ''}아래 계좌로 입금 부탁드립니다! 
 (상속/증여 평가: 상속인/수증인 성함으로 입금 추천)
 
 ➡️ 복수업체 잔금 입금 계좌
@@ -13214,7 +13217,6 @@ function mentUpdateStart(){
   const partnerBlock = multiMode ? `
 
 🔹복수업체 착수금
-
 ${partnerPhrase}
 (상속/증여 평가 : 상속인/수증인 성함으로 입금 추천)
 
@@ -13240,7 +13242,6 @@ ${partnerPhrase}
 -성함 or 상호:
 
 🔸하이테크 착수금
-
 ${htPhrase}
 (상속/증여 평가 : 상속인/수증인 성함으로 입금 추천)
 
