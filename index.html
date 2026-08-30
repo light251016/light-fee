@@ -7021,24 +7021,44 @@ window.addEventListener('resize',applyZoom);
 </div>
 </section>
 <section class="feePanel">
-<div class="feePanelTitle"><span class="num">2</span> 계산기</div>
+<div class="feePanelTitle"><span class="num">2</span> 자동계산</div>
 <div class="feeTableScroll">
-<table class="feeTable compactCalc feeCalcTable">
-<colgroup>
-<col class="labelCol"/>
-<col class="btnCol"/>
-<col class="inputCol"/>
-</colgroup>
+<table class="feeTable">
+<thead>
+<tr>
+<th class="resetCol">초기화</th>
+<th class="moneyCol">평가금액</th>
+<th class="smallCol">할증</th>
+<th class="moneyCol">추가비용</th>
+<th class="regionCol">지역명</th>
+<th class="travelCol">여비</th>
+<th class="moneyCol">실비</th>
+<th class="resultCol">최종수수료<br/>(VAT 포함)</th>
+<th class="resultCol">특용비<br/>(기준-하한)</th>
+</tr>
+</thead>
 <tbody>
 <tr>
-<th class="feeRowHead">수식</th>
-<td><button class="feeBtn primary" onclick="feeOnlyRunFormula()">계산</button></td>
-<td><textarea class="feeTextarea" id="feeOnlyFormulaInput" onkeydown="if(event.key==='Enter' &amp;&amp; !event.shiftKey){event.preventDefault(); feeOnlyRunFormula();}"></textarea></td>
+<td><button class="feeBtn" onclick="feeOnlyResetAuto(1)">초기화</button></td>
+<td><input class="feeInput" id="feeAuto1_amount" oninput="feeOnlyUpdateAuto(1)"/></td>
+<td><input class="feeInput" id="feeAuto1_markup" oninput="feeOnlyUpdateAuto(1)" value="1"/></td>
+<td><input class="feeInput" id="feeAuto1_extra" oninput="feeOnlyUpdateAuto(1)"/></td>
+<td><input class="feeInput regionInput" id="feeAuto1_region" list="regionList" oninput="feeOnlyUpdateAuto(1)"/></td>
+<td><div class="feeOutputCell" id="feeAuto1_travel"></div></td>
+<td><input class="feeInput" id="feeAuto1_actual" oninput="feeOnlyUpdateAuto(1)" value="30000"/></td>
+<td><div class="feeOutputBox feeResultStrong" id="feeAuto1_final"></div></td>
+<td><div class="feeOutputBox feeResultStrong" id="feeAuto1_special"></div></td>
 </tr>
 <tr>
-<th class="feeRowHead">결과</th>
-<td><button class="feeBtn" onclick="feeOnlySetVal('feeOnlyFormulaInput',''); feeOnlySetText('feeOnlyFormulaResult','');">초기화</button></td>
-<td><div class="feeOutputBox feeFormulaResult" id="feeOnlyFormulaResult"></div></td>
+<td><button class="feeBtn" onclick="feeOnlyResetAuto(2)">초기화</button></td>
+<td><input class="feeInput" id="feeAuto2_amount" oninput="feeOnlyUpdateAuto(2)"/></td>
+<td><input class="feeInput" id="feeAuto2_markup" oninput="feeOnlyUpdateAuto(2)" value="1"/></td>
+<td><input class="feeInput" id="feeAuto2_extra" oninput="feeOnlyUpdateAuto(2)"/></td>
+<td><input class="feeInput regionInput" id="feeAuto2_region" list="regionList" oninput="feeOnlyUpdateAuto(2)"/></td>
+<td><div class="feeOutputCell" id="feeAuto2_travel"></div></td>
+<td><input class="feeInput" id="feeAuto2_actual" oninput="feeOnlyUpdateAuto(2)" value="30000"/></td>
+<td><div class="feeOutputBox feeResultStrong" id="feeAuto2_final"></div></td>
+<td><div class="feeOutputBox feeResultStrong" id="feeAuto2_special"></div></td>
 </tr>
 </tbody>
 </table>
@@ -7089,51 +7109,7 @@ window.addEventListener('resize',applyZoom);
 </div>
 </section>
 <section class="feePanel">
-<div class="feePanelTitle"><span class="num">4</span> 자동계산</div>
-<div class="feeTableScroll">
-<table class="feeTable">
-<thead>
-<tr>
-<th class="resetCol">초기화</th>
-<th class="moneyCol">평가금액</th>
-<th class="smallCol">할증</th>
-<th class="moneyCol">추가비용</th>
-<th class="regionCol">지역명</th>
-<th class="travelCol">여비</th>
-<th class="moneyCol">실비</th>
-<th class="resultCol">최종수수료<br/>(VAT 포함)</th>
-<th class="resultCol">특용비<br/>(기준-하한)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><button class="feeBtn" onclick="feeOnlyResetAuto(1)">초기화</button></td>
-<td><input class="feeInput" id="feeAuto1_amount" oninput="feeOnlyUpdateAuto(1)"/></td>
-<td><input class="feeInput" id="feeAuto1_markup" oninput="feeOnlyUpdateAuto(1)" value="1"/></td>
-<td><input class="feeInput" id="feeAuto1_extra" oninput="feeOnlyUpdateAuto(1)"/></td>
-<td><input class="feeInput regionInput" id="feeAuto1_region" list="regionList" oninput="feeOnlyUpdateAuto(1)"/></td>
-<td><div class="feeOutputCell" id="feeAuto1_travel"></div></td>
-<td><input class="feeInput" id="feeAuto1_actual" oninput="feeOnlyUpdateAuto(1)" value="30000"/></td>
-<td><div class="feeOutputBox feeResultStrong" id="feeAuto1_final"></div></td>
-<td><div class="feeOutputBox feeResultStrong" id="feeAuto1_special"></div></td>
-</tr>
-<tr>
-<td><button class="feeBtn" onclick="feeOnlyResetAuto(2)">초기화</button></td>
-<td><input class="feeInput" id="feeAuto2_amount" oninput="feeOnlyUpdateAuto(2)"/></td>
-<td><input class="feeInput" id="feeAuto2_markup" oninput="feeOnlyUpdateAuto(2)" value="1"/></td>
-<td><input class="feeInput" id="feeAuto2_extra" oninput="feeOnlyUpdateAuto(2)"/></td>
-<td><input class="feeInput regionInput" id="feeAuto2_region" list="regionList" oninput="feeOnlyUpdateAuto(2)"/></td>
-<td><div class="feeOutputCell" id="feeAuto2_travel"></div></td>
-<td><input class="feeInput" id="feeAuto2_actual" oninput="feeOnlyUpdateAuto(2)" value="30000"/></td>
-<td><div class="feeOutputBox feeResultStrong" id="feeAuto2_final"></div></td>
-<td><div class="feeOutputBox feeResultStrong" id="feeAuto2_special"></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section class="feePanel">
-<div class="feePanelTitle"><span class="num">5</span> 희망금액</div>
+<div class="feePanelTitle"><span class="num">4</span> 희망금액</div>
 <div class="feeTableScroll">
 <table class="feeTable compactGoal feeGoalMainTable">
 <thead>
@@ -8105,17 +8081,22 @@ window.addEventListener('resize',applyZoom);
 <button onclick="rightsGenerate()">반영</button>
 <button class="light" onclick="rightsReset()">초기화</button>
 </div>
-<div class="rightsSettings">[설정]
-*자동계산 항목: 영업권 / 특허권 / 상표권 / 저작권 / 인허가권 / 디자인권 / 판권 / 보험평가
-
-*권리 평가
--2개까지 추가비용 없음
--3-5개 +50만원  /  6-8개 +100만원  /  9-11개 +150만원  /  12개 이상 +개별협상
--평가가 난해한 특이건 개별협상으로 수수료율 정함
-
-*영업권, 권리 수수료 60억 미만 픽스
-
-*보험상품 10억 이상 수수료 개별협상</div>
+<div class="field" style="margin-top:12px;">
+<label for="rightsCount">권리평가 갯수</label>
+<select class="userInput" id="rightsCount" onchange="rightsGenerate()">
+<option value="1" selected>1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+<option value="11">11</option>
+</select>
+</div>
 </section>
 <section class="card rightsCard">
 <div class="sectionTitle"><span class="badge">2</span> 전달 문구</div>
@@ -8131,21 +8112,21 @@ window.addEventListener('resize',applyZoom);
 <div class="rightsTableWrap">
 <h3>영업권 수수료표</h3>
 <table class="resultTable">
-<thead><tr><th>구간</th><th>수수료</th><th>특용비</th></tr></thead>
+<thead><tr><th>구간</th><th>최저수수료</th><th>특용비</th><th>총수수료</th><th>vat 포함 최종</th></tr></thead>
 <tbody id="goodwillFeeBody"></tbody>
 </table>
 </div>
 <div class="rightsTableWrap">
 <h3>특허권/상표권/저작권/인허가권/디자인권/판권 공통표</h3>
 <table class="resultTable">
-<thead><tr><th>구간</th><th>수수료</th><th>특용비</th></tr></thead>
+<thead><tr><th>구간</th><th>최저수수료</th><th>특용비</th><th>총수수료</th><th>vat 포함 최종</th></tr></thead>
 <tbody id="commonRightsFeeBody"></tbody>
 </table>
 </div>
 <div class="rightsTableWrap">
 <h3>보험평가 수수료표</h3>
 <table class="resultTable">
-<thead><tr><th>구간</th><th>수수료</th><th>특용비</th></tr></thead>
+<thead><tr><th>구간</th><th>최저수수료</th><th>특용비</th><th>총수수료</th><th>vat 포함 최종</th></tr></thead>
 <tbody id="insuranceFeeBody"></tbody>
 </table>
 </div>
@@ -11939,7 +11920,7 @@ function receiveRightsFeeRow(type, amountValue){
 function receiveRightsBuildMessage(parsed){
   const deadline = receiveRightsAddBusinessDays(new Date(), 5);
   const row = receiveRightsFeeRow(parsed.type, parsed.progressAmount);
-  const feeShort = row ? receiveRightsFeeShort(row.fee) : '---만';
+  const feeShort = row ? receiveRightsFeeShort(row.totalFee) : '---만';
   const specialShort = row ? receiveRightsFeeShort(row.extra) : '---만';
   const amountValue = parsed.progressAmount;
   const guideFeeText = parsed.selectedFeeText || '';
@@ -12084,46 +12065,73 @@ const rightsTypes = ['영업권','특허권','상표권','저작권','인허가�
 const insuranceTypeLabel = '보험평가';
 const insuranceKeywords = ['법인보험','종신보험','보험상품','보험'];
 const goodwillFeeTable = [
-  { label:'최저가~3억 미만', min:0, max:3, fee:220, extra:20 },
-  { label:'3억 이상~5억 미만', min:3, max:5, fee:275, extra:25 },
-  { label:'5억 이상~7억 미만', min:5, max:7, fee:330, extra:30 },
-  { label:'7억 이상~10억 미만', min:7, max:10, fee:385, extra:35 },
-  { label:'10억 이상~13억 미만', min:10, max:13, fee:440, extra:40 },
-  { label:'13억 이상~16억 미만', min:13, max:16, fee:495, extra:45 },
-  { label:'16억 이상~20억 미만', min:16, max:20, fee:550, extra:50 },
-  { label:'20억 이상~25억 미만', min:20, max:25, fee:605, extra:55 },
-  { label:'25억 이상~30억 미만', min:25, max:30, fee:660, extra:60 },
-  { label:'30억 이상~40억 미만', min:30, max:40, fee:770, extra:70 },
-  { label:'40억 이상~50억 미만', min:40, max:50, fee:880, extra:80 },
-  { label:'50억 이상~60억 미만', min:50, max:60, fee:990, extra:90 },
-  { label:'60억 이상~70억 미만', min:60, max:70, fee:1100, extra:100 },
-  { label:'70억 이상~80억 미만', min:70, max:80, fee:1210, extra:110 },
-  { label:'80억 이상~90억 미만', min:80, max:90, fee:1320, extra:120 },
-  { label:'90억 이상~100억 미만', min:90, max:100, fee:1430, extra:130 },
+  { label:'최저가~3억 미만', min:0, max:3, minFee:200, extra:20, totalFee:220 },
+  { label:'3억 이상~5억 미만', min:3, max:5, minFee:250, extra:25, totalFee:275 },
+  { label:'5억 이상~7억 미만', min:5, max:7, minFee:300, extra:30, totalFee:330 },
+  { label:'7억 이상~10억 미만', min:7, max:10, minFee:350, extra:35, totalFee:385 },
+  { label:'10억 이상~13억 미만', min:10, max:13, minFee:400, extra:40, totalFee:440 },
+  { label:'13억 이상~16억 미만', min:13, max:16, minFee:450, extra:45, totalFee:495 },
+  { label:'16억 이상~20억 미만', min:16, max:20, minFee:500, extra:50, totalFee:550 },
+  { label:'20억 이상~25억 미만', min:20, max:25, minFee:550, extra:55, totalFee:605 },
+  { label:'25억 이상~30억 미만', min:25, max:30, minFee:600, extra:60, totalFee:660 },
+  { label:'30억 이상~40억 미만', min:30, max:40, minFee:700, extra:70, totalFee:770 },
+  { label:'40억 이상~50억 미만', min:40, max:50, minFee:800, extra:80, totalFee:880 },
+  { label:'50억 이상~60억 미만', min:50, max:60, minFee:900, extra:90, totalFee:990 },
+  { label:'60억 이상~70억 미만', min:60, max:70, minFee:1000, extra:100, totalFee:1100 },
+  { label:'70억 이상~80억 미만', min:70, max:80, minFee:1100, extra:110, totalFee:1210 },
+  { label:'80억 이상~90억 미만', min:80, max:90, minFee:1200, extra:120, totalFee:1320 },
+  { label:'90억 이상~100억 미만', min:90, max:100, minFee:1300, extra:130, totalFee:1430 },
+  { label:'100억 이상~110억 미만', min:100, max:110, minFee:1400, extra:140, totalFee:1540 },
+  { label:'110억 이상~120억 미만', min:110, max:120, minFee:1500, extra:150, totalFee:1650 },
+  { label:'120억 이상~130억 미만', min:120, max:130, minFee:1600, extra:160, totalFee:1760 },
+  { label:'130억 이상~140억 미만', min:130, max:140, minFee:1700, extra:170, totalFee:1870 },
+  { label:'140억 이상~150억 미만', min:140, max:150, minFee:1800, extra:180, totalFee:1980 },
+  { label:'150억 이상~160억 미만', min:150, max:160, minFee:1900, extra:190, totalFee:2090 },
+  { label:'160억 이상~170억 미만', min:160, max:170, minFee:2000, extra:200, totalFee:2200 },
+  { label:'170억 이상~180억 미만', min:170, max:180, minFee:2100, extra:210, totalFee:2310 },
+  { label:'180억 이상~190억 미만', min:180, max:190, minFee:2200, extra:220, totalFee:2420 },
+  { label:'190억 이상~200억 미만', min:190, max:200, minFee:2300, extra:230, totalFee:2530 },
 ];
 const commonRightsFeeTable = [
-  { label:'최저가~3억 미만', min:0, max:3, fee:370, extra:20 },
-  { label:'3억 이상~5억 미만', min:3, max:5, fee:425, extra:25 },
-  { label:'5억 이상~7억 미만', min:5, max:7, fee:480, extra:30 },
-  { label:'7억 이상~10억 미만', min:7, max:10, fee:535, extra:35 },
-  { label:'10억 이상~13억 미만', min:10, max:13, fee:590, extra:40 },
-  { label:'13억 이상~16억 미만', min:13, max:16, fee:645, extra:45 },
-  { label:'16억 이상~20억 미만', min:16, max:20, fee:700, extra:50 },
-  { label:'20억 이상~25억 미만', min:20, max:25, fee:755, extra:55 },
-  { label:'25억 이상~30억 미만', min:25, max:30, fee:810, extra:60 },
-  { label:'30억 이상~40억 미만', min:30, max:40, fee:920, extra:70 },
-  { label:'40억 이상~50억 미만', min:40, max:50, fee:1030, extra:80 },
-  { label:'50억 이상~60억 미만', min:50, max:60, fee:1140, extra:90 },
-  { label:'60억 이상~70억 미만', min:60, max:70, fee:1250, extra:100 },
-  { label:'70억 이상~80억 미만', min:70, max:80, fee:1360, extra:110 },
-  { label:'80억 이상~90억 미만', min:80, max:90, fee:1470, extra:120 },
-  { label:'90억 이상~100억 미만', min:90, max:100, fee:1580, extra:130 },
+  { label:'최저가~3억 미만', min:0, max:3, minFee:350, extra:20, totalFee:370 },
+  { label:'3억 이상~5억 미만', min:3, max:5, minFee:400, extra:25, totalFee:425 },
+  { label:'5억 이상~7억 미만', min:5, max:7, minFee:450, extra:30, totalFee:480 },
+  { label:'7억 이상~10억 미만', min:7, max:10, minFee:500, extra:35, totalFee:535 },
+  { label:'10억 이상~13억 미만', min:10, max:13, minFee:550, extra:40, totalFee:590 },
+  { label:'13억 이상~16억 미만', min:13, max:16, minFee:600, extra:45, totalFee:645 },
+  { label:'16억 이상~20억 미만', min:16, max:20, minFee:650, extra:50, totalFee:700 },
+  { label:'20억 이상~25억 미만', min:20, max:25, minFee:700, extra:55, totalFee:755 },
+  { label:'25억 이상~30억 미만', min:25, max:30, minFee:750, extra:60, totalFee:810 },
+  { label:'30억 이상~40억 미만', min:30, max:40, minFee:850, extra:70, totalFee:920 },
+  { label:'40억 이상~50억 미만', min:40, max:50, minFee:950, extra:80, totalFee:1030 },
+  { label:'50억 이상~60억 미만', min:50, max:60, minFee:1050, extra:90, totalFee:1140 },
+  { label:'60억 이상~70억 미만', min:60, max:70, minFee:1150, extra:100, totalFee:1250 },
+  { label:'70억 이상~80억 미만', min:70, max:80, minFee:1250, extra:110, totalFee:1360 },
+  { label:'80억 이상~90억 미만', min:80, max:90, minFee:1350, extra:120, totalFee:1470 },
+  { label:'90억 이상~100억 미만', min:90, max:100, minFee:1450, extra:130, totalFee:1580 },
+  { label:'100억 이상~110억 미만', min:100, max:110, minFee:1550, extra:140, totalFee:1690 },
+  { label:'110억 이상~120억 미만', min:110, max:120, minFee:1650, extra:150, totalFee:1800 },
+  { label:'120억 이상~130억 미만', min:120, max:130, minFee:1750, extra:160, totalFee:1910 },
+  { label:'130억 이상~140억 미만', min:130, max:140, minFee:1850, extra:170, totalFee:2020 },
+  { label:'140억 이상~150억 미만', min:140, max:150, minFee:1950, extra:180, totalFee:2130 },
+  { label:'150억 이상~160억 미만', min:150, max:160, minFee:2050, extra:190, totalFee:2240 },
+  { label:'160억 이상~170억 미만', min:160, max:170, minFee:2150, extra:200, totalFee:2350 },
+  { label:'170억 이상~180억 미만', min:170, max:180, minFee:2250, extra:210, totalFee:2460 },
+  { label:'180억 이상~190억 미만', min:180, max:190, minFee:2350, extra:220, totalFee:2570 },
+  { label:'190억 이상~200억 미만', min:190, max:200, minFee:2450, extra:230, totalFee:2680 },
 ];
 const insuranceFeeTable = [
-  { label:'0~3억 미만', min:0, max:3, fee:420, extra:20 },
-  { label:'3억 이상~5억 미만', min:3, max:5, fee:530, extra:30 },
-  { label:'5억 이상~10억 미만', min:5, max:10, fee:640, extra:40 },
-  { label:'10억 이상', min:10, max:Infinity, fee:'개별협상', extra:'개별협상' },
+  { label:'0~3억 미만', min:0, max:3, minFee:400, extra:20, totalFee:420 },
+  { label:'3억 이상~5억 미만', min:3, max:5, minFee:500, extra:30, totalFee:530 },
+  { label:'5억 이상~10억 미만', min:5, max:10, minFee:600, extra:40, totalFee:640 },
+  { label:'10억 이상', min:10, max:Infinity, minFee:'개별협상', extra:'개별협상', totalFee:'개별협상' },
+];
+const commonRightsCountFeeRows = [
+  { label:'2건까지', surcharge:'추가금 0원' },
+  { label:'3-5건', surcharge:'추가금 50만원' },
+  { label:'6-8건', surcharge:'추가금 100만원' },
+  { label:'9-11건', surcharge:'추가금 150만원' },
+  { label:'12개 이상', surcharge:'개별협상' },
 ];
 function rightsNormalizeText(s){ return String(s || '').replace(/[，]/g, ',').replace(/[–—~〜]/g, '-').replace(/\s+/g, ' ').trim(); }
 function rightsNumberTrim(n){
@@ -12152,6 +12160,29 @@ function rightsFormatAmount(eok){
 function rightsFeeLabel(v){
   if(typeof v === 'string') return v;
   return rightsNumberTrim(v) + '만원';
+}
+function rightsVatIncludedFee(v){
+  if(typeof v === 'string') return v;
+  return Math.round(v * 1.1 * 10000) / 10000;
+}
+function rightsGetCount(){
+  const el = document.getElementById('rightsCount');
+  const count = Number(el?.value || 1);
+  return Number.isFinite(count) && count >= 1 ? count : 1;
+}
+function rightsCountSurcharge(type, count){
+  if(type === '영업권' || type === insuranceTypeLabel) return 0;
+  if(count <= 2) return 0;
+  if(count <= 5) return 50;
+  if(count <= 8) return 100;
+  if(count <= 11) return 150;
+  return '개별협상';
+}
+function rightsTotalFeeWithCount(type, totalFee, count){
+  if(typeof totalFee === 'string') return totalFee;
+  const surcharge = rightsCountSurcharge(type, count);
+  if(typeof surcharge === 'string') return surcharge;
+  return totalFee + surcharge;
 }
 function rightsFindType(line){
   const explicitRight = rightsTypes.find(t => line.includes(t));
@@ -12285,7 +12316,8 @@ function rightsRowsFor(type, min, max){
 }
 function rightsBuildMessage(item){
   const rows = rightsRowsFor(item.type, item.min, item.max);
-  const feeLines = rows.map(r => `•${r.label}: ${rightsFeeLabel(r.fee)}`).join('\n');
+  const rightsCount = rightsGetCount();
+  const feeLines = rows.map(r => `•${r.label}: ${rightsFeeLabel(rightsVatIncludedFee(rightsTotalFeeWithCount(item.type, r.totalFee, rightsCount)))}`).join('\n');
   const extraLines = rows.map(r => `•${r.label}: ${rightsFeeLabel(r.extra)}`).join('\n');
   const amountBlock = item.isSingleAmount
     ? `🔸예상평가액\n•희망금액 ${item.wishText || item.minText}`
@@ -12298,7 +12330,7 @@ function rightsBuildMessage(item){
 
 ${amountBlock}
 
-🔸${item.type} 예상 수수료(vat 별도)
+🔸${item.type} 예상 수수료(vat 포함)
 ${feeLines}
 
 🔸${item.type} 예상 특용비
@@ -12340,7 +12372,9 @@ function rightsGenerate(){
 function rightsReset(){
   const input = document.getElementById('rightsInput');
   const out = document.getElementById('rightsMsg');
+  const count = document.getElementById('rightsCount');
   if(input) input.value = '';
+  if(count) count.value = '1';
   if(out) out.textContent = '정보를 입력하고 반영을 누르면 권리평가 안내문이 생성됩니다.';
 }
 function rightsCopyMsg(){
@@ -12351,9 +12385,11 @@ function rightsRenderTables(){
   const good = document.getElementById('goodwillFeeBody');
   const common = document.getElementById('commonRightsFeeBody');
   const insurance = document.getElementById('insuranceFeeBody');
-  if(good) good.innerHTML = goodwillFeeTable.map(r => `<tr><td>${r.label}</td><td>${rightsFeeLabel(r.fee)}</td><td>${rightsFeeLabel(r.extra)}</td></tr>`).join('');
-  if(common) common.innerHTML = commonRightsFeeTable.map(r => `<tr><td>${r.label}</td><td>${rightsFeeLabel(r.fee)}</td><td>${rightsFeeLabel(r.extra)}</td></tr>`).join('');
-  if(insurance) insurance.innerHTML = insuranceFeeTable.map(r => `<tr><td>${r.label}</td><td>${rightsFeeLabel(r.fee)}</td><td>${rightsFeeLabel(r.extra)}</td></tr>`).join('');
+  const renderRow = r => `<tr><td>${r.label}</td><td>${rightsFeeLabel(r.minFee)}</td><td>${rightsFeeLabel(r.extra)}</td><td>${rightsFeeLabel(r.totalFee)}</td><td>${rightsFeeLabel(rightsVatIncludedFee(r.totalFee))}</td></tr>`;
+  const renderCountFeeRow = r => `<tr><td>${r.label}</td><td>${r.surcharge}</td><td></td><td></td><td></td></tr>`;
+  if(good) good.innerHTML = goodwillFeeTable.map(renderRow).join('');
+  if(common) common.innerHTML = commonRightsFeeTable.map(renderRow).join('') + commonRightsCountFeeRows.map(renderCountFeeRow).join('');
+  if(insurance) insurance.innerHTML = insuranceFeeTable.map(renderRow).join('');
 }
 rightsRenderTables();
 
