@@ -2702,6 +2702,229 @@ input, textarea, [contenteditable="true"] {
   }
 }
 
+/* 착수 설정: 업체별 0~5건 선택 버튼을 한 줄로 간소화 */
+#ment_sub_start .mentOptionBox{
+  padding:8px !important;
+  margin-top:7px !important;
+}
+#ment_sub_start .mentOptionBox > b{
+  font-size:12px;
+}
+#ment_sub_start .mentCountBtns{
+  display:grid !important;
+  grid-template-columns:repeat(6, minmax(0, 1fr));
+  gap:4px !important;
+  margin:5px 0 1px !important;
+  width:100%;
+}
+#ment_sub_start .mentCountBtns button{
+  width:100% !important;
+  min-width:0 !important;
+  height:28px;
+  padding:0 !important;
+  border-radius:8px;
+  justify-content:center !important;
+  font-size:12px;
+}
+
+/* 평가완료 설정: 업체별 잔금 입력칸 추가/삭제 */
+#ment_sub_done .mentDoneCompanies{
+  display:grid;
+  gap:8px;
+  min-width:0;
+}
+#ment_sub_done .mentDoneCompany{
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:8px;
+  min-width:0;
+}
+#ment_sub_done .mentDoneCompanyHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  margin-bottom:6px;
+  font-size:12px;
+}
+#ment_sub_done .mentDoneCompanyHead button{
+  flex:0 0 auto;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  padding:5px 7px;
+  background:#fff;
+  color:#334155;
+  font-size:11px;
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
+}
+#ment_sub_done .mentDoneAmountRows{
+  display:grid;
+  gap:5px;
+}
+#ment_sub_done .mentDoneAmountRow{
+  display:grid;
+  grid-template-columns:28px minmax(0, 1fr) 14px 24px;
+  gap:4px;
+  align-items:center;
+  min-width:0;
+}
+#ment_sub_done .mentDoneAmountRow:not(:has(.mentDoneRemove)){
+  grid-template-columns:28px minmax(0, 1fr) 14px;
+}
+#ment_sub_done .mentDoneAmountIndex,
+#ment_sub_done .mentDoneWon{
+  color:#64748b;
+  font-size:11px;
+  font-weight:900;
+  text-align:center;
+}
+#ment_sub_done .mentDoneAmount{
+  width:100% !important;
+  min-width:0 !important;
+  padding:7px 8px !important;
+  border:1px solid #d1d5db;
+  border-radius:9px;
+  background:var(--mentYellow);
+  text-align:right;
+  font-size:13px !important;
+  font-weight:900;
+}
+#ment_sub_done .mentDoneRemove{
+  width:24px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-radius:7px;
+  background:#fee2e2;
+  color:#b91c1c;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* 특용비 설정: 평가완료와 동일한 업체별 금액 입력칸 추가/삭제 */
+#ment_sub_special .mentDoneCompanies{
+  display:grid;
+  gap:8px;
+  min-width:0;
+}
+#ment_sub_special .mentDoneCompany{
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:8px;
+  min-width:0;
+}
+#ment_sub_special .mentDoneCompanyHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+  margin-bottom:6px;
+  font-size:12px;
+}
+#ment_sub_special .mentDoneCompanyHead button{
+  flex:0 0 auto;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  padding:5px 7px;
+  background:#fff;
+  color:#334155;
+  font-size:11px;
+  font-weight:900;
+  cursor:pointer;
+  white-space:nowrap;
+}
+#ment_sub_special .mentDoneAmountRows{
+  display:grid;
+  gap:5px;
+}
+#ment_sub_special .mentDoneAmountRow{
+  display:grid;
+  grid-template-columns:28px minmax(0, 1fr) 14px 24px;
+  gap:4px;
+  align-items:center;
+  min-width:0;
+}
+#ment_sub_special .mentDoneAmountRow:not(:has(.mentDoneRemove)){
+  grid-template-columns:28px minmax(0, 1fr) 14px;
+}
+#ment_sub_special .mentDoneAmountIndex,
+#ment_sub_special .mentDoneWon{
+  color:#64748b;
+  font-size:11px;
+  font-weight:900;
+  text-align:center;
+}
+#ment_sub_special .mentDoneAmount{
+  width:100% !important;
+  min-width:0 !important;
+  padding:7px 8px !important;
+  border:1px solid #d1d5db;
+  border-radius:9px;
+  background:var(--mentYellow);
+  text-align:right;
+  font-size:13px !important;
+  font-weight:900;
+}
+#ment_sub_special .mentDoneRemove{
+  width:24px;
+  height:28px;
+  padding:0;
+  border:0;
+  border-radius:7px;
+  background:#fee2e2;
+  color:#b91c1c;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+/* 대상 선택: 지정 메뉴에서만 작은 버튼형 그리드로 표시 */
+#ment_sub_takgam .mentRoleChips,
+#ment_sub_firstContact .mentRoleChips,
+#ment_sub_done .mentRoleChips,
+#ment_sub_finish .mentRoleChips{
+  display:grid !important;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:4px !important;
+  margin:5px 0 8px !important;
+  width:100%;
+}
+#ment_sub_takgam .mentRoleChips label,
+#ment_sub_firstContact .mentRoleChips label,
+#ment_sub_done .mentRoleChips label,
+#ment_sub_finish .mentRoleChips label{
+  width:100% !important;
+  min-width:0 !important;
+  height:28px;
+  padding:0 3px !important;
+  border-radius:8px !important;
+  justify-content:center !important;
+  font-size:11px !important;
+  line-height:1 !important;
+  white-space:nowrap;
+}
+#ment_sub_takgam .mentRoleChips input[type="radio"],
+#ment_sub_firstContact .mentRoleChips input[type="radio"],
+#ment_sub_done .mentRoleChips input[type="radio"],
+#ment_sub_finish .mentRoleChips input[type="radio"]{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+@media(max-width:640px){
+  #ment_sub_takgam .mentRoleChips,
+  #ment_sub_firstContact .mentRoleChips,
+  #ment_sub_done .mentRoleChips,
+  #ment_sub_finish .mentRoleChips{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* 하감의뢰서 모바일 기본 배율/버튼 보정 */
 #page_hagamRequest .quoteEmbedWrap{max-width:100%;overflow:auto;}
 #page_hagamRequest .hagamRequestFrame{display:block;width:100%;}
@@ -2932,11 +3155,13 @@ input, textarea, [contenteditable="true"] {
 <div class="mentRoleChips">
 <label><input name="mentRole_takgam" onchange="mentChooseRole('takgam','대표님')" type="radio"/> 대표님</label>
 <label><input checked="" name="mentRole_takgam" onchange="mentChooseRole('takgam','세무사님')" type="radio"/> 세무사님</label>
+<label><input name="mentRole_takgam" onchange="mentChooseRole('takgam','사무장님')" type="radio"/> 사무장님</label>
 <label><input name="mentRole_takgam" onchange="mentChooseRole('takgam','법무사님')" type="radio"/> 법무사님</label>
 <label><input name="mentRole_takgam" onchange="mentChooseRole('takgam','회계사님')" type="radio"/> 회계사님</label>
 <label><input name="mentRole_takgam" onchange="mentChooseRole('takgam','변호사님')" type="radio"/> 변호사님</label>
 <label><input name="mentRole_takgam" onchange="mentChooseRole('takgam','변리사님')" type="radio"/> 변리사님</label>
-<label class="mentCustomRolePill"><input id="ment_takgam_customCheck" onchange="mentUseCustomRole('takgam')" type="checkbox"/><input id="ment_takgam_role" onfocus="mentCheckCustomRole('takgam')" oninput="mentCheckCustomRole('takgam'); mentUpdateTakgam();" type="text" value="세무사님"/></label>
+<label><input name="mentRole_takgam" onchange="mentChooseRole('takgam','전무님')" type="radio"/> 전무님</label>
+<input id="ment_takgam_role" type="hidden" value="세무사님"/>
 </div>
 <div class="mentOptionBox">
 <b>추가 멘트</b>
@@ -2957,11 +3182,13 @@ input, textarea, [contenteditable="true"] {
 <div class="mentRoleChips">
 <label><input name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','대표님')" type="radio"/> 대표님</label>
 <label><input checked="" name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','세무사님')" type="radio"/> 세무사님</label>
+<label><input name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','사무장님')" type="radio"/> 사무장님</label>
 <label><input name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','법무사님')" type="radio"/> 법무사님</label>
 <label><input name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','회계사님')" type="radio"/> 회계사님</label>
 <label><input name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','변호사님')" type="radio"/> 변호사님</label>
 <label><input name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','변리사님')" type="radio"/> 변리사님</label>
-<label class="mentCustomRolePill"><input id="ment_rightsTakgam_customCheck" onchange="mentUseCustomRole('rightsTakgam')" type="checkbox"/><input id="ment_rightsTakgam_role" onfocus="mentCheckCustomRole('rightsTakgam')" oninput="mentCheckCustomRole('rightsTakgam'); mentUpdateRightsTakgam();" type="text" value="세무사님"/></label>
+<label><input name="mentRole_rightsTakgam" onchange="mentChooseRole('rightsTakgam','전무님')" type="radio"/> 전무님</label>
+<input id="ment_rightsTakgam_role" type="hidden" value="세무사님"/>
 </div>
 </div>
 </div>
@@ -2970,7 +3197,7 @@ input, textarea, [contenteditable="true"] {
 <div class="mentSubPage" id="ment_sub_start">
 <div class="mentGrid">
 <div class="mentCard mentOutputCard">
-<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">착수</span><button class="mentCopyBtn mentCompactTitleBtn" onclick="mentCopy('ment_start_output', this)">복사</button><label class="mentCheckPill mentTitleCheck" title="체크하면 복수업체 착수금 내용이 함께 표시됩니다"><input id="ment_start_multiCheck" onchange="mentToggleStartMulti(this)" type="checkbox"/> 복수진행</label></div>
+<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">착수</span><button class="mentCopyBtn mentCompactTitleBtn" onclick="mentCopy('ment_start_output', this)">복사</button></div>
 <textarea class="mentOutput" id="ment_start_output"></textarea>
 </div>
 <div class="mentCard mentControlCard">
@@ -2978,6 +3205,7 @@ input, textarea, [contenteditable="true"] {
 <div class="mentOptionBox">
 <b>하이테크 평가 건수</b>
 <div class="mentCountBtns" id="ment_start_ht_countBtns">
+<button onclick="mentSetStartCount('ht', 0)" type="button">0</button>
 <button class="active" onclick="mentSetStartCount('ht', 1)" type="button">1</button>
 <button onclick="mentSetStartCount('ht', 2)" type="button">2</button>
 <button onclick="mentSetStartCount('ht', 3)" type="button">3</button>
@@ -2987,17 +3215,29 @@ input, textarea, [contenteditable="true"] {
 <input id="ment_start_ht_count" type="hidden" value="1"/>
 </div>
 <div class="mentOptionBox">
-<b>복수업체 평가 건수</b>
-<div class="mentCountBtns" id="ment_start_partner_countBtns">
-<button class="active" onclick="mentSetStartCount('partner', 1)" type="button">1</button>
-<button onclick="mentSetStartCount('partner', 2)" type="button">2</button>
-<button onclick="mentSetStartCount('partner', 3)" type="button">3</button>
-<button onclick="mentSetStartCount('partner', 4)" type="button">4</button>
-<button onclick="mentSetStartCount('partner', 5)" type="button">5</button>
+<b>바름 평가 건수</b>
+<div class="mentCountBtns" id="ment_start_bareum_countBtns">
+<button class="active" onclick="mentSetStartCount('bareum', 0)" type="button">0</button>
+<button onclick="mentSetStartCount('bareum', 1)" type="button">1</button>
+<button onclick="mentSetStartCount('bareum', 2)" type="button">2</button>
+<button onclick="mentSetStartCount('bareum', 3)" type="button">3</button>
+<button onclick="mentSetStartCount('bareum', 4)" type="button">4</button>
+<button onclick="mentSetStartCount('bareum', 5)" type="button">5</button>
 </div>
-<input id="ment_start_partner_count" type="hidden" value="1"/>
+<input id="ment_start_bareum_count" type="hidden" value="0"/>
 </div>
-<input id="ment_start_multiMode" type="hidden" value="0"/>
+<div class="mentOptionBox">
+<b>온결 평가 건수</b>
+<div class="mentCountBtns" id="ment_start_ongyeol_countBtns">
+<button class="active" onclick="mentSetStartCount('ongyeol', 0)" type="button">0</button>
+<button onclick="mentSetStartCount('ongyeol', 1)" type="button">1</button>
+<button onclick="mentSetStartCount('ongyeol', 2)" type="button">2</button>
+<button onclick="mentSetStartCount('ongyeol', 3)" type="button">3</button>
+<button onclick="mentSetStartCount('ongyeol', 4)" type="button">4</button>
+<button onclick="mentSetStartCount('ongyeol', 5)" type="button">5</button>
+</div>
+<input id="ment_start_ongyeol_count" type="hidden" value="0"/>
+</div>
 </div>
 </div>
 </div>
@@ -3012,11 +3252,13 @@ input, textarea, [contenteditable="true"] {
 <div class="mentRoleChips">
 <label><input checked="" name="mentRole_firstContact" onchange="mentChooseRole('firstContact','대표님')" type="radio"/> 대표님</label>
 <label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','세무사님')" type="radio"/> 세무사님</label>
+<label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','사무장님')" type="radio"/> 사무장님</label>
 <label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','법무사님')" type="radio"/> 법무사님</label>
 <label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','회계사님')" type="radio"/> 회계사님</label>
 <label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','변호사님')" type="radio"/> 변호사님</label>
 <label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','변리사님')" type="radio"/> 변리사님</label>
-<label class="mentCustomRolePill"><input id="ment_firstContact_customCheck" onchange="mentUseCustomRole('firstContact')" type="checkbox"/><input id="ment_firstContact_role" onfocus="mentCheckCustomRole('firstContact')" oninput="mentCheckCustomRole('firstContact'); mentUpdateFirstContact();" type="text" value="대표님"/></label>
+<label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','전무님')" type="radio"/> 전무님</label>
+<input id="ment_firstContact_role" type="hidden" value="대표님"/>
 </div>
 </div>
 </div>
@@ -3025,7 +3267,7 @@ input, textarea, [contenteditable="true"] {
 <div class="mentPairStack">
 <div class="mentPairGrid">
 <div class="mentCard mentOutputCard">
-<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">평가완료_고객</span><button class="mentCopyBtn" onclick="mentCopy('ment_doneCustomer_output', this)">복사</button><button class="mentLightBtn mentCompactTitleBtn" id="ment_doneCustomer_multiBtn" onclick="mentToggleDoneCustomerMulti(this)">복수진행</button></div>
+<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">평가완료_고객</span><button class="mentCopyBtn" onclick="mentCopy('ment_doneCustomer_output', this)">복사</button></div>
 <textarea class="mentOutput" id="ment_doneCustomer_output"></textarea>
 </div>
 <div class="mentCard mentControlCard">
@@ -3033,16 +3275,33 @@ input, textarea, [contenteditable="true"] {
 <div class="mentRoleChips">
 <label><input checked="" name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','대표님')" type="radio"/> 대표님</label>
 <label><input name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','세무사님')" type="radio"/> 세무사님</label>
+<label><input name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','사무장님')" type="radio"/> 사무장님</label>
 <label><input name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','법무사님')" type="radio"/> 법무사님</label>
 <label><input name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','회계사님')" type="radio"/> 회계사님</label>
 <label><input name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','변호사님')" type="radio"/> 변호사님</label>
 <label><input name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','변리사님')" type="radio"/> 변리사님</label>
-<label class="mentCustomRolePill"><input id="ment_doneCustomer_customCheck" onchange="mentUseCustomRole('doneCustomer')" type="checkbox"/><input id="ment_doneCustomer_role" onfocus="mentCheckCustomRole('doneCustomer')" oninput="mentCheckCustomRole('doneCustomer'); mentUpdateDoneCustomer();" type="text" value="대표님"/></label>
+<label><input name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','전무님')" type="radio"/> 전무님</label>
+<input id="ment_doneCustomer_role" type="hidden" value="대표님"/>
 </div>
-<div class="mentTwoCols">
-<div class="mentField"><label>하이테크 잔금</label><input class="mentMoney" data-ment-money="" id="ment_doneCustomer_ht" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value=""/></div>
-<div class="mentField"><label>복수업체 잔금</label><input class="mentMoney" data-ment-money="" id="ment_doneCustomer_partner" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value=""/></div>
-<input id="ment_doneCustomer_multiMode" type="hidden" value="0"/>
+<div class="mentDoneCompanies">
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟧 하이테크 잔금</b><button onclick="mentAddDoneAmount('ht')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_doneCustomer_ht_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span></div>
+</div>
+</div>
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟦 바름 잔금</b><button onclick="mentAddDoneAmount('bareum')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_doneCustomer_bareum_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span></div>
+</div>
+</div>
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟩 온결 잔금</b><button onclick="mentAddDoneAmount('ongyeol')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_doneCustomer_ongyeol_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span></div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -3056,11 +3315,13 @@ input, textarea, [contenteditable="true"] {
 <div class="mentRoleChips">
 <label><input name="mentRole_donePartner" onchange="mentChooseRole('donePartner','대표님')" type="radio"/> 대표님</label>
 <label><input checked="" name="mentRole_donePartner" onchange="mentChooseRole('donePartner','세무사님')" type="radio"/> 세무사님</label>
+<label><input name="mentRole_donePartner" onchange="mentChooseRole('donePartner','사무장님')" type="radio"/> 사무장님</label>
 <label><input name="mentRole_donePartner" onchange="mentChooseRole('donePartner','법무사님')" type="radio"/> 법무사님</label>
 <label><input name="mentRole_donePartner" onchange="mentChooseRole('donePartner','회계사님')" type="radio"/> 회계사님</label>
 <label><input name="mentRole_donePartner" onchange="mentChooseRole('donePartner','변호사님')" type="radio"/> 변호사님</label>
 <label><input name="mentRole_donePartner" onchange="mentChooseRole('donePartner','변리사님')" type="radio"/> 변리사님</label>
-<label class="mentCustomRolePill"><input id="ment_donePartner_customCheck" onchange="mentUseCustomRole('donePartner')" type="checkbox"/><input id="ment_donePartner_role" onfocus="mentCheckCustomRole('donePartner')" oninput="mentCheckCustomRole('donePartner'); mentUpdateDonePartner();" type="text" value="세무사님"/></label>
+<label><input name="mentRole_donePartner" onchange="mentChooseRole('donePartner','전무님')" type="radio"/> 전무님</label>
+<input id="ment_donePartner_role" type="hidden" value="세무사님"/>
 </div>
 </div>
 </div>
@@ -3086,11 +3347,13 @@ input, textarea, [contenteditable="true"] {
 <div class="mentRoleChips">
 <label><input checked="" name="mentRole_finish" onchange="mentChooseRole('finish','대표님')" type="radio"/> 대표님</label>
 <label><input name="mentRole_finish" onchange="mentChooseRole('finish','세무사님')" type="radio"/> 세무사님</label>
+<label><input name="mentRole_finish" onchange="mentChooseRole('finish','사무장님')" type="radio"/> 사무장님</label>
 <label><input name="mentRole_finish" onchange="mentChooseRole('finish','법무사님')" type="radio"/> 법무사님</label>
 <label><input name="mentRole_finish" onchange="mentChooseRole('finish','회계사님')" type="radio"/> 회계사님</label>
 <label><input name="mentRole_finish" onchange="mentChooseRole('finish','변호사님')" type="radio"/> 변호사님</label>
 <label><input name="mentRole_finish" onchange="mentChooseRole('finish','변리사님')" type="radio"/> 변리사님</label>
-<label class="mentCustomRolePill"><input id="ment_finish_customCheck" onchange="mentUseCustomRole('finish')" type="checkbox"/><input id="ment_finish_role" onfocus="mentCheckCustomRole('finish')" oninput="mentCheckCustomRole('finish'); mentUpdateFinish();" type="text" value="대표님"/></label>
+<label><input name="mentRole_finish" onchange="mentChooseRole('finish','전무님')" type="radio"/> 전무님</label>
+<input id="ment_finish_role" type="hidden" value="대표님"/>
 </div>
 </div>
 </div>
@@ -3098,9 +3361,10 @@ input, textarea, [contenteditable="true"] {
 <div class="mentSubPage" id="ment_sub_special">
 <div class="mentGrid">
 <div class="mentCard mentOutputCard">
-<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">특용비</span><button class="mentLightBtn mentCompactTitleBtn" id="ment_special_multiBtn" onclick="mentToggleSpecialMulti(this)">복수진행</button></div>
+<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">특용비</span></div>
 <div class="mentBlockScroll">
 <div class="mentBlock"><div class="mentBlockHead"><h3>특용 처음</h3><button class="mentCopyBtn" onclick="mentCopy('ment_special_1', this)">복사</button></div><textarea class="mentOutput" id="ment_special_1"></textarea></div>
+<div class="mentBlock"><div class="mentBlockHead"><h3>기존 특용</h3><button class="mentCopyBtn" onclick="mentCopy('ment_special_existing', this)">복사</button></div><textarea class="mentOutput short" id="ment_special_existing"></textarea></div>
 <div class="mentBlock"><div class="mentBlockHead"><h3>특용비 2</h3><button class="mentCopyBtn" onclick="mentCopy('ment_special_2', this)">복사</button></div><textarea class="mentOutput short" id="ment_special_2"></textarea></div>
 <div class="mentBlock"><div class="mentBlockHead"><h3>특용비 3</h3><button class="mentCopyBtn" onclick="mentCopy('ment_special_3', this)">복사</button></div><textarea class="mentOutput short" id="ment_special_3"></textarea></div>
 <div class="mentBlock"><div class="mentBlockHead"><h3>특용비 4</h3><button class="mentCopyBtn" onclick="mentCopy('ment_special_4', this)">복사</button></div><textarea class="mentOutput" id="ment_special_4"></textarea></div>
@@ -3108,11 +3372,26 @@ input, textarea, [contenteditable="true"] {
 </div>
 <div class="mentCard mentControlCard">
 <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">특용비</span></div>
-<div class="mentTwoCols">
-<div class="mentField"><label>하이테크 특용비</label><input class="mentMoney" data-ment-money="" id="ment_special_ht" oninput="mentMoneyInput(this); mentUpdateSpecial();" value=""/></div>
-<div class="mentField"><label>복수업체 특용비</label><input class="mentMoney" data-ment-money="" id="ment_special_partner" oninput="mentMoneyInput(this); mentUpdateSpecial();" value=""/></div>
+<div class="mentDoneCompanies mentSpecialCompanies">
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟧 하이테크 특용비</b><button onclick="mentAddSpecialAmount('ht')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_special_ht_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span></div>
 </div>
-<input id="ment_special_includePartner" type="hidden" value="0"/>
+</div>
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟦 바름 특용비</b><button onclick="mentAddSpecialAmount('bareum')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_special_bareum_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span></div>
+</div>
+</div>
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟩 온결 특용비</b><button onclick="mentAddSpecialAmount('ongyeol')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_special_ongyeol_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -13138,18 +13417,73 @@ function mentFallbackCopy(el, done){
   sel.removeAllRanges(); sel.addRange(range);
   document.execCommand('copy'); sel.removeAllRanges(); if(done) done();
 }
-function mentToggleDoneCustomerMulti(btn){
-  const input = mentGet('ment_doneCustomer_multiMode');
-  const next = input?.value !== '1';
-  if(input) input.value = next ? '1' : '0';
-  if(btn) btn.classList.toggle('active', next);
+function mentRefreshDoneAmountRows(rows){
+  if(!rows) return;
+  rows.querySelectorAll('.mentDoneAmountRow').forEach((row, index) => {
+    const label = row.querySelector('.mentDoneAmountIndex');
+    if(label) label.textContent = (index + 1) + '번';
+  });
+}
+function mentDoneMoneyFocus(input){
+  if(input && /^0+$/.test(mentDigits(input.value))) input.value = '';
+}
+function mentDoneMoneyBlur(input){
+  if(!input) return;
+  if(!mentDigits(input.value) || /^0+$/.test(mentDigits(input.value))) input.value = '0';
+  else mentMoneyInput(input);
   mentUpdateDoneCustomer();
+}
+function mentAddDoneAmount(company){
+  const type = ['ht', 'bareum', 'ongyeol'].includes(company) ? company : 'ht';
+  const rows = mentGet('ment_doneCustomer_' + type + '_amounts');
+  if(!rows) return;
+  const row = document.createElement('div');
+  row.className = 'mentDoneAmountRow';
+  row.innerHTML = `<span class="mentDoneAmountIndex"></span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentRemoveDoneAmount(this)" title="금액칸 삭제" type="button">×</button>`;
+  rows.appendChild(row);
+  mentRefreshDoneAmountRows(rows);
+  const input = row.querySelector('.mentDoneAmount');
+  if(input) input.focus();
+  mentUpdateDoneCustomer();
+}
+function mentRemoveDoneAmount(button){
+  const row = button?.closest('.mentDoneAmountRow');
+  const rows = row?.parentElement;
+  if(!row || !rows) return;
+  row.remove();
+  mentRefreshDoneAmountRows(rows);
+  mentUpdateDoneCustomer();
+}
+function mentDoneAmounts(company){
+  const rows = mentGet('ment_doneCustomer_' + company + '_amounts');
+  if(!rows) return [];
+  return Array.from(rows.querySelectorAll('.mentDoneAmount')).map(input => {
+    const digits = mentDigits(input.value).replace(/^0+(?=\d)/, '');
+    return digits && !/^0+$/.test(digits) ? mentComma(digits) : '';
+  }).filter(Boolean);
+}
+function mentDoneCompanyBlock(company){
+  const companies = {
+    ht: {name:'하이테크', icon:'🟧', bank:'국민은행 532001-01-294849', holder:'하이테크감정평가법인(주)'},
+    bareum: {name:'바름', icon:'🟦', bank:'국민은행 529401-01-292371', holder:'(주)바름감정평가법인'},
+    ongyeol: {name:'온결', icon:'🟩', bank:'국민은행 015437-04-023593', holder:'(주)온결감정평가법인'}
+  };
+  const info = companies[company];
+  if(!info) return '';
+  const amounts = mentDoneAmounts(company);
+  if(amounts.length === 0) return '';
+  const paymentGuide = amounts.length === 1
+    ? `${amounts[0]}원 아래 계좌로 입금 부탁드립니다!`
+    : `${amounts.map(amount => '-' + amount + '원').join('\n')}\n총 ${amounts.length}번 아래 계좌로 입금 부탁드립니다!`;
+  return `${info.icon} ${info.name} 잔금
+${paymentGuide}
+
+${info.bank}
+${info.holder}`;
 }
 function mentUpdateDoneCustomer(){
   const role = mentRole('doneCustomer');
-  const includePartner = mentVal('ment_doneCustomer_multiMode') === '1';
-  const htBalance = mentVal('ment_doneCustomer_ht');
-  const partnerBalance = mentVal('ment_doneCustomer_partner');
+  const companyBlocks = ['ht', 'bareum', 'ongyeol'].map(mentDoneCompanyBlock).filter(Boolean);
   let text = `안녕하세요 ${role}!😊
 평가금액 확정되어 확인용 청구서와 괄호감정표 바로 전달드립니다:)
 
@@ -13158,32 +13492,11 @@ function mentUpdateDoneCustomer(){
 🔸세금계산서/현금영수증 중 어떤걸 발행해드릴까요?
 1. 세계 : 사업자 사본, 메일 필요 
 2. 현영 : 성함, 연락처 필요
-(상속/증여 평가: 상속인/수증인 성함으로 발행 추천)
 
 🔸실물평가서 배송받으실 
-[주소, 성함, 번호] 요청드립니다
+[주소, 성함, 번호] 요청드립니다${companyBlocks.length ? '\n\n' + companyBlocks.join('\n\n') : ''}
 
-🔸 하이테크 잔금 
-${htBalance ? htBalance + '원 ' : ''}아래 계좌로 입금 부탁드립니다! 
-(상속/증여 평가: 상속인/수증인 성함으로 입금 추천)
-
-➡️ 잔금 입금 계좌
-국민은행 532001-01-294849
-하이테크감정평가법인(주)`;
-  if(includePartner){
-    text += `
-
-🔹 복수업체 잔금
-${partnerBalance ? partnerBalance + '원 ' : ''}아래 계좌로 입금 부탁드립니다! 
-(상속/증여 평가: 상속인/수증인 성함으로 입금 추천)
-
-➡️ 복수업체 잔금 입금 계좌
-국민은행 529401-01-292371
-(주)바름감정평가법인
-
-‼️복수업체와 하이테크 계좌가 별도이니 
-꼭 각각의 계좌로 입금 부탁드립니다:)`;
-  }
+‼️상속/증여 평가: 상속인/수증인 성함으로 입금 및 영수증 발행 추천드립니다`;
   mentSet('ment_doneCustomer_output', text);
 }
 function mentUpdateDonePartner(){
@@ -13226,64 +13539,65 @@ ${phrase} 전달드립니다!
 감사합니다!!😊`);
 }
 function mentSetStartCount(company, n){
-  const type = company === 'partner' ? 'partner' : 'ht';
-  const count = Math.max(1, Math.min(5, Number(n) || 1));
+  const type = ['ht', 'bareum', 'ongyeol'].includes(company) ? company : 'ht';
+  const count = Math.max(0, Math.min(5, Number(n) || 0));
   const input = mentGet('ment_start_' + type + '_count');
   if(input) input.value = String(count);
   document.querySelectorAll('#ment_start_' + type + '_countBtns button').forEach(btn => btn.classList.toggle('active', btn.textContent.trim() === String(count)));
   mentUpdateStart();
 }
-function mentToggleStartMulti(control){
-  const input = mentGet('ment_start_multiMode');
-  const next = control?.type === 'checkbox' ? !!control.checked : input?.value !== '1';
-  if(input) input.value = next ? '1' : '0';
-  if(control && control.type !== 'checkbox') control.classList.toggle('active', next);
-  mentUpdateStart();
-}
 function mentStartPhrase(company){
-  const type = company === 'partner' ? 'partner' : 'ht';
-  const count = Math.max(1, Number(mentVal('ment_start_' + type + '_count')) || 1);
-  if(count > 1) return `평가 ${count}건이므로 50만원씩 ${count}번 입금 부탁드립니다☺️`;
-  return type === 'ht' ? '하이테크로 50만원 입금 부탁드립니다☺️' : '복수업체로 50만원 입금 부탁드립니다☺️';
+  const companies = {
+    ht: {name:'하이테크', paymentTarget:'하이테크로'},
+    bareum: {name:'바름', paymentTarget:'바름으로'},
+    ongyeol: {name:'온결', paymentTarget:'온결로'}
+  };
+  const type = companies[company] ? company : 'ht';
+  const count = Math.max(0, Number(mentVal('ment_start_' + type + '_count')) || 0);
+  if(count > 1) return `평가 ${count}건이므로 50만원씩 ${count}번 입금 부탁드립니다`;
+  return `${companies[type].paymentTarget} 50만원 입금 부탁드립니다`;
+}
+function mentStartCompanyBlock(company){
+  const companies = {
+    ht: {
+      name:'하이테크', icon:'🟧', bank:'국민은행 532001-01-294849', holder:'하이테크감정평가법인(주)'
+    },
+    bareum: {
+      name:'바름', icon:'🟦', bank:'국민은행 529401-01-292371', holder:'(주)바름감정평가법인'
+    },
+    ongyeol: {
+      name:'온결', icon:'🟩', bank:'국민은행 015437-04-023593', holder:'(주)온결감정평가법인'
+    }
+  };
+  const info = companies[company];
+  if(!info) return '';
+  const count = Math.max(0, Number(mentVal('ment_start_' + company + '_count')) || 0);
+  if(count === 0) return '';
+  return `${info.icon}${info.name} 착수금
+${mentStartPhrase(company)}
+
+${info.bank}
+${info.holder}`;
 }
 function mentUpdateStart(){
-  const htPhrase = mentStartPhrase('ht');
-  const partnerPhrase = mentStartPhrase('partner');
-  const multiMode = mentVal('ment_start_multiMode') === '1';
-  const partnerBlock = multiMode ? `
-
-🔹복수업체 착수금
-${partnerPhrase}
-(상속/증여 평가 : 상속인/수증인 성함으로 입금 추천)
-
-🔹복수업체 착수금 입금 계좌
-국민은행 529401-01-292371
-(주)바름감정평가법인
-
-‼️복수업체와 하이테크 계좌가 별도이니 
-꼭 각각의 계좌로 입금 부탁드립니다:)` : '';
+  const selectedCompanies = ['ht', 'bareum', 'ongyeol'].filter(company => Number(mentVal('ment_start_' + company + '_count')) > 0);
+  const companyBlocks = selectedCompanies.map(mentStartCompanyBlock).join('\n\n');
+  const separateAccountNotice = selectedCompanies.length > 1 ? `
+6️⃣업체별 계좌가 별도이니 꼭 각각의 계좌로 입금 부탁드립니다^^` : '';
   mentSet('ment_start_output', `평가위한 안내내용 전달드리며, 
 착수금 입금 후 평가 시작 하겠습니다☺️
 
-🔸진행순서&안내
-착수금 입금 > 평가 진행&완료 > 잔금 입금 > 평가서 PDF 선제공 및 택배사 발송
-*입금 후 누락 방지 위해 입금자명 말씀 부탁드립니다
+🔸진행순서&안내사항
+착수금 입금 > 평가 진행&완료 > 잔금 입금 > 평가서 PDF 제공&실물 발송
 
-⚠️평가 시작~실물평가서 도착까지 영업일 기준 총 9일정도 예상 부탁드립니다!⚠️
-1️⃣평가는 영업일 기준 5~6일 소요되며, 평가서가 완료되는 대로 평가서 pdf 파일 먼저 전달드립니다
-2️⃣실물평가서 택배사 배송에는 보통 2-4일 소요된다고 합니다
+1️⃣평가는 영업일로 5~6일 소요되며, 평가서가 완료되는 대로 평가서 PDF 파일 먼저 전달드립니다
+2️⃣실물평가서 택배사 배송에는 보통 2-4일 소요된다고 합니다(대한통운 이용)
 3️⃣평가하는 물건의 내부 방문X
+4️⃣모든 입금 후 누락 방지 위해 입금자명 카톡 부탁드립니다
+5️⃣상속/증여 평가 : 증빙 고려하신다면 상속인/수증인 성함으로 입금 추천드립니다${separateAccountNotice}
 
 🔸평가서 의뢰인 칸에 기입될 정보 요청드립니다
--성함 or 상호:
-
-🔸하이테크 착수금
-${htPhrase}
-(상속/증여 평가 : 상속인/수증인 성함으로 입금 추천)
-
-🔸하이테크 착수금 입금 계좌
-국민은행 532001-01-294849
-하이테크감정평가법인(주)${partnerBlock}`);
+-성함 or 상호:${companyBlocks ? '\n\n' + companyBlocks : ''}`);
 }
 function mentUpdateTakgam(){
   const role = mentRole('takgam');
@@ -13317,31 +13631,90 @@ function mentUpdateRightsTakgam(){
 
 탁감에 필요한 내용은 사진과 같고, 서류 사본 외에는 카톡으로 간단히 적어주시면 주시면 됩니다!`);
 }
-function mentToggleSpecialMulti(btn){
-  const input = mentGet('ment_special_includePartner');
-  const next = input?.value !== '1';
-  if(input) input.value = next ? '1' : '0';
-  if(btn) btn.classList.toggle('active', next);
+function mentRefreshSpecialAmountRows(rows){
+  if(!rows) return;
+  rows.querySelectorAll('.mentDoneAmountRow').forEach((row, index) => {
+    const label = row.querySelector('.mentDoneAmountIndex');
+    if(label) label.textContent = (index + 1) + '번';
+  });
+}
+function mentSpecialMoneyBlur(input){
+  if(!input) return;
+  if(!mentDigits(input.value) || /^0+$/.test(mentDigits(input.value))) input.value = '0';
+  else mentMoneyInput(input);
   mentUpdateSpecial();
 }
+function mentAddSpecialAmount(company){
+  const type = ['ht', 'bareum', 'ongyeol'].includes(company) ? company : 'ht';
+  const rows = mentGet('ment_special_' + type + '_amounts');
+  if(!rows) return;
+  const row = document.createElement('div');
+  row.className = 'mentDoneAmountRow';
+  row.innerHTML = `<span class="mentDoneAmountIndex"></span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentRemoveSpecialAmount(this)" title="금액칸 삭제" type="button">×</button>`;
+  rows.appendChild(row);
+  mentRefreshSpecialAmountRows(rows);
+  const input = row.querySelector('.mentSpecialAmount');
+  if(input) input.focus();
+  mentUpdateSpecial();
+}
+function mentRemoveSpecialAmount(button){
+  const row = button?.closest('.mentDoneAmountRow');
+  const rows = row?.parentElement;
+  if(!row || !rows) return;
+  row.remove();
+  mentRefreshSpecialAmountRows(rows);
+  mentUpdateSpecial();
+}
+function mentSpecialAmounts(company){
+  const rows = mentGet('ment_special_' + company + '_amounts');
+  if(!rows) return [];
+  return Array.from(rows.querySelectorAll('.mentSpecialAmount')).map(input => {
+    const digits = mentDigits(input.value).replace(/^0+(?=\d)/, '');
+    return digits && !/^0+$/.test(digits) ? mentComma(digits) : '';
+  }).filter(Boolean);
+}
+function mentSpecialCompanyLine(company){
+  const companies = {
+    ht: {name:'하이테크', icon:'🟧'},
+    bareum: {name:'바름', icon:'🟦'},
+    ongyeol: {name:'온결', icon:'🟩'}
+  };
+  const info = companies[company];
+  if(!info) return '';
+  const amounts = mentSpecialAmounts(company);
+  if(amounts.length === 0) return '';
+  return `${info.icon} ${info.name} 특용비 : ${amounts.map(amount => amount + '원').join(' & ')}`;
+}
+function mentExistingSpecialCompanyLine(company){
+  const companies = {
+    ht: {name:'하이테크', icon:'🟧'},
+    bareum: {name:'바름', icon:'🟦'},
+    ongyeol: {name:'온결', icon:'🟩'}
+  };
+  const info = companies[company];
+  if(!info) return '';
+  const amounts = mentSpecialAmounts(company);
+  if(amounts.length === 0) return '';
+  return `${info.icon} ${info.name} 특용비: ${amounts.map(amount => amount + '원').join(' & ')}`;
+}
 function mentUpdateSpecial(){
-  const ht = mentVal('ment_special_ht');
-  const partner = mentVal('ment_special_partner');
-  const includePartner = mentVal('ment_special_includePartner') === '1';
-  const partnerLine = includePartner ? `\n🔹복수업체 특용비 : ${partner}` : '';
-  const lastLine = includePartner ? `\n\n‼️하이테크/복수업체 별도로 입금되오니 세계도 각 업체 따로따로 발급 부탁드립니다😊` : '';
-  mentSet('ment_special_1', `감사합니다:) 마지막으로 요번 특용비는 어떤 방법으로 드릴까용?😊
-🔸하이테크 특용비 : ${ht}${partnerLine}
+  const companyLines = ['ht', 'bareum', 'ongyeol'].map(mentSpecialCompanyLine).filter(Boolean);
+  const amountBlock = companyLines.length ? `\n\n${companyLines.join('\n')}` : '';
+  const existingCompanyLines = ['ht', 'bareum', 'ongyeol'].map(mentExistingSpecialCompanyLine).filter(Boolean);
+  const existingAmountBlock = existingCompanyLines.length ? `\n\n${existingCompanyLines.join('\n')}` : '';
+  mentSet('ment_special_1', `마지막으로 요번 특용비는 어떤 방법으로 도와드릴까용? 
+방법 2개 중 택1 부탁드립니다!😊${amountBlock}
 
 1️⃣ 사업소득
 특용비에서 3.3% 공제 후 계좌로 지급 (친가족 가능)
 • 받으실 분의 [성함, 주민번호, 입금계좌] 필요
 
-
 2️⃣ 세금계산서
-저희로 세금계산서 발행 후, 세계 사본과 아래 정보 전달 필요
-• 받으실 분의 [성함, 사업자번호, 입금계좌] 필요
-• 특용비 금액에서 부가세 별도로 세계 발급${lastLine}`);
+세금계산서 발행 후, 발행 사본과 아래 정보 전달 필요 
+• 받으실 분의 [성함, 사업자번호, 입금계좌] 필요 
+• 특용비 금액에서 [부가세 별도]로 세계 발급
+• 업체별로 특용비가 별도 처리되오니 세계도 각 업체별로 발급 필요합니다:)`);
+  mentSet('ment_special_existing', `요번 특용비도 기존과 같은 방법으로 진행하고 입금 후 회신드리면 될까요?^^${existingAmountBlock}`);
   mentSet('ment_special_2', `요기로 부가세 별도 발행 후 
 발행한 세금계산서 캡쳐본과 위의 정보들 같이 전달주시면 됩니다!!😊`);
   mentSet('ment_special_3', `특용비는 오늘 접수되면 3~10일 안에 이체될 예정입니다:)
@@ -13360,10 +13733,6 @@ function mentUpdateSpecial(){
 }
 function mentInit(){
   mentSyncStickyOffset();
-  ['ment_start_multiMode','ment_doneCustomer_multiMode','ment_special_includePartner'].forEach(id => { const el = mentGet(id); if(el) el.value = '0'; });
-  const startMultiCheck = mentGet('ment_start_multiCheck');
-  if(startMultiCheck) startMultiCheck.checked = false;
-  ['ment_doneCustomer_multiBtn','ment_special_multiBtn'].forEach(id => mentGet(id)?.classList.remove('active'));
   document.querySelectorAll('#page_ment [data-ment-money]').forEach(el => mentMoneyInput(el));
   mentUpdateTakgam();
   mentUpdateRightsTakgam();
