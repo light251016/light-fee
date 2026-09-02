@@ -633,13 +633,19 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
   padding:8px 10px;
   border:1px solid #d1d5db;
   border-radius:11px;
-  background:#f8fafc;
+  background:#fff;
   font-size:14px;
   font-weight:900;
   color:#111827;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
+  outline:none;
+  cursor:text;
+}
+#page_receiveProperty #receiveTitleValue:focus {
+  border-color:#2563eb;
+  box-shadow:0 0 0 2px rgba(37,99,235,.10);
 }
 #page_receiveProperty .receiveMiniGrid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:10px 0 0; }
 #page_receiveProperty .receiveInfoBox {
@@ -7992,6 +7998,11 @@ window.addEventListener('resize',applyZoom);
 세무사님께 탁감 전달한 내용 전부
 
 의뢰인명(있을경우)"></textarea>
+<div class="receiveFirmSelector" data-receive-firm-group="property" aria-label="일반접수 업체 선택">
+<button type="button" class="active" data-firm="hagam" onclick="receiveSetFirm('property','hagam')">하감</button>
+<button type="button" data-firm="bareum" onclick="receiveSetFirm('property','bareum')">바름</button>
+<button type="button" data-firm="ongyeol" onclick="receiveSetFirm('property','ongyeol')">온결</button>
+</div>
 <div class="btns">
 <button onclick="receiveGenerate()">반영</button>
 <button class="light" onclick="receiveReset()">초기화</button>
@@ -8022,7 +8033,7 @@ window.addEventListener('resize',applyZoom);
 <div class="sectionTitle"><span class="badge">2</span> 접수글</div>
 <div class="receiveTitleLine">
 <div class="receiveTitleLabel">제목:</div>
-<div id="receiveTitleValue">접수글 생성 후 제목이 표시됩니다.</div>
+<div contenteditable="true" id="receiveTitleValue" spellcheck="false">접수글 생성 후 제목이 표시됩니다.</div>
 <button class="smallBtn light" onclick="receiveCopyTitle()">복사</button>
 </div>
 <div class="output" contenteditable="true" id="receiveOutput">정보를 입력하고 반영을 누르면 접수글이 생성됩니다.</div>
@@ -8145,6 +8156,11 @@ window.addEventListener('resize',applyZoom);
 </section>
 <section class="card receiveMultiHtOutputCard">
 <div class="sectionTitle"><span class="badge">3</span> 접수글_하이테크</div>
+<div class="receiveFirmSelector receiveMultiFirmSelector" data-receive-firm-group="multi1" aria-label="복수접수 3번 업체 선택">
+<button type="button" class="active" data-firm="hagam" onclick="receiveSetFirm('multi1','hagam')">하감</button>
+<button type="button" data-firm="bareum" onclick="receiveSetFirm('multi1','bareum')">바름</button>
+<button type="button" data-firm="ongyeol" onclick="receiveSetFirm('multi1','ongyeol')">온결</button>
+</div>
 <div class="receiveTitleLine receiveMultiTitleLine">
 <div class="receiveTitleLabel">제목:</div>
 <div id="receiveMultiHtTitleValue">접수글 생성 후 제목이 표시됩니다.</div>
@@ -8195,6 +8211,11 @@ window.addEventListener('resize',applyZoom);
 </section>
 <section class="card receiveMultiPartnerOutputCard">
 <div class="sectionTitle"><span class="badge">4</span> 접수글_복수업체</div>
+<div class="receiveFirmSelector receiveMultiFirmSelector" data-receive-firm-group="multi2" aria-label="복수접수 4번 업체 선택">
+<button type="button" data-firm="hagam" onclick="receiveSetFirm('multi2','hagam')">하감</button>
+<button type="button" class="active" data-firm="bareum" onclick="receiveSetFirm('multi2','bareum')">바름</button>
+<button type="button" data-firm="ongyeol" onclick="receiveSetFirm('multi2','ongyeol')">온결</button>
+</div>
 <div class="receiveTitleLine receiveMultiTitleLine">
 <div class="receiveTitleLabel">제목:</div>
 <div id="receiveMultiPartnerTitleValue">접수글 생성 후 제목이 표시됩니다.</div>
@@ -8259,6 +8280,11 @@ window.addEventListener('resize',applyZoom);
 
 진행할 평가금액
 의뢰인명(있을경우)"></textarea>
+<div class="receiveFirmSelector" data-receive-firm-group="rights" aria-label="무형접수 업체 선택">
+<button type="button" class="active" data-firm="hagam" onclick="receiveSetFirm('rights','hagam')">하감</button>
+<button type="button" data-firm="bareum" onclick="receiveSetFirm('rights','bareum')">바름</button>
+<button type="button" data-firm="ongyeol" onclick="receiveSetFirm('rights','ongyeol')">온결</button>
+</div>
 <div class="btns">
 <button onclick="receiveRightsGenerate()">반영</button>
 <button class="light" onclick="receiveRightsReset()">초기화</button>
@@ -8431,11 +8457,11 @@ window.addEventListener('resize',applyZoom);
 19층 59.96
 기타사항
 
-하이테크 (메모가능)
+바름
 중간 25.7
 최저 20.3
 
-복수업체 다은
+온결 현보람
 중간 26
 최저 21.8"></textarea>
 </div>
@@ -8570,7 +8596,7 @@ window.addEventListener('resize',applyZoom);
 <div class="sectionTitle"><span class="badge">3</span> 수수료 계산</div>
 <div class="multiCalcTables">
 <div class="multiCalcTableBox">
-<h3>하이테크 평가서</h3>
+<h3 id="multiHtCompanyTitle">하이테크 평가서</h3>
 <table class="inputTable">
 <thead><tr><th>구분</th><th>평가금액</th><th>단위</th><th>추가비용</th></tr></thead>
 <tbody>
@@ -8581,7 +8607,7 @@ window.addEventListener('resize',applyZoom);
 </table>
 </div>
 <div class="multiCalcTableBox partnerTableBox">
-<h3>복수업체 평가서</h3>
+<h3 id="multiPartnerCompanyTitle">복수업체 평가서</h3>
 <table class="inputTable">
 <thead><tr><th>구분</th><th>평가금액</th><th>단위</th><th>추가비용</th></tr></thead>
 <tbody>
@@ -8597,8 +8623,8 @@ window.addEventListener('resize',applyZoom);
 <thead>
 <tr>
 <th>구분</th>
-<th>하이테크</th>
-<th>복수업체</th>
+<th id="multiDiffHtHead">하이테크</th>
+<th id="multiDiffPartnerHead">복수업체</th>
 <th>복수 +-10% 금액</th>
 <th>낮은금액 기준 차이율</th>
 <th>높은금액 기준 차이율</th>
@@ -9249,7 +9275,7 @@ function makeMsg(){
   if(document.getElementById('excludeSpecialCheck')?.checked){
     text = removeSpecialFeeLines(text);
   }
-  document.getElementById('msg').textContent = text;
+  document.getElementById('msg').textContent = normalizeGeneratedMessageText(text);
   syncExcludeSpecialButton();
 }
 async function copyMsg(){
@@ -9384,6 +9410,7 @@ let multiSelectedFlags = new Set();
 let multiRows = [];
 let multiAmountTitleOverrides = {};
 let multiQuoteModeTitleOverride = '';
+let multiCompanyLabels = {ht:'하이테크', partner:'복수업체'};
 let multiExtraManual = {
   ht:{low:false, mid:false, high:false},
   partner:{low:false, mid:false, high:false}
@@ -9425,23 +9452,64 @@ function multiFormatAutoEok(n){
   return (Math.round(Number(n) * 100) / 100).toString().replace(/\.0+$/,'').replace(/(\.\d*[1-9])0+$/,'$1');
 }
 
+function multiExtractCompanyHeader(line){
+  const text = String(line || '').trim();
+  if(!text) return '';
+  const m = text.match(/^(하이테크|하감|바름|온결|복수업체)(?=\s|$|[()（）\[\]{}:：/\-])/);
+  return m ? m[1] : '';
+}
+function multiGetCompanyLabel(company){
+  return multiCompanyLabels[company] || (company === 'ht' ? '하이테크' : '복수업체');
+}
+function multiGetMessageCompanyLabel(company){
+  const label = multiGetCompanyLabel(company);
+  if(label === '하감') return '하이테크';
+  return label === '복수업체' ? '복수평가' : label;
+}
+
+function multiUpdateCompanyLabelsUI(){
+  const htLabel = multiGetCompanyLabel('ht');
+  const partnerLabel = multiGetCompanyLabel('partner');
+  const htTitle = document.getElementById('multiHtCompanyTitle');
+  const partnerTitle = document.getElementById('multiPartnerCompanyTitle');
+  const htHead = document.getElementById('multiDiffHtHead');
+  const partnerHead = document.getElementById('multiDiffPartnerHead');
+  if(htTitle) htTitle.textContent = htLabel + ' 평가서';
+  if(partnerTitle) partnerTitle.textContent = partnerLabel + ' 평가서';
+  if(htHead) htHead.textContent = htLabel;
+  if(partnerHead) partnerHead.textContent = partnerLabel;
+}
 function parseMultiCompanyAmounts(lines){
-  const result = {ht:{}, partner:{}, blanks:{ht:{}, partner:{}}, labelOverrides:{ht:{}, partner:{}}};
+  const result = {ht:{}, partner:{}, blanks:{ht:{}, partner:{}}, labelOverrides:{ht:{}, partner:{}}, labels:{ht:'', partner:''}};
   let current = '';
+  const companySlots = {};
+  const getCompanySlot = (name) => {
+    if(companySlots[name]) return companySlots[name];
+    if(!result.labels.ht){
+      companySlots[name] = 'ht';
+      result.labels.ht = name;
+      return 'ht';
+    }
+    if(!result.labels.partner){
+      companySlots[name] = 'partner';
+      result.labels.partner = name;
+      return 'partner';
+    }
+    return '';
+  };
+
   lines.forEach(line => {
     const original = String(line || '').trim();
     if(!original) return;
     let working = original;
-    const compact = original.replace(/\s+/g,'');
+    const companyName = multiExtractCompanyHeader(original);
 
-    if(/하이테크|hitech|hightech/i.test(compact)) {
-      current = 'ht';
-      working = original.replace(/하이테크|hitech|hightech/ig, '').trim();
-      if(!working) return;
-    } else if(/복수업체|복수평가|타업체|업체/i.test(compact)) {
-      current = 'partner';
-      working = original.replace(/복수업체|복수평가|타업체|업체/ig, '').trim();
-      if(!working) return;
+    if(companyName){
+      current = getCompanySlot(companyName);
+      working = original.slice(companyName.length).trim();
+      // 업체명 뒤의 담당자명/메모는 금액 정보가 아니므로 무시합니다.
+      // 같은 줄에 실제 금액 라벨+숫자가 있는 경우에만 이어서 파싱합니다.
+      if(!working || !/(희망|하한|최저|최소|기준|시세|적정가|중간|현재|최고|상한|최상|최대)\s*[:：]?\s*\d/.test(working)) return;
     }
     if(!current) return;
 
@@ -9460,14 +9528,14 @@ function parseMultiCompanyAmounts(lines){
       return;
     }
 
-    // "최저"처럼 라벨만 있고 금액이 비어있는 경우 표시해둔 뒤, 상대 업체 금액 기준 ±10%로 1차 자동기입
+    // "최저"처럼 라벨만 있고 금액이 비어있는 경우 표시해둔 뒤, 두 번째 업체 금액 기준 ±10%로 첫 번째 업체 칸에 자동기입
     const blank = working.replace(/[\/|,，:：\s]/g,'').match(/^((?:희망금액)|희망가?|희망|하한|최저가?|최소|기준|시세|적정가|중간값?|현재|최고|상한|최상|최대가?|최대)$/);
     if(blank){
       result.blanks[current][keyOf(blank[1])] = true;
     }
   });
 
-  // 하이테크 금액 라벨은 있는데 숫자가 비어있고, 복수업체 금액이 있으면 10% 조정값을 하이테크 칸에 자동 기입
+  // 첫 번째 업체 금액 라벨은 있는데 숫자가 비어있고, 두 번째 업체 금액이 있으면 기존과 동일하게 10% 조정값 자동 기입
   if(result.blanks.ht.low && !result.ht.low && result.partner.low){
     result.ht.low = multiFormatAutoEok(Number(result.partner.low) * 0.9);
   }
@@ -9495,6 +9563,11 @@ function parseMultiQuickInput(){
   multiAmountTitleOverrides = {};
   multiQuoteModeTitleOverride = '';
   const amounts = parseMultiCompanyAmounts(lines);
+  multiCompanyLabels = {
+    ht: amounts.labels?.ht || '하이테크',
+    partner: amounts.labels?.partner || '복수업체'
+  };
+  multiUpdateCompanyLabelsUI();
 
   const firstParts = splitQuickMetaLine(lines[0]);
   firstParts.forEach(part => {
@@ -9521,8 +9594,7 @@ function parseMultiQuickInput(){
   let firstAddressSeen = false;
   let floorAreaSeen = false;
   lines.slice(1).forEach(line => {
-    const compact = line.replace(/\s+/g,'');
-    if(/하이테크|복수업체|복수평가|타업체/i.test(compact)) { beforeCompany = false; return; }
+    if(multiExtractCompanyHeader(line)) { beforeCompany = false; return; }
     if(!beforeCompany) return;
 
     const isFloorAreaOnly = /층/.test(line) && /\d/.test(line) && !/(서울|경기|인천|부산|대구|광주|대전|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주|시|구|군|동|로|길)/.test(line.replace(/층/g,''));
@@ -9594,8 +9666,8 @@ function parseMultiQuickInput(){
     '주소:',
     (addressLines.join('\n') || ''),
     '층 / 전용면적 / 용도: ' + [floor ? floor + '층' : '', area ? area + '㎡' : '', useType || ''].filter(Boolean).join(' / '),
-    '하이테크: ' + ['low','mid','high'].filter(k=>amounts.ht[k]).map(k=>(multiAmountDisplayLabel(k)) + ' ' + amounts.ht[k] + '억').join(' / '),
-    '복수업체: ' + ['low','mid','high'].filter(k=>amounts.partner[k]).map(k=>(multiAmountDisplayLabel(k)) + ' ' + amounts.partner[k] + '억').join(' / '),
+    multiGetCompanyLabel('ht') + ': ' + ['low','mid','high'].filter(k=>amounts.ht[k]).map(k=>(multiAmountDisplayLabel(k)) + ' ' + amounts.ht[k] + '억').join(' / '),
+    multiGetCompanyLabel('partner') + ': ' + ['low','mid','high'].filter(k=>amounts.partner[k]).map(k=>(multiAmountDisplayLabel(k)) + ' ' + amounts.partner[k] + '억').join(' / '),
     document.getElementById('multiMemo').value ? '안내멘트 기타사항: ' + document.getElementById('multiMemo').value : '안내멘트 기타사항: 없음'
   ].filter(v => v !== '').join('\n');
   document.getElementById('multiQuickParsePreview').textContent = preview;
@@ -9718,7 +9790,7 @@ function multiCalcOne(company,key,label){
     special = specialFeeDiffRaw(w, markup);
     specialReason = '기준요율-하한요율';
   }
-  return {company, companyLabel: company === 'ht' ? '하이테크' : '복수업체', key, label, w, extra, actual, travel, basis, lower, pure, lowerFinal, finalRaw, final, special, specialReason};
+  return {company, companyLabel: multiGetCompanyLabel(company), key, label, w, extra, actual, travel, basis, lower, pure, lowerFinal, finalRaw, final, special, specialReason};
 }
 function multiGetKeysForMode(){
   const mode = document.getElementById('multiQuoteMode')?.value || 'low';
@@ -9898,14 +9970,14 @@ function multiMakeMsg(){
       const partner = multiRows.find(r=>r.company==='partner' && r.key===key);
 
       if(ht){
-        lines.push(`🔸 [ 하이테크 ${labelMap[key]} 금액 ]`);
+        lines.push(`🔸 [ ${multiGetMessageCompanyLabel('ht')} ${labelMap[key]} 금액 ]`);
         lines.push('• 예상평가액 : ' + eokTextFromWon(ht.w));
         lines.push('• 예상수수료 (VAT 포함) : ' + feeMan(ht.final));
         if(ht.special > 0) lines.push('• 예상특용비 : ' + specialMan(ht.special).replace(' 내외',''));
         lines.push('');
       }
       if(partner){
-        lines.push(`🔸 [ 복수평가 ${labelMap[key]} 금액 ]`);
+        lines.push(`🔸 [ ${multiGetMessageCompanyLabel('partner')} ${labelMap[key]} 금액 ]`);
         lines.push('• 예상평가액 : ' + eokTextFromWon(partner.w));
         lines.push('• 예상수수료 (VAT 포함) : ' + feeMan(partner.final));
         if(partner.special > 0) lines.push('• 예상특용비 : ' + specialMan(partner.special).replace(' 내외',''));
@@ -9940,7 +10012,7 @@ function multiMakeMsg(){
   if(document.getElementById('multiExcludeSpecialCheck')?.checked){
     text = removeSpecialFeeLines(text);
   }
-  document.getElementById('multiMsg').textContent = text;
+  document.getElementById('multiMsg').textContent = normalizeGeneratedMessageText(text);
   syncMultiExcludeSpecialButton();
 }
 async function multiCopyMsg(){
@@ -9950,6 +10022,8 @@ async function multiCopyMsg(){
 function multiReset(){
   multiAmountTitleOverrides = {};
   multiQuoteModeTitleOverride = '';
+  multiCompanyLabels = {ht:'하이테크', partner:'복수업체'};
+  multiUpdateCompanyLabelsUI();
   ['multiQuickInput','multiTarget','multiFloor','multiArea','multiUseType','multiPurposeCustom','multiMemo'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
   ['ht','partner'].forEach(c => ['low','mid','high'].forEach(k => {
     const a=document.getElementById(`multi_${c}_amount_${k}`); if(a) a.value='';
@@ -10040,8 +10114,14 @@ function mapQuickMode(s){
 }
 
 function splitQuickMetaLine(line){
-  const original = String(line || '').trim();
+  let original = String(line || '').trim();
   if(!original) return [];
+
+  // 실무 메모 구분자: 첫 줄에서 공백 뒤 '/'가 나오면 그 뒤 내용은 항상 메모로 보고
+  // 평가목적/기준시점/희망금액 자동해석에서는 완전히 제외합니다.
+  // 예: '상속. 26.4.9. 최저 / 타법인 11억' -> '상속. 26.4.9. 최저'
+  // '특관자 증여/양도'처럼 단어 내부의 슬래시는 그대로 보존합니다.
+  original = original.replace(/\s+\/\s*.*$/, '').trim();
 
   // 날짜 안의 점/슬래시는 보존하고, 목적·기준시점·희망금액 사이의 구분자만 분리합니다.
   // 예: "상속. 현재. 최저", "상속 . 33.2.3 . 중간", "증여/ 현재/ 최고"
@@ -10074,6 +10154,11 @@ function splitQuickMetaLine(line){
   return temp.split('§')
     .map(v => v.trim().replace(/__QDATE_(\d+)__/g, (_, i) => protectedDates[Number(i)] || ''))
     .filter(Boolean);
+}
+
+function normalizeGeneratedMessageText(text){
+  // '하감'은 실무 입력용 별칭이며, 외부 전달문구에서는 항상 정식 명칭 '하이테크'로 표기합니다.
+  return String(text ?? '').replace(/하감/g, '하이테크');
 }
 
 function labelQuickMode(v, titleOverride){
@@ -11082,10 +11167,27 @@ function receiveGetOutputText(){
   if(!el) return '';
   return (el.innerText || el.textContent || '').trim();
 }
+function receiveExtractGeneralAssignee(raw){
+  const src = String(raw || '').replace(/\r/g,'');
+  // [중간 금액] / [최저 금액] / [희망 금액] / [최고 금액] 등
+  // 금액 제목과 같은 줄 오른쪽에 단독으로 적힌 한글 이름만 담당자로 인식합니다.
+  const re = /(?:^|\n)\s*🔸?\s*\[\s*[^\]\n]*금액[^\]\n]*\]\s*([가-힣]{2,4})\s*(?=\n|$)/g;
+  const blacklist = new Set(['참고','없음','미정','예상','내외','금액','중간','최저','최고','희망','평가','수수료','특용비']);
+  let m;
+  while((m = re.exec(src))){
+    const name = (m[1] || '').trim();
+    if(name && !blacklist.has(name)) return name;
+  }
+  return '';
+}
+function receiveCurrentGeneralAssignee(){
+  return receiveExtractGeneralAssignee(document.getElementById('receiveInput')?.value || '');
+}
 function receiveExtractReceiptTitleFromText(text){
   const m = String(text || '').match(/접수번호\s*[:：]\s*([^\n]+)/);
   const receipt = m ? m[1].trim() : '';
-  return receipt ? `${receipt} (담당:  )` : '접수글 생성 후 제목이 표시됩니다.';
+  const assignee = receiveCurrentGeneralAssignee();
+  return receipt ? `${receipt} (담당: ${assignee})` : '접수글 생성 후 제목이 표시됩니다.';
 }
 function receiveUpdateTitleFromText(text){
   const box = document.getElementById('receiveTitleValue');
@@ -11223,13 +11325,20 @@ function receiveSheetApplyFromCurrent(){
   const client = hasReceiptText ? receiveSheetExtractLine(text, '의뢰인') : '';
   const target = hasReceiptText ? receiveSheetExtractLine(text, '평가대상') : '';
 
-  // 배정일·ARM/평가기한·마감일·평가담당자명은 접수글 내용과 관계없이 비워둡니다.
+  // 평가담당자명은 정보기입의 [○○ 금액] 옆 이름을 자동 반영합니다.
+  // 제목을 사용자가 직접 수정한 경우에는 제목의 (담당: 이름)을 우선합니다.
+  const titleText = document.getElementById('receiveTitleValue')?.textContent || '';
+  const titleAssigneeMatch = titleText.match(/담당\s*[:：]\s*([^\)]*)\)/);
+  const titleAssignee = titleAssigneeMatch ? (titleAssigneeMatch[1] || '').trim() : '';
+  const inputAssignee = receiveCurrentGeneralAssignee();
+  const appraiser = hasReceiptText ? (titleAssignee || inputAssignee) : '';
+
   receiveSheetSet('reportNo', reportNo);
   receiveSheetSet('assignedDate', '');
   receiveSheetSet('armUsePeriod', '');
   receiveSheetSet('deadline', '');
   receiveSheetSet('customerManager', hasReceiptText ? '김가민' : '');
-  receiveSheetSet('appraiser', '');
+  receiveSheetSet('appraiser', appraiser);
   receiveSheetSet('client', client);
   receiveSheetSet('depositDate', hasReceiptText ? receiveSheetFormatDate(new Date()) : '');
   receiveSheetSet('targetType', target ? receiveSheetTargetType(target) : '');
@@ -11252,18 +11361,28 @@ function receiveSheetScheduleRefresh(){
 if(document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', function(){
     const receiveOutput = document.getElementById('receiveOutput');
+    const receiveTitle = document.getElementById('receiveTitleValue');
     if(receiveOutput && !receiveOutput.dataset.sheetAutoReady){
       receiveOutput.dataset.sheetAutoReady = '1';
       receiveOutput.addEventListener('input', receiveSheetApplyFromCurrent);
       receiveSheetScheduleRefresh();
     }
+    if(receiveTitle && !receiveTitle.dataset.sheetAutoReady){
+      receiveTitle.dataset.sheetAutoReady = '1';
+      receiveTitle.addEventListener('input', receiveSheetApplyFromCurrent);
+    }
   });
 } else {
   const receiveOutput = document.getElementById('receiveOutput');
+  const receiveTitle = document.getElementById('receiveTitleValue');
   if(receiveOutput && !receiveOutput.dataset.sheetAutoReady){
     receiveOutput.dataset.sheetAutoReady = '1';
     receiveOutput.addEventListener('input', receiveSheetApplyFromCurrent);
     receiveSheetScheduleRefresh();
+  }
+  if(receiveTitle && !receiveTitle.dataset.sheetAutoReady){
+    receiveTitle.dataset.sheetAutoReady = '1';
+    receiveTitle.addEventListener('input', receiveSheetApplyFromCurrent);
   }
 }
 
@@ -12114,10 +12233,30 @@ function receiveRightsSetOutput(text, highlight=true){
 function receiveRightsGetOutputText(){
   return document.getElementById('receiveRightsOutput')?.innerText || '';
 }
+function receiveRightsExtractAssigneeFromInput(raw){
+  const lines = String(raw || '').replace(/\r/g, '').split('\n');
+  const blacklist = new Set([
+    '예상','평가','평가액','금액','수수료','특용비','최저','중간','최고','희망',
+    '내외','만원','억원','영업권','특허권','상표권','저작권','인허가권','디자인권','판권','보험평가'
+  ]);
+  for(const rawLine of lines){
+    const line = rawLine.trim();
+    if(!/^[🔸◆▪•\-\s]*예상평가액(?=\s|[:：]|$)/.test(line)) continue;
+    const tail = line.replace(/^[🔸◆▪•\-\s]*예상평가액\s*[:：]?\s*/, '');
+    const candidates = tail.match(/[가-힣]{2,4}/g) || [];
+    for(const token of candidates){
+      if(blacklist.has(token)) continue;
+      if(/^(?:내외|정도|예정|기준|포함|별도)$/.test(token)) continue;
+      return token;
+    }
+  }
+  return '';
+}
 function receiveRightsExtractReceiptTitleFromText(text){
   const m = String(text || '').match(/접수번호\s*[:：]\s*([^\n]+)/);
   const receipt = m ? m[1].trim() : '';
-  return receipt ? `${receipt} (담당:  )` : '접수글 생성 후 제목이 표시됩니다.';
+  const assignee = receiveRightsExtractAssigneeFromInput(document.getElementById('receiveRightsInput')?.value || '');
+  return receipt ? `${receipt} (담당: ${assignee})` : '접수글 생성 후 제목이 표시됩니다.';
 }
 function receiveRightsUpdateTitleFromText(text){
   const box = document.getElementById('receiveRightsTitleValue');
@@ -12199,16 +12338,10 @@ function receiveRightsFeeRow(type, amountValue){
 function receiveRightsBuildMessage(parsed){
   const deadline = receiveRightsAddBusinessDays(new Date(), 5);
   const row = receiveRightsFeeRow(parsed.type, parsed.progressAmount);
-  const feeShort = row ? receiveRightsFeeShort(row.totalFee) : '---만';
+  const pureFeeShort = row ? receiveRightsFeeShort(row.minFee) : '---만';
   const specialShort = row ? receiveRightsFeeShort(row.extra) : '---만';
-  const amountValue = parsed.progressAmount;
-  const guideFeeText = parsed.selectedFeeText || '';
-  const isUnderOrEqual51 = amountValue != null && amountValue <= 5.1;
-  const feeLine = guideFeeText
-    ? (isUnderOrEqual51
-      ? `순수수료 기준요율 / 특용 +10만 / vat 포함 총 수수료 [하감: ${guideFeeText}] 맞추거나 살짝 안으로`
-      : `순수수료 하한요율 / 특용 기준-하한 / vat 포함 총 수수료 [하감: ${guideFeeText}] 맞추거나 살짝 안으로`)
-    : `특용 ${specialShort} / VAT 별도 총 수수료 ${feeShort}`;
+  const vatIncludedFeeShort = row ? receiveRightsFeeShort(rightsVatIncludedFee(row.totalFee)) : '---만';
+  const feeLine = `순수수료 ${pureFeeShort} / 특용 ${specialShort} / VAT 포함 총 수수료 ${vatIncludedFeeShort}`;
   const fixGuide = parsed.selectedKey === 'high'
     ? '딱 요 금액이나 살짝 높게 부탁드려요!! 낮아지면 안됩니당!'
     : (parsed.selectedKey === 'low' ? '딱 요 금액이나 살짝 아래로 부탁드려요!! 올라가면 안됩니당!' : '딱 요 금액으로 부탁드려요!');
@@ -12292,6 +12425,8 @@ function receiveRightsGenerate(){
   }
   const parsed = receiveRightsParseInput(raw);
   receiveRightsSetOutput(receiveRightsBuildMessage(parsed), true);
+  receiveRightsUpdateTitleFromText(receiveRightsGetOutputText());
+  if(typeof receiveRightsSheetApplyFromCurrent === 'function') receiveRightsSheetApplyFromCurrent();
 }
 function receiveRightsReset(){
   const input = document.getElementById('receiveRightsInput');
@@ -12646,7 +12781,7 @@ function rightsGenerate(){
       messages.push(rightsBuildMessage(parsed));
     }
   }
-  out.textContent = messages.join('\n\n');
+  out.textContent = normalizeGeneratedMessageText(messages.join('\n\n'));
 }
 function rightsReset(){
   const input = document.getElementById('rightsInput');
@@ -13200,13 +13335,14 @@ function receiveRightsSheetApplyFromCurrent(){
   const target = hasReceiptText ? receiveSheetExtractLine(text, '평가대상') : '';
   const today = hasReceiptText ? receiveSheetFormatDate(new Date()) : '';
 
-  // 배정일·ARM/평가기한·마감일·평가담당자명은 접수글 내용과 관계없이 비워둡니다.
+  // 평가담당자명은 정보기입의 '예상평가액' 같은 줄에 적힌 이름을 자동 반영합니다.
+  const appraiser = hasReceiptText ? receiveRightsExtractAssigneeFromInput(document.getElementById('receiveRightsInput')?.value || '') : '';
   receiveRightsSheetSet('reportNo', reportNo);
   receiveRightsSheetSet('assignedDate', '');
   receiveRightsSheetSet('armUsePeriod', '');
   receiveRightsSheetSet('deadline', '');
   receiveRightsSheetSet('customerManager', hasReceiptText ? '김가민' : '');
-  receiveRightsSheetSet('appraiser', '');
+  receiveRightsSheetSet('appraiser', appraiser);
   receiveRightsSheetSet('client', client);
   receiveRightsSheetSet('depositDate', today);
   receiveRightsSheetSet('targetType', target ? receiveRightsSheetTargetType(target) : '');
@@ -13231,6 +13367,17 @@ function receiveRightsSheetScheduleRefresh(){
     receiveRightsSheetScheduleRefresh();
   };
   const setup = function(){
+    const input = document.getElementById('receiveRightsInput');
+    if(input && !input.dataset.rightsAssigneeSyncReady){
+      input.dataset.rightsAssigneeSyncReady = '1';
+      input.addEventListener('input', () => {
+        const text = receiveRightsGetOutputText();
+        if(/접수번호\s*[:：]/.test(text)){
+          receiveRightsUpdateTitleFromText(text);
+          receiveRightsSheetApplyFromCurrent();
+        }
+      });
+    }
     const output = document.getElementById('receiveRightsOutput');
     if(output && !output.dataset.rightsSheetReady){
       output.dataset.rightsSheetReady = '1';
@@ -13860,6 +14007,564 @@ setTimeout(mentSyncStickyOffset, 250);
   window.addEventListener('orientationchange', function(){ setTimeout(resizeQuoteRequestFrames, 250); });
 })();
 </script>
+
+
+<style>
+/* 접수 페이지 업체 선택: 기존 접수 UI에만 한정 */
+.receiveFirmSelector{
+  display:flex;
+  gap:5px;
+  margin:8px 0 2px;
+  width:fit-content;
+  max-width:100%;
+}
+.receiveFirmSelector button{
+  min-width:54px;
+  height:30px;
+  padding:0 11px;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  background:#fff;
+  color:#334155;
+  font-size:12px;
+  font-weight:900;
+}
+.receiveFirmSelector button.active{
+  background:#111827;
+  border-color:#111827;
+  color:#fff;
+}
+#page_receiveMulti .receiveMultiFirmSelector{ margin:0 0 8px; }
+@media(max-width:640px){
+  .receiveFirmSelector{ width:100%; }
+  .receiveFirmSelector button{ flex:1; min-width:0; }
+}
+</style>
+<script>
+/* 접수 페이지 업체 선택/접수번호 prefix/복수 담당자 자동연동 보강 */
+(function(){
+  const firmInfo = {
+    hagam:{ label:'하이테크', prefix:'HI' },
+    bareum:{ label:'바름', prefix:'BA' },
+    ongyeol:{ label:'온결', prefix:'ON' }
+  };
+  const selected = { property:'hagam', rights:'hagam', multi1:'hagam', multi2:'bareum' };
+
+  function normalizeFirmName(name){
+    const s = String(name || '').trim();
+    if(s === '하감' || s === '하이테크') return '하이테크';
+    if(s === '바름') return '바름';
+    if(s === '온결') return '온결';
+    if(s === '복수평가' || s === '복수업체') return '바름';
+    return '';
+  }
+  function keyFromLabel(label){
+    const n = normalizeFirmName(label);
+    if(n === '하이테크') return 'hagam';
+    if(n === '바름') return 'bareum';
+    if(n === '온결') return 'ongyeol';
+    return '';
+  }
+  function prefixFor(group){ return firmInfo[selected[group] || 'hagam'].prefix; }
+  function labelFor(group){ return firmInfo[selected[group] || 'hagam'].label; }
+  function setActive(group){
+    document.querySelectorAll(`[data-receive-firm-group="${group}"] button[data-firm]`).forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.firm === selected[group]);
+    });
+  }
+  function replaceReceiptPrefix(text, prefix){
+    return String(text || '').replace(/(접수번호\s*[:：]\s*)[A-Z]{2}(\d{6}-\d+)/, `$1${prefix}$2`);
+  }
+  function refreshGeneralPrefix(){
+    const text = typeof receiveGetOutputText === 'function' ? receiveGetOutputText() : '';
+    if(/접수번호\s*[:：]/.test(text)){
+      receiveSetOutput(replaceReceiptPrefix(text, prefixFor('property')), true);
+      receiveRefreshTitle();
+    }
+  }
+  function refreshRightsPrefix(){
+    const text = typeof receiveRightsGetOutputText === 'function' ? receiveRightsGetOutputText() : '';
+    if(/접수번호\s*[:：]/.test(text)){
+      receiveRightsSetOutput(replaceReceiptPrefix(text, prefixFor('rights')), true);
+      receiveRightsRefreshTitle();
+    }
+  }
+
+  function extractSectionMeta(raw){
+    const src = String(raw || '').replace(/\r/g,'');
+    const headerRe = /🔸+\s*\[\s*(?:(하이테크|하감|바름|온결|복수평가|복수업체)\s*)?([^\]]*?(?:최저|중간|최고|희망\s*금액|희망가?|희망)[^\]]*)\]\s*([^\n]*)/g;
+    const headers=[];
+    let m;
+    while((m=headerRe.exec(src))){
+      headers.push({start:m.index, end:headerRe.lastIndex, rawFirm:(m[1]||'').trim(), title:(m[2]||'').trim(), headerTail:(m[3]||'').trim()});
+    }
+    return headers.map((h,i)=>{
+      const bodyStart = src.indexOf('\n', h.end);
+      const from = bodyStart < 0 ? h.end : bodyStart + 1;
+      const to = i+1 < headers.length ? headers[i+1].start : src.length;
+      const body = src.slice(from,to);
+      let assignee='';
+      const tail = h.headerTail.replace(/[()\[\]]/g,' ').trim();
+      const tailM = tail.match(/(?:^|\s)([가-힣]{2,4})(?:\s|$)/);
+      if(tailM) assignee=tailM[1];
+      if(!assignee){
+        const lines = body.split(/\n/).map(v=>v.trim());
+        const specialIdx = lines.findIndex(v=>/예상특용비\s*[:：]/.test(v));
+        if(specialIdx >= 0){
+          for(let j=specialIdx+1;j<Math.min(lines.length,specialIdx+4);j++){
+            const v=lines[j];
+            if(!v) continue;
+            if(/^[가-힣]{2,4}$/.test(v)){ assignee=v; break; }
+            if(/^🔸|^•|^━|^\*/.test(v)) break;
+          }
+        }
+      }
+      return {firm:normalizeFirmName(h.rawFirm), rawFirm:h.rawFirm, title:h.title, headerTail:h.headerTail, body, assignee};
+    });
+  }
+  function selectedAssignee(group){
+    const raw=document.getElementById('receiveMultiInput')?.value || '';
+    const metas=extractSectionMeta(raw);
+    const want=labelFor(group);
+    let hit=metas.find(x=>x.firm===want);
+    if(!hit) hit = group==='multi1' ? metas[0] : metas[1];
+    return hit?.assignee || '';
+  }
+  function refreshMultiTitles(){
+    const t1=receiveMultiGetOutputText('receiveMultiHtOutput');
+    const t2=receiveMultiGetOutputText('receiveMultiPartnerOutput');
+    const no1=receiveMultiExtractReceiptNoFromText(t1) || receiveMultiReceiptNo(prefixFor('multi1'));
+    const no2=receiveMultiExtractReceiptNoFromText(t2) || receiveMultiReceiptNo(prefixFor('multi2'));
+    receiveMultiSetTitleValue('receiveMultiHtTitleValue', no1, selectedAssignee('multi1'), '복수');
+    receiveMultiSetTitleValue('receiveMultiPartnerTitleValue', no2, selectedAssignee('multi2'), '');
+    if(typeof receiveMultiSheetApplyAll === 'function') receiveMultiSheetApplyAll();
+  }
+  function refreshMultiPrefix(group){
+    const is1=group==='multi1';
+    const id=is1?'receiveMultiHtOutput':'receiveMultiPartnerOutput';
+    const text=receiveMultiGetOutputText(id);
+    if(/접수번호\s*[:：]/.test(text)){
+      receiveMultiSetOutput(id, replaceReceiptPrefix(text,prefixFor(group)), true);
+    }
+    refreshMultiTitles();
+  }
+
+  window.receiveSetFirm=function(group, firm){
+    if(!selected.hasOwnProperty(group) || !firmInfo[firm]) return;
+    selected[group]=firm;
+    setActive(group);
+    if(group==='property') refreshGeneralPrefix();
+    else if(group==='rights') refreshRightsPrefix();
+    else refreshMultiPrefix(group);
+  };
+
+  // 기존 접수번호 생성 함수는 날짜/뒤 번호 형식을 유지하고 prefix만 선택값으로 바꿉니다.
+  window.receiveReceiptNo=function(){
+    const d=new Date();
+    return prefixFor('property') + String(d.getFullYear()).slice(2) + receivePad2(d.getMonth()+1) + receivePad2(d.getDate()) + '-1400';
+  };
+  window.receiveRightsReceiptNo=function(){
+    const d=new Date();
+    return prefixFor('rights') + String(d.getFullYear()).slice(2) + receiveRightsPad2(d.getMonth()+1) + receiveRightsPad2(d.getDate()) + '-14006';
+  };
+
+  // 복수접수 입력의 업체명이 하이테크/하감/바름/온결이어도 기존 2개 금액 슬롯에 순서대로 연결합니다.
+  window.receiveMultiParseCompanySections=function(text){
+    const result={ht:{},partner:{}};
+    const metas=extractSectionMeta(text);
+    metas.slice(0,2).forEach((meta,index)=>{
+      const body=meta.body || '';
+      const title=meta.title || '';
+      const key=/희망|최저/.test(title)?'low':title.includes('최고')?'high':'mid';
+      const amountLine=(body.match(/예상평가액\s*[:：]\s*([^\n]+)/)||[,''])[1];
+      const feeLine=(body.match(/예상수수료[^:：]*[:：]\s*([^\n]+)/)||[,''])[1];
+      const specialLine=(body.match(/예상특용비\s*[:：]\s*([^\n]+)/)||[,''])[1];
+      const parsedAmount=receiveMultiParseAmountText(amountLine);
+      const slot=index===0?'ht':'partner';
+      result[slot][key]={
+        amountText:parsedAmount.text,
+        amountValue:parsedAmount.value,
+        feeText:receiveMultiExtractMoneyMan(feeLine),
+        specialText:receiveMultiExtractMoneyMan(specialLine),
+        rawAmount:amountLine.trim(), rawFee:feeLine.trim(), rawSpecial:specialLine.trim(),
+        firmName:meta.firm || (slot==='ht'?'하이테크':'바름'), assignee:meta.assignee || ''
+      };
+    });
+    if(!Object.keys(result.ht).length && !Object.keys(result.partner).length && typeof receiveMultiParseSections==='function'){
+      const generic=receiveMultiParseSections(text);
+      if(Object.keys(generic||{}).length) result.ht=generic;
+    }
+    return result;
+  };
+
+  // 복수 접수글은 선택된 3/4번 업체에 따라 각각 접수번호 prefix를 생성합니다.
+  const oldMultiBuild=window.receiveMultiBuildDualMessage;
+  window.receiveMultiGenerate=function(){
+    const input=document.getElementById('receiveMultiInput');
+    const o1=document.getElementById('receiveMultiHtOutput');
+    const o2=document.getElementById('receiveMultiPartnerOutput');
+    if(!input||!o1||!o2) return;
+    const raw=input.value.trim();
+    if(!raw){
+      receiveMultiSetBothOutputs('정보를 입력하고 반영을 누르면 하이테크 접수글이 생성됩니다.','정보를 입력하고 반영을 누르면 복수업체 접수글이 생성됩니다.',false);
+      receiveMultiSetTitleValue('receiveMultiHtTitleValue','접수글 생성 후 제목이 표시됩니다.','','');
+      receiveMultiSetTitleValue('receiveMultiPartnerTitleValue','접수글 생성 후 제목이 표시됩니다.','','');
+      return;
+    }
+    const parsed=receiveMultiParseInput(raw);
+    receiveMultiSetBothOutputs(oldMultiBuild(parsed,prefixFor('multi1')),oldMultiBuild(parsed,prefixFor('multi2')),true);
+    refreshMultiTitles();
+  };
+
+  // 복수 제목은 두 접수글 모두 선택된 업체에 해당하는 담당자를 자동 반영합니다.
+  window.receiveMultiUpdateTitlesFromOutputs=refreshMultiTitles;
+
+  // 스프레드시트 평가담당자도 각 제목의 담당자를 그대로 사용합니다.
+  window.receiveMultiSheetExtractTitleAssignee=function(type='partner'){
+    const id=type==='ht'?'receiveMultiHtTitleValue':'receiveMultiPartnerTitleValue';
+    const title=document.getElementById(id)?.textContent || '';
+    const m=title.match(/담당\s*[:：]\s*([^\)]*)\)/);
+    return m?(m[1]||'').trim():'';
+  };
+  window.receiveMultiSheetFill=function(prefix,text,type){
+    const hasReceiptText=/접수번호\s*[:：]/.test(text)||/평가대상\s*[:：]/.test(text);
+    const reportNo=hasReceiptText?receiveSheetExtractLine(text,'접수번호'):'';
+    const client=hasReceiptText?receiveSheetExtractLine(text,'의뢰인'):'';
+    const target=hasReceiptText?receiveSheetExtractLine(text,'평가대상'):'';
+    const today=receiveSheetFormatDate(new Date());
+    const appraiser=hasReceiptText?receiveMultiSheetExtractTitleAssignee(type):'';
+    receiveMultiSheetSet(prefix,'reportNo',reportNo);
+    receiveMultiSheetSet(prefix,'assignedDate','');
+    receiveMultiSheetSet(prefix,'armUsePeriod','');
+    receiveMultiSheetSet(prefix,'deadline','');
+    receiveMultiSheetSet(prefix,'customerManager',hasReceiptText?'김가민':'');
+    receiveMultiSheetSet(prefix,'appraiser',appraiser);
+    receiveMultiSheetSet(prefix,'client',client);
+    receiveMultiSheetSet(prefix,'depositDate',hasReceiptText?today:'');
+    receiveMultiSheetSet(prefix,'targetType',target?receiveSheetTargetType(target):'');
+    receiveMultiSheetSet(prefix,'region',target?receiveSheetRegionFromTarget(target):'');
+    receiveMultiSheetSet(prefix,'depositStatus',hasReceiptText?'진행':'');
+    receiveMultiSheetBuildTsv(prefix);
+  };
+
+  function init(){ Object.keys(selected).forEach(setActive); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+
+
+
+<style>
+/* 복수접수: 업체는 정보기입의 첫 번째/두 번째 금액 블록에서 자동 결정 */
+#page_receiveMulti .receiveMultiFirmSelector{display:none !important;}
+</style>
+<script>
+/* 복수접수 업체/금액/수수료/담당자 세트 자동연동 최종 보강 */
+(function(){
+  const FIRM_MAP = {
+    '하감': {label:'하이테크', prefix:'HI'},
+    '하이테크': {label:'하이테크', prefix:'HI'},
+    '바름': {label:'바름', prefix:'BA'},
+    '온결': {label:'온결', prefix:'ON'}
+  };
+
+  function firmMeta(name){
+    return FIRM_MAP[String(name||'').trim()] || null;
+  }
+
+  function tierKey(title){
+    const s=String(title||'');
+    if(/희망|최저/.test(s)) return 'low';
+    if(/최고/.test(s)) return 'high';
+    return 'mid';
+  }
+
+  function findAssignee(headerTail, body){
+    const blacklist=/^(하감|하이테크|바름|온결|최저|중간|최고|희망|금액|평가|예상|수수료|특용비|내외|만원|억)$/;
+    const cleanName=(s)=>{
+      const candidates=String(s||'').replace(/[()\[\]]/g,' ').match(/[가-힣]{2,4}/g)||[];
+      for(const n of candidates){
+        if(!blacklist.test(n) && !/평가|수수료|특용비|예상|포함|금액/.test(n)) return n;
+      }
+      return '';
+    };
+    let name=cleanName(headerTail);
+    if(name) return name;
+    const lines=String(body||'').split(/\r?\n/).map(v=>v.trim());
+    const specialIdx=lines.findIndex(v=>/예상특용비\s*[:：]/.test(v));
+    if(specialIdx>=0){
+      for(let i=specialIdx+1;i<Math.min(lines.length,specialIdx+4);i++){
+        const line=lines[i];
+        if(!line) continue;
+        if(/^🔸|^•|^━|^\*/.test(line)) break;
+        if(/^[가-힣]{2,4}$/.test(line) && !blacklist.test(line)) return line;
+      }
+    }
+    return '';
+  }
+
+  function parseFirmBlocks(raw){
+    const src=String(raw||'').replace(/\r/g,'');
+    // 업체명은 반드시 금액 제목 안의 하감/하이테크/바름/온결만 인정합니다.
+    const re=/🔸+\s*\[\s*(하감|하이테크|바름|온결)\s+([^\]]*?(?:최저|중간|최고|희망\s*금액|희망가?|희망)[^\]]*)\]\s*([^\n]*)/g;
+    const headers=[];
+    let m;
+    while((m=re.exec(src))){
+      headers.push({start:m.index,end:re.lastIndex,rawFirm:m[1],title:m[2],tail:(m[3]||'').trim()});
+    }
+    return headers.map((h,i)=>{
+      const bodyLineStart=src.indexOf('\n',h.end);
+      const from=bodyLineStart<0?h.end:bodyLineStart+1;
+      const to=i+1<headers.length?headers[i+1].start:src.length;
+      let body=src.slice(from,to);
+      const cut=body.search(/\n\s*━{3,}|\n\s*\*[^\n]*/);
+      if(cut>=0) body=body.slice(0,cut);
+      const fm=firmMeta(h.rawFirm);
+      const amountLine=(body.match(/예상평가액\s*[:：]\s*([^\n]+)/)||[,''])[1].trim();
+      const feeLine=(body.match(/예상수수료[^:：]*[:：]\s*([^\n]+)/)||[,''])[1].trim();
+      const specialLine=(body.match(/예상특용비\s*[:：]\s*([^\n]+)/)||[,''])[1].trim();
+      const parsedAmount=receiveMultiParseAmountText(amountLine);
+      return {
+        rawFirm:h.rawFirm,
+        firmName:fm?fm.label:h.rawFirm,
+        prefix:fm?fm.prefix:'HI',
+        title:h.title,
+        key:tierKey(h.title),
+        amountText:parsedAmount.text,
+        amountValue:parsedAmount.value,
+        feeText:receiveMultiExtractMoneyMan(feeLine),
+        specialText:receiveMultiExtractMoneyMan(specialLine),
+        rawAmount:amountLine,
+        rawFee:feeLine,
+        rawSpecial:specialLine,
+        assignee:findAssignee(h.tail,body),
+        headerTail:h.tail,
+        body
+      };
+    }).slice(0,2);
+  }
+
+  function parseClientOutsideBlocks(raw, blocks){
+    const src=String(raw||'').replace(/\r/g,'');
+    const lines=src.split('\n').map(v=>v.trim()).filter(Boolean);
+    // 사용자가 맨 아래에 적은 의뢰인명을 우선합니다. 평가사명은 제외합니다.
+    const assignees=new Set((blocks||[]).map(b=>b.assignee).filter(Boolean));
+    for(let i=lines.length-1;i>=0;i--){
+      const line=lines[i];
+      if(assignees.has(line)) continue;
+      if(/^✅|^🔸|^•|^━|^\*/.test(line)) continue;
+      if(/[0-9]/.test(line)) continue;
+      if(/평가목적|기준시점|예상|수수료|특용비|시세|복수평가|하이테크|하감|바름|온결|금액|내외|국세청|세무서|업로드|착수금/.test(line)) continue;
+      if(/^[가-힣]{2,4}$/.test(line)) return line;
+    }
+    return '';
+  }
+
+  function makeCompanySections(blocks){
+    const result={ht:{},partner:{}};
+    (blocks||[]).forEach((b,index)=>{
+      const slot=index===0?'ht':'partner';
+      result[slot][b.key]={
+        amountText:b.amountText,
+        amountValue:b.amountValue,
+        feeText:b.feeText,
+        specialText:b.specialText,
+        rawAmount:b.rawAmount,
+        rawFee:b.rawFee,
+        rawSpecial:b.rawSpecial,
+        firmName:b.firmName,
+        prefix:b.prefix,
+        assignee:b.assignee
+      };
+    });
+    return result;
+  }
+
+  // 기존 파서가 요구하는 구조는 유지하되, 업체 블록만 실제 입력 세트 기준으로 치환합니다.
+  const previousParseInput=window.receiveMultiParseInput;
+  window.receiveMultiParseInput=function(raw){
+    let base={};
+    try{ base=previousParseInput?previousParseInput(raw):{}; }catch(e){ base={}; }
+    const blocks=parseFirmBlocks(raw);
+    const companySections=makeCompanySections(blocks);
+    return {
+      ...base,
+      target:base.target || receiveMultiCleanLine((String(raw||'').split(/\r?\n/).find(l=>/^\s*✅/.test(l))||'')),
+      purpose:base.purpose || receiveMultiExtractField(raw,'평가목적'),
+      baseDate:base.baseDate || receiveMultiExtractField(raw,'기준시점'),
+      client:parseClientOutsideBlocks(raw,blocks) || base.client || '',
+      companySections,
+      selectedKey:blocks[0]?.key || blocks[1]?.key || base.selectedKey || 'low',
+      avgText:receiveMultiExtractAverage(raw),
+      firmBlocks:blocks
+    };
+  };
+
+  window.receiveMultiParseCompanySections=function(text){
+    return makeCompanySections(parseFirmBlocks(text));
+  };
+
+  function averageText(first,second,parsed){
+    if(first?.amountValue!=null && second?.amountValue!=null){
+      return receiveMultiFormatEok((first.amountValue+second.amountValue)/2);
+    }
+    return parsed?.avgText || '**억';
+  }
+
+  window.receiveMultiBuildDualMessage=function(parsed,prefixOverride){
+    const blocks=(parsed&&parsed.firmBlocks)||parseFirmBlocks(document.getElementById('receiveMultiInput')?.value||'');
+    const first=blocks[0]||{};
+    const second=blocks[1]||{};
+    const firstName=first.firmName||'하이테크';
+    const secondName=second.firmName||'바름';
+    const firstAmount=first.amountText||'**억';
+    const secondAmount=second.amountText||'**억';
+    const firstFee=first.feeText||'***만원';
+    const secondFee=second.feeText||'***만원';
+    const avg=averageText(first,second,parsed);
+    const key=first.key||second.key||parsed?.selectedKey||'low';
+    const hasUnderOrEqual51=[first.amountValue,second.amountValue].some(v=>v!=null&&v<=5.1);
+    const feeRule=hasUnderOrEqual51
+      ? '순수수료 기준요율 / 특용 +10만 / vat 포함 총 수수료'
+      : '순수수료 하한요율 / 특용 기준-하한 / vat 포함 총 수수료';
+    const direction=key==='high'
+      ? `평균 ${avg} 픽스, 안되면 살짝 올려주세요! 낮아지면 안됩니다!`
+      : `평균 ${avg} 픽스, 안되면 살짝 내려주세요! 올라가면 안됩니다!`;
+    const today=new Date();
+    const deadline=receiveMultiAddBusinessDays(today,receiveMultiDeadlineBusinessDays(parsed?.target||''));
+    const receiptNo=receiveMultiReceiptNo(prefixOverride||first.prefix||'HI');
+    return `접수번호 : ${receiptNo}
+의뢰인 : ${parsed?.client||''}
+평가대상 : ${parsed?.target||''}
+평가목적 : ${parsed?.purpose||''}
+제출처 : 국세청 및 세무서
+기준시점 : ${parsed?.baseDate||''}
+조사일자, 작성일자, 확약서, 발송도장 : 현재
+
+특이사항
+- ${firstName} ${firstAmount} / ${secondName} ${secondAmount} (${direction})
+- 평가서 ${receiveMultiFormatMD(deadline)}까지 업로드 완료 (단축수수료 없음)
+- ${feeRule} [${firstName}: ${firstFee} / ${secondName}: ${secondFee}] 맞추거나 살짝 안으로
+- 착수금 각각 50만원 입금ㅇ
+
+- 평가서 업로드 후 라인으로 pdf 폴더 링크 전달 부탁드려요!`;
+  };
+
+  function setCardLabels(blocks){
+    const cards=[document.querySelector('#page_receiveMulti .receiveMultiHtOutputCard .sectionTitle'),document.querySelector('#page_receiveMulti .receiveMultiPartnerOutputCard .sectionTitle')];
+    cards.forEach((el,i)=>{
+      if(!el) return;
+      const badge=el.querySelector('.badge');
+      const no=badge?badge.outerHTML:`<span class="badge">${i+3}</span>`;
+      const name=blocks[i]?.firmName || (i===0?'첫 번째 업체':'두 번째 업체');
+      el.innerHTML=`${no} 접수글_${name}`;
+    });
+    const htSheet=document.querySelector('#page_receiveMulti .receiveMultiHtOutputCard .receiveMultiSheetTitle > b');
+    const ptSheet=document.querySelector('#page_receiveMulti .receiveMultiPartnerOutputCard .receiveMultiSheetTitle > b');
+    if(htSheet) htSheet.textContent='스프레드시트용_' + (blocks[0]?.firmName||'첫 번째 업체');
+    if(ptSheet) ptSheet.textContent='스프레드시트용_' + (blocks[1]?.firmName||'두 번째 업체');
+  }
+
+  window.receiveMultiUpdateTitlesFromOutputs=function(){
+    const raw=document.getElementById('receiveMultiInput')?.value||'';
+    const blocks=parseFirmBlocks(raw);
+    const t1=receiveMultiGetOutputText('receiveMultiHtOutput');
+    const t2=receiveMultiGetOutputText('receiveMultiPartnerOutput');
+    const p1=blocks[0]?.prefix||'HI';
+    const p2=blocks[1]?.prefix||'BA';
+    const no1=receiveMultiExtractReceiptNoFromText(t1)||receiveMultiReceiptNo(p1);
+    const no2=receiveMultiExtractReceiptNoFromText(t2)||receiveMultiReceiptNo(p2);
+    receiveMultiSetTitleValue('receiveMultiHtTitleValue',no1,blocks[0]?.assignee||'','복수');
+    receiveMultiSetTitleValue('receiveMultiPartnerTitleValue',no2,blocks[1]?.assignee||'','복수');
+    setCardLabels(blocks);
+    if(typeof receiveMultiSheetApplyAll==='function') receiveMultiSheetApplyAll();
+  };
+
+  window.receiveMultiGenerate=function(){
+    const input=document.getElementById('receiveMultiInput');
+    const o1=document.getElementById('receiveMultiHtOutput');
+    const o2=document.getElementById('receiveMultiPartnerOutput');
+    if(!input||!o1||!o2) return;
+    const raw=input.value.trim();
+    if(!raw){
+      receiveMultiSetBothOutputs('정보를 입력하고 반영을 누르면 첫 번째 업체 접수글이 생성됩니다.','정보를 입력하고 반영을 누르면 두 번째 업체 접수글이 생성됩니다.',false);
+      receiveMultiSetTitleValue('receiveMultiHtTitleValue','접수글 생성 후 제목이 표시됩니다.','','');
+      receiveMultiSetTitleValue('receiveMultiPartnerTitleValue','접수글 생성 후 제목이 표시됩니다.','','');
+      setCardLabels([]);
+      return;
+    }
+    const parsed=receiveMultiParseInput(raw);
+    const blocks=parsed.firmBlocks||[];
+    const p1=blocks[0]?.prefix||'HI';
+    const p2=blocks[1]?.prefix||'BA';
+    receiveMultiSetBothOutputs(receiveMultiBuildDualMessage(parsed,p1),receiveMultiBuildDualMessage(parsed,p2),true);
+    receiveMultiUpdateTitlesFromOutputs();
+  };
+
+  // 자동 추출 안내 문구도 실제 동작에 맞게 정리합니다.
+  function init(){
+    const info=document.querySelector('#page_receiveMulti .receiveMultiInfoBody');
+    if(info){
+      info.innerHTML='• 정보기입에 적힌 첫 번째 업체 금액 블록이 3번 접수글, 두 번째 업체 금액 블록이 4번 접수글로 연결됩니다.<br/>• 업체명은 하감/하이테크/바름/온결만 인식하며, 하감은 접수글에서 하이테크로 표시됩니다.<br/>• 각 블록 안의 예상평가액·예상수수료·예상특용비·담당자를 같은 업체의 한 세트로 인식합니다.<br/>• 접수번호는 하감/하이테크=HI, 바름=BA, 온결=ON으로 자동 생성됩니다.<br/>• 마감일은 기존 규칙 그대로 자동 계산됩니다.';
+    }
+    setCardLabels(parseFirmBlocks(document.getElementById('receiveMultiInput')?.value||''));
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+
+
+<script>
+/* 복수접수 자동업체 연동 보조: 3→4 반영 버튼/형광펜도 동적 업체명 기준 */
+(function(){
+  function companyPrefixFromInput(index){
+    const raw=document.getElementById('receiveMultiInput')?.value||'';
+    const re=/🔸+\s*\[\s*(하감|하이테크|바름|온결)\s+[^\]]*(?:최저|중간|최고|희망)[^\]]*\]/g;
+    const found=[]; let m;
+    while((m=re.exec(raw))){ found.push(m[1]); if(found.length>=2) break; }
+    const name=found[index]||'';
+    if(name==='바름') return 'BA';
+    if(name==='온결') return 'ON';
+    return 'HI';
+  }
+  window.receiveMultiSyncPartnerFromHt=function(){
+    const firstText=receiveMultiGetOutputText('receiveMultiHtOutput');
+    if(!firstText||firstText.includes('정보를 입력하고')) return;
+    const secondPrefix=companyPrefixFromInput(1);
+    const firstNo=receiveMultiExtractReceiptNoFromText(firstText)||'';
+    // 3번 접수번호에서 업체 prefix(영문)만 제외한 숫자/하이픈 부분을 그대로 4번에 동기화합니다.
+    // 예: HI260902-1400 → ON260902-1400 / BA260902-1400
+    const sharedSuffix=String(firstNo).replace(/^[A-Za-z]+/, '');
+    const secondNo=sharedSuffix ? (secondPrefix + sharedSuffix) : receiveMultiReceiptNo(secondPrefix);
+    const secondText=String(firstText).replace(/(접수번호\s*[:：]\s*)[^\n]+/,`$1${secondNo}`);
+    receiveMultiSetOutput('receiveMultiPartnerOutput',secondText,true);
+    receiveMultiUpdateTitlesFromOutputs();
+  };
+
+  window.receiveMultiHighlightOutput=function(plain){
+    return String(plain||'').split('\n').map(line=>{
+      if(line.startsWith('접수번호 :')){
+        const m=line.match(/^(접수번호\s*:\s*)(.*)$/);
+        return receiveMultiEscapeHtml(m[1])+receiveMultiHighlightText(m[2]);
+      }
+      if(/^-\s*(하이테크|바름|온결)\s+/.test(line) && /\s\/\s/.test(line)){
+        const m=line.match(/^(-\s*)(.*?)(\s*\(평균\s*)([^\s]+)(\s*픽스[\s\S]*\))$/);
+        if(m) return receiveMultiEscapeHtml(m[1])+receiveMultiHighlightText(m[2])+receiveMultiEscapeHtml(m[3])+receiveMultiHighlightText(m[4])+receiveMultiEscapeHtml(m[5]);
+      }
+      if(line.startsWith('- 평가서 ')){
+        const m=line.match(/^(-\s*평가서\s+)(\d{1,2}\/\d{1,2})(.*)$/);
+        if(m) return receiveMultiEscapeHtml(m[1])+receiveMultiHighlightText(m[2])+receiveMultiEscapeHtml(m[3]);
+      }
+      if(line.startsWith('- 순수수료 ')){
+        return receiveMultiHighlightText(line);
+      }
+      return receiveMultiEscapeHtml(line);
+    }).join('\n');
+  };
+})();
+</script>
+
+
 
 </body>
 </html>
