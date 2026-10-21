@@ -1151,8 +1151,6 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
 #page_receiveProperty .receiveSheetTable td {
   border:1px solid #e5e7eb;
   padding:6px;
-  text-align:center;
-  vertical-align:middle;
 }
 #page_receiveProperty .receiveSheetTable th {
   background:#fff100;
@@ -3121,6 +3119,7 @@ input, textarea, [contenteditable="true"] {
     max-width:100% !important;
   }
 }
+
 </style>
 </head>
 <body>
@@ -3209,14 +3208,14 @@ input, textarea, [contenteditable="true"] {
 <div class="mentOptionBox">
 <b>하이테크 평가 건수</b>
 <div class="mentCountBtns" id="ment_start_ht_countBtns">
-<button onclick="mentSetStartCount('ht', 0)" type="button">0</button>
-<button class="active" onclick="mentSetStartCount('ht', 1)" type="button">1</button>
+<button class="active" onclick="mentSetStartCount('ht', 0)" type="button">0</button>
+<button onclick="mentSetStartCount('ht', 1)" type="button">1</button>
 <button onclick="mentSetStartCount('ht', 2)" type="button">2</button>
 <button onclick="mentSetStartCount('ht', 3)" type="button">3</button>
 <button onclick="mentSetStartCount('ht', 4)" type="button">4</button>
 <button onclick="mentSetStartCount('ht', 5)" type="button">5</button>
 </div>
-<input id="ment_start_ht_count" type="hidden" value="1"/>
+<input id="ment_start_ht_count" type="hidden" value="0"/>
 </div>
 <div class="mentOptionBox">
 <b>바름 평가 건수</b>
@@ -3275,7 +3274,7 @@ input, textarea, [contenteditable="true"] {
 <textarea class="mentOutput" id="ment_doneCustomer_output"></textarea>
 </div>
 <div class="mentCard mentControlCard">
-<div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">고객</span></div>
+<div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">고객</span><button class="mentLightBtn mentCompactTitleBtn" onclick="mentResetDoneCustomer()" type="button">초기화</button></div>
 <div class="mentRoleChips">
 <label><input checked="" name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','대표님')" type="radio"/> 대표님</label>
 <label><input name="mentRole_doneCustomer" onchange="mentChooseRole('doneCustomer','세무사님')" type="radio"/> 세무사님</label>
@@ -3291,19 +3290,19 @@ input, textarea, [contenteditable="true"] {
 <div class="mentDoneCompany">
 <div class="mentDoneCompanyHead"><b>🟧 하이테크 잔금</b><button onclick="mentAddDoneAmount('ht')" type="button">+ 금액칸 추가</button></div>
 <div class="mentDoneAmountRows" id="ment_doneCustomer_ht_amounts">
-<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span></div>
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearDoneAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
 </div>
 </div>
 <div class="mentDoneCompany">
 <div class="mentDoneCompanyHead"><b>🟦 바름 잔금</b><button onclick="mentAddDoneAmount('bareum')" type="button">+ 금액칸 추가</button></div>
 <div class="mentDoneAmountRows" id="ment_doneCustomer_bareum_amounts">
-<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span></div>
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearDoneAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
 </div>
 </div>
 <div class="mentDoneCompany">
 <div class="mentDoneCompanyHead"><b>🟩 온결 잔금</b><button onclick="mentAddDoneAmount('ongyeol')" type="button">+ 금액칸 추가</button></div>
 <div class="mentDoneAmountRows" id="ment_doneCustomer_ongyeol_amounts">
-<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span></div>
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearDoneAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
 </div>
 </div>
 </div>
@@ -3380,19 +3379,19 @@ input, textarea, [contenteditable="true"] {
 <div class="mentDoneCompany">
 <div class="mentDoneCompanyHead"><b>🟧 하이테크 특용비</b><button onclick="mentAddSpecialAmount('ht')" type="button">+ 금액칸 추가</button></div>
 <div class="mentDoneAmountRows" id="ment_special_ht_amounts">
-<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span></div>
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearSpecialAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
 </div>
 </div>
 <div class="mentDoneCompany">
 <div class="mentDoneCompanyHead"><b>🟦 바름 특용비</b><button onclick="mentAddSpecialAmount('bareum')" type="button">+ 금액칸 추가</button></div>
 <div class="mentDoneAmountRows" id="ment_special_bareum_amounts">
-<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span></div>
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearSpecialAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
 </div>
 </div>
 <div class="mentDoneCompany">
 <div class="mentDoneCompanyHead"><b>🟩 온결 특용비</b><button onclick="mentAddSpecialAmount('ongyeol')" type="button">+ 금액칸 추가</button></div>
 <div class="mentDoneAmountRows" id="ment_special_ongyeol_amounts">
-<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span></div>
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearSpecialAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
 </div>
 </div>
 </div>
@@ -8057,11 +8056,9 @@ function makeMsg(){
 }
 async function copyMsg(){
   await navigator.clipboard.writeText(document.getElementById('msg').textContent);
-  alert('멘트를 복사했습니다.');
 }
 async function copyNums(){
   await navigator.clipboard.writeText(JSON.stringify(lastRows, null, 2));
-  alert('계산값을 복사했습니다.');
 }
 function resetAll(){
   quickAmountTitleOverrides = {};
@@ -8168,7 +8165,6 @@ async function copyRegionsCsv(){
   const header='시도,시군구,전체지역명,여비(원)';
   const rows = regions.map(r => [r.province||'',r.city||'',r.full||'',r.cost||0].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','));
   await navigator.clipboard.writeText([header,...rows].join('\n'));
-  alert('지역/여비표 CSV를 복사했습니다.');
 }
 
 ['region','baseActual','parcelCount','target','floor','area','useType','baseDate','purposeCustom','evalType','memo'].forEach(id => {
@@ -8794,7 +8790,6 @@ function multiMakeMsg(){
 }
 async function multiCopyMsg(){
   await navigator.clipboard.writeText(document.getElementById('multiMsg')?.textContent || '');
-  alert('멘트를 복사했습니다.');
 }
 function multiReset(){
   multiAmountTitleOverrides = {};
@@ -9597,7 +9592,6 @@ function calcCustomType(type){
 async function copyCustomMsg(type){
   const msg = document.getElementById(type + 'Msg')?.textContent || '';
   await navigator.clipboard.writeText(msg);
-  alert('멘트를 복사했습니다.');
 }
 
 function markUserInputs(){
@@ -9915,8 +9909,8 @@ function receiveHighlightOutput(plain){
       const m = line.match(/^(접수번호\s*:\s*)(.*)$/);
       return receiveEscapeHtml(m[1]) + receiveHighlightText(m[2]);
     }
-    if(line.startsWith('- 하이테크 ')){
-      const m = line.match(/^(-\s*하이테크\s+)(.*?)(\s+픽스.*)$/);
+    if(/^(-\s+).*?\s+픽스/.test(line)){
+      const m = line.match(/^(-\s+)(.*?)(\s+픽스.*)$/);
       if(m) return receiveEscapeHtml(m[1]) + receiveHighlightText(m[2]) + receiveEscapeHtml(m[3]);
     }
     if(line.startsWith('- 평가서 ')){
@@ -9981,7 +9975,7 @@ function receiveCopyTitle(){
     alert('복사할 제목이 없습니다.');
     return;
   }
-  navigator.clipboard.writeText(title).then(() => alert('제목이 복사되었습니다.'));
+  navigator.clipboard.writeText(title).then(() => {});
 }
 
 function receiveSheetPad2(n){ return String(n).padStart(2,'0'); }
@@ -10022,7 +10016,7 @@ function receiveSheetFindValidMD_(text){
   return '';
 }
 function receiveSheetExtractLine(text, label){
-  const re = new RegExp(label + '\\s*[:：]\\s*([^\\n]+)');
+  const re = new RegExp('^' + label + '[ \\t]*[:：][ \\t]*([^\\r\\n]*)', 'm');
   const m = String(text || '').match(re);
   return m ? m[1].trim() : '';
 }
@@ -10123,9 +10117,68 @@ function receiveSheetApplyFromCurrent(){
   receiveSheetSet('depositStatus', hasReceiptText ? '진행' : '');
   receiveSheetBuildTsvFromInputs();
 }
+// 접수 행 복사: 구글 스프레드시트에서 생성하는 표 클립보드 형식으로
+// 셀 값과 가로·세로 중앙 정렬을 함께 전달합니다 (일반/복수/무형 공통).
+async function receiveSheetCopyPlainText(text){
+  const escaped = value => String(value)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  const cells = text.split(/\r?\n/).map(line => line.split('\t'));
+  const colCount = Math.max(0, ...cells.map(row => row.length));
+  const columns = Array.from({length:colCount}, () => '<col width="100"/>').join('');
+  const rows = cells.map(row =>
+    '<tr style="height:21px;">' + row.map(value => {
+      // 시트에서 복사한 표의 데이터 표시 형식도 함께 전달합니다.
+      // 단순 숫자는 숫자 그대로, 코드/날짜/문자는 텍스트 그대로 보존합니다.
+      let data = '';
+      if(value !== ''){
+        const numeric = /^-?(?:0|[1-9]\d*)(?:\.\d+)?$/.test(value) && Number.isFinite(Number(value));
+        const typed = numeric ? {'1':3,'3':Number(value)} : {'1':2,'2':value};
+        data = ' data-sheets-value="' + escaped(JSON.stringify(typed)) + '"';
+      }
+      return '<td' + data + ' align="center" valign="middle"' +
+        ' style="overflow:hidden;padding:2px 3px 2px 3px;vertical-align:middle;text-align:center;">' +
+        escaped(value) + '</td>';
+    }).join('') + '</tr>'
+  ).join('');
+  // 실제 구글 시트의 클립보드 구조와 동일한 meta / origin / colgroup /
+  // data-sheets-value / 행·셀 서식을 포함해 복사합니다.
+  const html = '<meta charset="utf-8"><google-sheets-html-origin>' +
+    '<style type="text/css">td {border:1 px solid #cccccc;} br {mso-data-placement:same-cell;}</style>' +
+    '<table xmlns="http://www.w3.org/1999/xhtml" cellspacing="0" cellpadding="0" dir="ltr" border="1"' +
+    ' style="table-layout:fixed;font-size:10pt;font-family:Arial;width:0px;border-collapse:collapse;border:none"' +
+    ' data-sheets-root="1" data-sheets-baot="1"><colgroup>' + columns +
+    '</colgroup><tbody>' + rows + '</tbody></table></google-sheets-html-origin>';
+
+  if(navigator.clipboard && navigator.clipboard.write && typeof ClipboardItem !== 'undefined'){
+    try {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/plain': new Blob([text], {type:'text/plain'}),
+        'text/html': new Blob([html], {type:'text/html'})
+      })]);
+      return;
+    } catch(error) { /* 클립보드 권한/로컬 파일 제약 시 copy 이벤트로 재시도 */ }
+  }
+  let copied = false;
+  const onCopy = event => {
+    if(!event.clipboardData) return;
+    event.clipboardData.clearData();
+    event.clipboardData.setData('text/plain', text);
+    event.clipboardData.setData('text/html', html);
+    event.preventDefault();
+    copied = true;
+  };
+  document.addEventListener('copy', onCopy);
+  try {
+    if(!document.execCommand('copy') || !copied) throw new Error('copy failed');
+  } finally {
+    document.removeEventListener('copy', onCopy);
+  }
+}
+
 function receiveSheetCopyRow(){
   const text = receiveSheetBuildTsvFromInputs();
-  navigator.clipboard.writeText(text).then(() => alert('스프레드시트용 행이 복사되었습니다.'));
+  receiveSheetCopyPlainText(text).then(() => {}).catch(() => alert('복사하지 못했습니다. 복사 버튼을 다시 눌러주세요.'));
 }
 
 function receiveSheetScheduleRefresh(){
@@ -10185,7 +10238,7 @@ function receiveBuildMessage(parsed){
 조사일자, 작성일자, 확약서, 발송도장 : 현재
 
 특이사항
-- 하이테크 ${amountText} 픽스 (${fixGuide})
+- ${amountText} 픽스 (${fixGuide})
 - 평가서 ${receiveFormatMD(deadline)}까지 업로드 완료 (단축수수료 없음)
 - ${feePhrase}
 - 착수금 50만원 입금ㅇ
@@ -10227,7 +10280,7 @@ function receiveReset(){
 }
 function receiveCopy(){
   const txt = receiveGetOutputText();
-  navigator.clipboard.writeText(txt).then(() => alert('복사되었습니다.'));
+  navigator.clipboard.writeText(txt).then(() => {});
 }
 
 
@@ -10481,11 +10534,11 @@ function receiveMultiReset(){
 }
 function receiveMultiCopyHt(){
   const txt = receiveMultiGetOutputText('receiveMultiHtOutput');
-  navigator.clipboard.writeText(txt).then(() => alert('하이테크 접수글이 복사되었습니다.'));
+  navigator.clipboard.writeText(txt).then(() => {});
 }
 function receiveMultiCopyPartner(){
   const txt = receiveMultiGetOutputText('receiveMultiPartnerOutput');
-  navigator.clipboard.writeText(txt).then(() => alert('복수업체 접수글이 복사되었습니다.'));
+  navigator.clipboard.writeText(txt).then(() => {});
 }
 
 
@@ -10700,7 +10753,7 @@ function receiveMultiUpdateTitlesFromOutputs(){
 }
 function receiveMultiCopyTitleById(id){
   const txt = document.getElementById(id)?.textContent || '';
-  navigator.clipboard.writeText(txt).then(() => alert('제목이 복사되었습니다.'));
+  navigator.clipboard.writeText(txt).then(() => {});
 }
 function receiveMultiCopyHtTitle(){ receiveMultiCopyTitleById('receiveMultiHtTitleValue'); }
 function receiveMultiCopyPartnerTitle(){ receiveMultiCopyTitleById('receiveMultiPartnerTitleValue'); }
@@ -10873,15 +10926,15 @@ function receiveMultiSheetApplyAll(){
 }
 function receiveMultiSheetCopyHt(){
   const text = receiveMultiSheetBuildTsv('receiveMultiSheet_ht');
-  navigator.clipboard.writeText(text).then(() => alert('하이테크 스프레드시트용 행이 복사되었습니다.'));
+  receiveSheetCopyPlainText(text).then(() => {}).catch(() => alert('복사하지 못했습니다. 복사 버튼을 다시 눌러주세요.'));
 }
 function receiveMultiSheetCopyPartner(){
   const text = receiveMultiSheetBuildTsv('receiveMultiSheet_partner');
-  navigator.clipboard.writeText(text).then(() => alert('복수업체 스프레드시트용 행이 복사되었습니다.'));
+  receiveSheetCopyPlainText(text).then(() => {}).catch(() => alert('복사하지 못했습니다. 복사 버튼을 다시 눌러주세요.'));
 }
 function receiveMultiSheetCopyBoth(){
   const text = receiveMultiSheetBuildTsv('receiveMultiSheet_ht') + '\n' + receiveMultiSheetBuildTsv('receiveMultiSheet_partner');
-  navigator.clipboard.writeText(text).then(() => alert('스프레드시트용 두 줄이 복사되었습니다.'));
+  receiveSheetCopyPlainText(text).then(() => {}).catch(() => alert('복사하지 못했습니다. 복사 버튼을 다시 눌러주세요.'));
 }
 function receiveMultiSheetScheduleRefresh(){
   if(typeof receiveMultiSheetApplyAll !== 'function') return;
@@ -11050,7 +11103,7 @@ function receiveRightsCopyTitle(){
     alert('복사할 제목이 없습니다.');
     return;
   }
-  navigator.clipboard.writeText(title).then(() => alert('제목이 복사되었습니다.'));
+  navigator.clipboard.writeText(title).then(() => {});
 }
 function receiveRightsDetectTypeFromTarget(target){
   const normalized = String(target || '');
@@ -11092,7 +11145,7 @@ function receiveRightsExtractBottomInfo(raw, target, type){
     }
     if(client || amount != null) break;
   }
-  if(!client) client = receiveRightsStripTypeFromTarget(target, type);
+  // 의뢰인이 없으면 평가대상으로 대체하지 않고 빈칸을 유지합니다.
   return {client, amount, amountText};
 }
 function receiveRightsExtractRightsWishInfo(raw){
@@ -11212,7 +11265,7 @@ function receiveRightsReset(){
 }
 function receiveRightsCopy(){
   const txt = receiveRightsGetOutputText();
-  navigator.clipboard.writeText(txt).then(() => alert('복사되었습니다.'));
+  navigator.clipboard.writeText(txt).then(() => {});
 }
 
 let receiveRightsCalendarDate = new Date();
@@ -11570,7 +11623,7 @@ function rightsReset(){
 }
 function rightsCopyMsg(){
   const txt = document.getElementById('rightsMsg')?.textContent || '';
-  navigator.clipboard.writeText(txt).then(() => alert('복사되었습니다.'));
+  navigator.clipboard.writeText(txt).then(() => {});
 }
 function rightsRenderTables(){
   const good = document.getElementById('goodwillFeeBody');
@@ -12028,7 +12081,7 @@ function feeOnlyCopyResult(){
     '자동2 최종: ' + (document.getElementById('feeAuto2_final')?.textContent || ''),
     '자동2 특용비: ' + (document.getElementById('feeAuto2_special')?.textContent || '')
   ].join('\n');
-  navigator.clipboard.writeText(parts).then(() => alert('복사되었습니다.'));
+  navigator.clipboard.writeText(parts).then(() => {});
 }
 function feeOnlyInitMarkup(){ }
 if(document.readyState === 'loading'){
@@ -12129,7 +12182,7 @@ function receiveRightsSheetApplyFromCurrent(){
 }
 function receiveRightsSheetCopyRow(){
   const text = receiveRightsSheetBuildTsvFromInputs();
-  navigator.clipboard.writeText(text).then(() => alert('무형접수 스프레드시트용 행이 복사되었습니다.'));
+  receiveSheetCopyPlainText(text).then(() => {}).catch(() => alert('복사하지 못했습니다. 복사 버튼을 다시 눌러주세요.'));
 }
 function receiveRightsSheetScheduleRefresh(){
   if(typeof receiveRightsSheetApplyFromCurrent !== 'function') return;
@@ -12235,7 +12288,7 @@ function receiveRightsExtractBottomInfo(raw, target, type){
       continue;
     }
   }
-  if(!client) client = receiveRightsStripTypeFromTarget(target, type);
+  // 의뢰인이 없으면 평가대상으로 대체하지 않고 빈칸을 유지합니다.
   return {client, amount, amountText};
 }
 
@@ -12368,6 +12421,28 @@ function mentAddDoneAmount(company){
   mentRefreshDoneAmountRows(rows);
   const input = row.querySelector('.mentDoneAmount');
   if(input) input.focus();
+  mentUpdateDoneCustomer();
+}
+function mentClearDoneAmount(button){
+  const input = button?.closest('.mentDoneAmountRow')?.querySelector('.mentDoneAmount');
+  if(!input) return;
+  input.value = '';
+  mentUpdateDoneCustomer();
+}
+function mentResetDoneCustomer(){
+  ['ht', 'bareum', 'ongyeol'].forEach(company => {
+    const rows = mentGet('ment_doneCustomer_' + company + '_amounts');
+    if(!rows) return;
+    const allRows = Array.from(rows.querySelectorAll('.mentDoneAmountRow'));
+    allRows.slice(1).forEach(row => row.remove());
+    const firstInput = allRows[0]?.querySelector('.mentDoneAmount');
+    if(firstInput) firstInput.value = '0';
+    mentRefreshDoneAmountRows(rows);
+  });
+  const roleButtons = document.querySelectorAll('input[name="mentRole_doneCustomer"]');
+  roleButtons.forEach((radio, index) => { radio.checked = index === 0; });
+  const role = mentGet('ment_doneCustomer_role');
+  if(role) role.value = '대표님';
   mentUpdateDoneCustomer();
 }
 function mentRemoveDoneAmount(button){
@@ -12579,6 +12654,12 @@ function mentAddSpecialAmount(company){
   mentRefreshSpecialAmountRows(rows);
   const input = row.querySelector('.mentSpecialAmount');
   if(input) input.focus();
+  mentUpdateSpecial();
+}
+function mentClearSpecialAmount(button){
+  const input = button?.closest('.mentDoneAmountRow')?.querySelector('.mentSpecialAmount');
+  if(!input) return;
+  input.value = '';
   mentUpdateSpecial();
 }
 function mentRemoveSpecialAmount(button){
