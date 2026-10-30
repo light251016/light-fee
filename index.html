@@ -4446,6 +4446,30 @@ html, body, .stage, .paper, .overlay {
   }
 }
 
+
+/* 견적서 표 전용: 비고 및 긴 문장 자동 줄바꿈, 셀 밖으로 글자 유출 방지 */
+.paper .quoteGrid .cell {
+  min-width:0;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  white-space:normal;
+}
+.paper .quoteGrid .cell [contenteditable=&quot;true&quot;],
+.paper .quoteGrid .cell .center-edit,
+.paper .quoteGrid .cell .money,
+.paper .quoteGrid .cell .readonly {
+  min-width:0;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  white-space:pre-wrap;
+  line-height:1.28;
+  text-align:center;
+}
+.paper .quoteGrid .noteCell [contenteditable=&quot;true&quot;] {
+  width:100%;
+  display:block;
+}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -4560,6 +4584,50 @@ function applyQuoteCompanyInfo(){
   data.bareum.tel=info.tel;
 }
 const quoteTransientStore={hagam:null,bareum:null};
+// 업체마다 표의 열 수와 행 위치가 다르므로, 비고를 위치가 아닌 과목명으로 연결합니다.
+// 사용자가 실제 변경한 비고만 동기화하고, 변경하지 않은 비고는 업체별 기본값을 보존합니다.
+const quoteSharedRemarks=Object.create(null);
+function quoteRemarkFields(root){
+  if(!root) return [];
+  const grid=root.querySelector(&#x27;.feeGrid&#x27;);
+  if(!grid) return [];
+  const cells=[...grid.children].filter(el=&gt;el.classList.contains(&#x27;cell&#x27;));
+  const cols=mode===&#x27;hagam&#x27;?4:3;
+  const result=[];
+  for(let i=cols;i+cols&lt;=cells.length;i+=cols){
+    const row=cells.slice(i,i+cols);
+    const label=row[mode===&#x27;hagam&#x27;?1:0].innerText.trim();
+    const key=label===&#x27;총수수료&#x27;?&#x27;합계&#x27;:label;
+    const el=row[cols-1].querySelector(&#x27;[contenteditable=&quot;true&quot;]&#x27;);
+    if(el &amp;&amp; key) result.push({key,el});
+  }
+  return result;
+}
+function quoteApplySharedRemarks(){
+  [&#x27;paper&#x27;,&#x27;fullPaper&#x27;].forEach(id=&gt;{
+    quoteRemarkFields(document.getElementById(id)).forEach(({key,el})=&gt;{
+      if(Object.prototype.hasOwnProperty.call(quoteSharedRemarks,key)){
+        const text=quoteSharedRemarks[key];
+        if(el.innerText.replace(/\r/g,&#x27;&#x27;)!==text) el.innerText=text;
+      }
+    });
+  });
+  if(Object.prototype.hasOwnProperty.call(quoteSharedRemarks,&#x27;순수수료&#x27;)){
+    data.bareum.note=quoteSharedRemarks[&#x27;순수수료&#x27;];
+  }
+}
+function quoteRememberEditedRemark(key,el){
+  const text=el.innerText.replace(/\r/g,&#x27;&#x27;);
+  quoteSharedRemarks[key]=text;
+  if(key===&#x27;순수수료&#x27;) data.bareum.note=text;
+  [&#x27;paper&#x27;,&#x27;fullPaper&#x27;].forEach(id=&gt;{
+    quoteRemarkFields(document.getElementById(id)).forEach(entry=&gt;{
+      if(entry.key===key &amp;&amp; entry.el!==el &amp;&amp; entry.el.innerText.replace(/\r/g,&#x27;&#x27;)!==text){
+        entry.el.innerText=text;
+      }
+    });
+  });
+}
 const SHARED_QUOTE_MONEY_KEYS=[&#x27;pureFee&#x27;,&#x27;travel&#x27;,&#x27;specialFee&#x27;,&#x27;inspection&#x27;,&#x27;docFee&#x27;,&#x27;etc&#x27;,&#x27;deposit&#x27;];
 function quoteModeKey(){return mode===&#x27;hagam&#x27;?&#x27;hagam&#x27;:&#x27;bareum&#x27;;}
 function captureQuoteTransientEdits(){
@@ -4571,8 +4639,8 @@ function captureQuoteTransientEdits(){
     bodyLines:readAll(&#x27;.bodyLine&#x27;),
     feeIntro:readAll(&#x27;.feeIntro&#x27;),
     depositTitle:readAll(&#x27;.depositTitle&#x27;),
-    centerEdits:readAll(&#x27;.center-edit&#x27;),
-    freeNoteEdits:readAll(&#x27;.noteCell [contenteditable=&quot;true&quot;]:not([data-key]):not([data-money])&#x27;),
+    // 수수료표의 모든 비고는 quoteSharedRemarks에서만 보관 (행 삭제/삽입에도 위치 꼬임 방지)
+    centerEdits:[...root.querySelectorAll(&#x27;.center-edit&#x27;)].filter(el=&gt;!el.closest(&#x27;.feeGrid&#x27;)).map(el=&gt;el.innerHTML),
     accountLabels:readAll(&#x27;.accountLine &gt; span[contenteditable=&quot;true&quot;]:not([data-key]):not([data-money])&#x27;)
   };
 }
@@ -4589,13 +4657,16 @@ function restoreQuoteTransientEdits(snapshot){
     restore(container,&#x27;.bodyLine&#x27;,snapshot.bodyLines);
     restore(container,&#x27;.feeIntro&#x27;,snapshot.feeIntro);
     restore(container,&#x27;.depositTitle&#x27;,snapshot.depositTitle);
-    restore(container,&#x27;.center-edit&#x27;,snapshot.centerEdits);
-    restore(container,&#x27;.noteCell [contenteditable=&quot;true&quot;]:not([data-key]):not([data-money])&#x27;,snapshot.freeNoteEdits);
+    const otherCenters=[...container.querySelectorAll(&#x27;.center-edit&#x27;)].filter(el=&gt;!el.closest(&#x27;.feeGrid&#x27;));
+    if(snapshot.centerEdits) otherCenters.forEach((el,i)=&gt;{if(i&lt;snapshot.centerEdits.length) el.innerHTML=snapshot.centerEdits[i];});
     restore(container,&#x27;.accountLine &gt; span[contenteditable=&quot;true&quot;]:not([data-key]):not([data-money])&#x27;,snapshot.accountLabels);
   });
 }
 function saveTransientForCurrentMode(){quoteTransientStore[quoteModeKey()]=captureQuoteTransientEdits();}
-function restoreTransientForCurrentMode(){restoreQuoteTransientEdits(quoteTransientStore[quoteModeKey()]);}
+function restoreTransientForCurrentMode(){
+  restoreQuoteTransientEdits(quoteTransientStore[quoteModeKey()]);
+  quoteApplySharedRemarks();
+}
 function syncSharedQuoteValuesFrom(sourceMode){
   const src=data[sourceMode];
   const dst=data[sourceMode===&#x27;hagam&#x27;?&#x27;bareum&#x27;:&#x27;hagam&#x27;];
@@ -4664,6 +4735,9 @@ function toggleSpecial(){
 function resetDefaults(){
   data[mode]=JSON.parse(JSON.stringify(base[mode]));
   if(mode===&#x27;hagam&#x27;) data.hagam.date=getKoreaTodayText();
+  // 비고를 초기화하면 모든 업체에서 편집된 비고가 다시 나타나지 않도록 공통 변경분 제거
+  Object.keys(quoteSharedRemarks).forEach(key=&gt;delete quoteSharedRemarks[key]);
+  data.bareum.note=base.bareum.note;
   quoteTransientStore[quoteModeKey()]=null;
   syncSharedQuoteValuesFrom(mode);
   if(mode===&#x27;bareum&#x27;) applyQuoteCompanyInfo();
@@ -4836,6 +4910,7 @@ function render(){
   if(hagamBtn){hagamBtn.classList.toggle(&#x27;active&#x27;,mode===&#x27;hagam&#x27;);hagamBtn.classList.toggle(&#x27;ghost&#x27;,mode!==&#x27;hagam&#x27;);}
   if(bareumBtn){bareumBtn.classList.toggle(&#x27;active&#x27;,mode===&#x27;bareum&#x27;&amp;&amp;quoteCompany===&#x27;bareum&#x27;);bareumBtn.classList.toggle(&#x27;ghost&#x27;,!(mode===&#x27;bareum&#x27;&amp;&amp;quoteCompany===&#x27;bareum&#x27;));}
   if(ongyeolBtn){ongyeolBtn.classList.toggle(&#x27;active&#x27;,mode===&#x27;bareum&#x27;&amp;&amp;quoteCompany===&#x27;ongyeol&#x27;);ongyeolBtn.classList.toggle(&#x27;ghost&#x27;,!(mode===&#x27;bareum&#x27;&amp;&amp;quoteCompany===&#x27;ongyeol&#x27;));}
+  quoteApplySharedRemarks();
 }
 
 function saveFromDom(){
@@ -4854,6 +4929,7 @@ function saveFromDom(){
 
 function bindEditable(root){
   const editables=[...root.querySelectorAll(&#x27;[contenteditable=&quot;true&quot;]&#x27;)];
+  const remarkKeys=new Map(quoteRemarkFields(root).map(({key,el})=&gt;[el,key]));
 
   function moveFocus(current, direction){
     const list=[...root.querySelectorAll(&#x27;[contenteditable=&quot;true&quot;]&#x27;)].filter(el=&gt;{
@@ -4870,6 +4946,13 @@ function bindEditable(root){
 
   editables.forEach(el=&gt;{
     el.addEventListener(&#x27;focus&#x27;,()=&gt;selectEditable(el));
+
+    // 순수수료부터 총계까지 비고 열 전체에 변경 감지를 연결합니다.
+    if(remarkKeys.has(el)){
+      const remarkKey=remarkKeys.get(el);
+      el.addEventListener(&#x27;input&#x27;,()=&gt;quoteRememberEditedRemark(remarkKey,el));
+      el.addEventListener(&#x27;blur&#x27;,()=&gt;quoteRememberEditedRemark(remarkKey,el));
+    }
 
     if(el.dataset.money){
       el.addEventListener(&#x27;input&#x27;,()=&gt;{
@@ -5176,25 +5259,62 @@ function getBareumLayoutSvg(){
     ux.forEach(x=&gt;{out+=`&lt;line x1=&quot;${x}&quot; y1=&quot;${minY}&quot; x2=&quot;${x}&quot; y2=&quot;${maxY}&quot; stroke=&quot;${escAttr(borderColor)}&quot; stroke-width=&quot;1&quot; shape-rendering=&quot;crispEdges&quot;/&gt;`;});
     uy.forEach(y=&gt;{out+=`&lt;line x1=&quot;${minX}&quot; y1=&quot;${y}&quot; x2=&quot;${maxX}&quot; y2=&quot;${y}&quot; stroke=&quot;${escAttr(borderColor)}&quot; stroke-width=&quot;1&quot; shape-rendering=&quot;crispEdges&quot;/&gt;`;});
 
-    // 셀 텍스트
+    // 셀 텍스트: 화면에서 입력한 실제 값 + 개행 + 한글/영문 자동 줄바꿈.
+    // 각 셀의 실제 폭/높이에 맞춰 줄을 배치하고, 한 줄씩 셀 중심 정렬.
+    const measure=document.createElement(&#x27;canvas&#x27;).getContext(&#x27;2d&#x27;);
+    function wrapCellText(raw,maxWidth,fs,fw,fontFamily,spacing){
+      measure.font=`${fw} ${fs}px ${fontFamily}`;
+      const letterGap=parseFloat(spacing)||0;
+      const widthOf=s=&gt;measure.measureText(s).width+Math.max(0,[...s].length-1)*letterGap;
+      const result=[];
+      String(raw??&#x27;&#x27;).replace(/\r/g,&#x27;&#x27;).split(&#x27;\n&#x27;).forEach(paragraph=&gt;{
+        if(!paragraph){result.push(&#x27;&#x27;);return;}
+        let line=&#x27;&#x27;;
+        const tokens=paragraph.match(/\s+|\S+/g)||[];
+        tokens.forEach(token=&gt;{
+          if(/^\s+$/.test(token)){
+            if(line &amp;&amp; widthOf(line+token)&lt;=maxWidth) line+=token;
+            return;
+          }
+          if(widthOf(line+token)&lt;=maxWidth){line+=token;return;}
+          if(line.trim()){result.push(line.trimEnd());line=&#x27;&#x27;;}
+          if(widthOf(token)&lt;=maxWidth){line=token;return;}
+          // 공백 없는 긴 문자열도 셀 경계 안에서 문자 단위로 끊음.
+          for(const ch of [...token]){
+            if(line &amp;&amp; widthOf(line+ch)&gt;maxWidth){result.push(line);line=&#x27;&#x27;;}
+            line+=ch;
+          }
+        });
+        result.push(line.trimEnd());
+      });
+      return result;
+    }
     rects.forEach(({el,r})=&gt;{
-      let text=&#x27;&#x27;;
       const input=el.querySelector(&#x27;input[data-money]&#x27;);
       const money=el.querySelector(&#x27;[data-money]&#x27;);
-      if(input) text=input.value;
-      else if(money) text=(&#x27;value&#x27; in money)?money.value:money.innerText;
-      else text=el.innerText;
-
-      const source=input || money || el.querySelector(&#x27;[contenteditable=&quot;true&quot;]&#x27;) || el;
+      const value=input ? input.value : money ? ((&#x27;value&#x27; in money)?money.value:money.innerText) : el.innerText;
+      const source=input||money||el.querySelector(&#x27;[contenteditable=&quot;true&quot;]&#x27;)||el;
       const st=getComputedStyle(source);
-      const fs=parseFloat(st.fontSize)||14;
+      const originalSize=parseFloat(st.fontSize)||14;
       const fw=numFontWeight(st.fontWeight);
-      let lh=parseFloat(st.lineHeight); if(!isFinite(lh)) lh=fs*1.28;
-      const lines=String(text||&#x27;&#x27;).replace(/\r/g,&#x27;&#x27;).split(&#x27;\n&#x27;);
-      const total=(lines.length-1)*lh+fs;
-      const firstY=r.y+r.h/2-total/2+fs*0.82;
+      let size=originalSize, lines=[],lineHeight=0;
+      const usableWidth=Math.max(8,r.w-16);
+      const usableHeight=Math.max(8,r.h-8);
+      // 폭/높이에 맞지 않을 때만 글꼴을 조금씩 축소; 무리한 내용은 저장을 중단.
+      while(size&gt;=8.5){
+        lines=wrapCellText(value,usableWidth,size,fw,st.fontFamily,st.letterSpacing);
+        lineHeight=size*1.28;
+        const textHeight=lines.length ? (lines.length-1)*lineHeight+size : 0;
+        if(textHeight&lt;=usableHeight+0.5) break;
+        size-=0.5;
+      }
+      const renderedHeight=lines.length ? (lines.length-1)*lineHeight+size : 0;
+      if(renderedHeight&gt;usableHeight+0.5){
+        throw new Error(&#x27;표의 비고 또는 다른 칸에 입력된 문장이 너무 길어 A4 한 장에 담기지 않습니다. 내용을 줄인 후 다시 저장해주세요.&#x27;);
+      }
+      const firstY=r.y+(r.h-renderedHeight)/2+size*0.82;
       lines.forEach((line,i)=&gt;{
-        out+=svgTextStyled(r.x+r.w/2,firstY+i*lh,line,fs,fw,&#x27;middle&#x27;,st.color,st.fontFamily,st.letterSpacing);
+        out+=svgTextStyled(r.x+r.w/2,firstY+i*lineHeight,line,size,fw,&#x27;middle&#x27;,st.color,st.fontFamily,st.letterSpacing);
       });
     });
     return out;
@@ -5202,6 +5322,21 @@ function getBareumLayoutSvg(){
 
   let s=`&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;${W}&quot; height=&quot;${H}&quot; viewBox=&quot;0 0 ${W} ${H}&quot;&gt;&lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;white&quot;/&gt;`;
 
+  if(mode===&#x27;hagam&#x27;){
+    s+=drawTextElement(paper.querySelector(&#x27;.title&#x27;));
+    const logo=paper.querySelector(&#x27;.logoBox img&#x27;);
+    if(logo){const r=rectOf(logo);s+=svgImg(logo.src,r.x,r.y,r.w,r.h);}
+    paper.querySelectorAll(&#x27;.lineText&#x27;).forEach(el=&gt;{s+=drawTextElement(el);});
+    s+=drawGridLayout(paper.querySelector(&#x27;.quoteGrid.feeGrid&#x27;));
+    s+=drawTextElement(paper.querySelector(&#x27;.depositTitle&#x27;));
+    s+=drawGridLayout(paper.querySelector(&#x27;.quoteGrid.depositGrid&#x27;));
+    const account=paper.querySelector(&#x27;.accountLine&#x27;);
+    if(account){[...account.children].forEach(el=&gt;{s+=drawTextElement(el);});}
+    s+=drawTextElement(paper.querySelector(&#x27;.dateLine&#x27;));
+    s+=drawTextElement(paper.querySelector(&#x27;.companyName&#x27;));
+    s+=drawTextElement(paper.querySelector(&#x27;.address&#x27;));
+    s+=drawTextElement(paper.querySelector(&#x27;.tel&#x27;));
+  } else {
   // 상단 로고/업체명
   const logo=paper.querySelector(&#x27;.topLogo img&#x27;);
   if(logo){
@@ -5241,6 +5376,8 @@ function getBareumLayoutSvg(){
   s+=drawRule(paper.querySelector(&#x27;.dividerBottom&#x27;));
   s+=drawTextElement(paper.querySelector(&#x27;.address&#x27;));
   s+=drawTextElement(paper.querySelector(&#x27;.tel&#x27;));
+
+  }
 
   s+=&#x27;&lt;/svg&gt;&#x27;;
   return s;
@@ -5336,11 +5473,20 @@ function saveImageStable(fmtType, ev){
   try{
     if(document.activeElement) document.activeElement.blur();
     saveFromDom();
+    const paper=document.getElementById(&#x27;paper&#x27;);
+    const lastLine=paper &amp;&amp; paper.querySelector(&#x27;.tel&#x27;);
+    if(paper &amp;&amp; lastLine){
+      const pr=paper.getBoundingClientRect(), last=lastLine.getBoundingClientRect();
+      if(last.bottom &gt; pr.bottom-12){
+        alert(&#x27;작성한 글이 A4 견적서의 아래쪽을 넘어갑니다. 일부 문장을 줄인 다음 저장해주세요.&#x27;);
+        return;
+      }
+    }
     const btn=ev &amp;&amp; ev.currentTarget ? ev.currentTarget : null;
     const oldText=btn ? btn.textContent : &#x27;&#x27;;
     if(btn) btn.textContent=&#x27;저장중...&#x27;;
 
-    const svg = mode===&#x27;hagam&#x27; ? getHagamSvg() : getBareumLayoutSvg();
+    const svg = getBareumLayoutSvg(); // 세 업체 모두 화면의 수정된 표/비고를 그대로 출력
     const url=URL.createObjectURL(new Blob([svg],{type:&#x27;image/svg+xml;charset=utf-8&#x27;}));
     const img=new Image();
 
@@ -5382,13 +5528,17 @@ function saveImageStable(fmtType, ev){
     };
     img.src=url;
   }catch(err){
-    alert(&#x27;저장 중 오류: &#x27;+err.message);
+    const btn=ev &amp;&amp; ev.currentTarget ? ev.currentTarget : null;
+    if(btn &amp;&amp; btn.textContent===&#x27;저장중...&#x27;) btn.textContent=fmtType===&#x27;jpeg&#x27;?&#x27;jpg저장&#x27;:&#x27;png저장&#x27;;
+    alert(&#x27;이미지를 저장할 수 없습니다. &#x27;+err.message);
   }
 }
 
 function openFull(){
+  saveTransientForCurrentMode();
   saveFromDom();
   render();
+  restoreTransientForCurrentMode();
   document.getElementById(&#x27;overlay&#x27;).classList.add(&#x27;on&#x27;);
 }
 function closeFull(){document.getElementById(&#x27;overlay&#x27;).classList.remove(&#x27;on&#x27;);}
