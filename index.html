@@ -534,6 +534,7 @@ button.smallBtn { padding:7px 10px; font-size:12px; border-radius:9px; }
 #page_multi .multiLeftStack { height:100%; }
 #page_multi .multiMsgCard { height:100%; min-height:620px; }
 #page_multi #multiMsg { flex:1; min-height:520px; }
+#page_multi #multiAnonymousBtn.active { background:#334155; color:#fff; }
 #page_multi .partnerTableBox h3 { color:#0369a1; }
 #page_multi .partnerTableBox .inputTable th { background:#e0f2fe !important; }
 #page_multi .partnerTableBox .inputTable td:first-child { background:#f0f9ff !important; }
@@ -3152,18 +3153,18 @@ input, textarea, [contenteditable="true"] {
 <section class="typePage" id="page_ment">
 <div class="mentWrap">
 <div aria-label="멘트 메뉴" class="mentTabs">
-<button class="mentSubTab active" onclick="mentShowSub('takgam', this)">탁감</button>
-<button class="mentSubTab" onclick="mentShowSub('firstContact', this)">고객인사</button>
+<button class="mentSubTab active" onclick="mentShowSub('firstContact', this)">고객인사</button>
+<button class="mentSubTab" onclick="mentShowSub('takgam', this)">탁감</button>
 <button class="mentSubTab" onclick="mentShowSub('start', this)">착수</button>
 <button class="mentSubTab" onclick="mentShowSub('done', this)">평가완료</button>
 <button class="mentSubTab" onclick="mentShowSub('finish', this)">마무리</button>
 <button class="mentSubTab" onclick="mentShowSub('special', this)">특용비</button>
 </div>
-<div class="mentSubPage active" id="ment_sub_takgam">
+<div class="mentSubPage" id="ment_sub_takgam">
 <div class="mentPairStack">
 <div class="mentPairGrid">
 <div class="mentCard mentOutputCard">
-<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">탁감</span><button class="mentCopyBtn" onclick="mentCopy('ment_takgam_output', this)">복사</button></div>
+<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">탁감</span><button class="mentCopyBtn" onclick="mentCopy('ment_takgam_output', this)">복사</button><button class="mentLightBtn mentCompactTitleBtn" id="ment_takgam_greetingBtn" onclick="mentToggleTakgamGreeting('takgam')" type="button">인사제거</button></div>
 <textarea class="mentOutput" id="ment_takgam_output"></textarea>
 </div>
 <div class="mentCard mentControlCard">
@@ -3190,7 +3191,7 @@ input, textarea, [contenteditable="true"] {
 </div>
 <div class="mentPairGrid">
 <div class="mentCard mentOutputCard">
-<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">무형 탁감</span><button class="mentCopyBtn" onclick="mentCopy('ment_rightsTakgam_output', this)">복사</button></div>
+<div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">무형 탁감</span><button class="mentCopyBtn" onclick="mentCopy('ment_rightsTakgam_output', this)">복사</button><button class="mentLightBtn mentCompactTitleBtn" id="ment_rightsTakgam_greetingBtn" onclick="mentToggleTakgamGreeting('rightsTakgam')" type="button">인사제거</button></div>
 <textarea class="mentOutput short" id="ment_rightsTakgam_output"></textarea>
 </div>
 <div class="mentCard mentControlCard">
@@ -3254,10 +3255,34 @@ input, textarea, [contenteditable="true"] {
 </div>
 <input id="ment_start_ongyeol_count" type="hidden" value="0"/>
 </div>
+<div class="mentOptionBox">
+<b>화랑 평가 건수</b>
+<div class="mentCountBtns" id="ment_start_hwarang_countBtns">
+<button class="active" onclick="mentSetStartCount('hwarang', 0)" type="button">0</button>
+<button onclick="mentSetStartCount('hwarang', 1)" type="button">1</button>
+<button onclick="mentSetStartCount('hwarang', 2)" type="button">2</button>
+<button onclick="mentSetStartCount('hwarang', 3)" type="button">3</button>
+<button onclick="mentSetStartCount('hwarang', 4)" type="button">4</button>
+<button onclick="mentSetStartCount('hwarang', 5)" type="button">5</button>
+</div>
+<input id="ment_start_hwarang_count" type="hidden" value="0"/>
+</div>
+<div class="mentOptionBox">
+<b>지호 평가 건수</b>
+<div class="mentCountBtns" id="ment_start_jiho_countBtns">
+<button class="active" onclick="mentSetStartCount('jiho', 0)" type="button">0</button>
+<button onclick="mentSetStartCount('jiho', 1)" type="button">1</button>
+<button onclick="mentSetStartCount('jiho', 2)" type="button">2</button>
+<button onclick="mentSetStartCount('jiho', 3)" type="button">3</button>
+<button onclick="mentSetStartCount('jiho', 4)" type="button">4</button>
+<button onclick="mentSetStartCount('jiho', 5)" type="button">5</button>
+</div>
+<input id="ment_start_jiho_count" type="hidden" value="0"/>
 </div>
 </div>
 </div>
-<div class="mentSubPage" id="ment_sub_firstContact">
+</div>
+<div class="mentSubPage active" id="ment_sub_firstContact">
 <div class="mentGrid">
 <div class="mentCard mentOutputCard">
 <div class="mentCardTitle"><span class="mentNum">완성</span><span class="mentCardTitleText">고객인사</span><button class="mentCopyBtn" onclick="mentCopy('ment_firstContact_output', this)">복사</button></div>
@@ -3265,6 +3290,7 @@ input, textarea, [contenteditable="true"] {
 </div>
 <div class="mentCard mentControlCard">
 <div class="mentCardTitle"><span class="mentNum">설정</span><span class="mentCardTitleText">고객인사</span></div>
+<b>인사 대상</b>
 <div class="mentRoleChips">
 <label><input checked="" name="mentRole_firstContact" onchange="mentChooseRole('firstContact','대표님')" type="radio"/> 대표님</label>
 <label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','세무사님')" type="radio"/> 세무사님</label>
@@ -3275,6 +3301,18 @@ input, textarea, [contenteditable="true"] {
 <label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','변리사님')" type="radio"/> 변리사님</label>
 <label><input name="mentRole_firstContact" onchange="mentChooseRole('firstContact','전무님')" type="radio"/> 전무님</label>
 <input id="ment_firstContact_role" type="hidden" value="대표님"/>
+</div>
+<b>연락처 전달자</b>
+<div class="mentRoleChips">
+<label><input name="mentRole_firstContactReferrer" onchange="mentChooseFirstContactReferrer('대표님')" type="radio"/> 대표님</label>
+<label><input checked="" name="mentRole_firstContactReferrer" onchange="mentChooseFirstContactReferrer('세무사님')" type="radio"/> 세무사님</label>
+<label><input name="mentRole_firstContactReferrer" onchange="mentChooseFirstContactReferrer('사무장님')" type="radio"/> 사무장님</label>
+<label><input name="mentRole_firstContactReferrer" onchange="mentChooseFirstContactReferrer('법무사님')" type="radio"/> 법무사님</label>
+<label><input name="mentRole_firstContactReferrer" onchange="mentChooseFirstContactReferrer('회계사님')" type="radio"/> 회계사님</label>
+<label><input name="mentRole_firstContactReferrer" onchange="mentChooseFirstContactReferrer('변호사님')" type="radio"/> 변호사님</label>
+<label><input name="mentRole_firstContactReferrer" onchange="mentChooseFirstContactReferrer('변리사님')" type="radio"/> 변리사님</label>
+<label><input name="mentRole_firstContactReferrer" onchange="mentChooseFirstContactReferrer('전무님')" type="radio"/> 전무님</label>
+<input id="ment_firstContact_referrer_role" type="hidden" value="세무사님"/>
 </div>
 </div>
 </div>
@@ -3315,6 +3353,18 @@ input, textarea, [contenteditable="true"] {
 <div class="mentDoneCompany">
 <div class="mentDoneCompanyHead"><b>🟩 온결 잔금</b><button onclick="mentAddDoneAmount('ongyeol')" type="button">+ 금액칸 추가</button></div>
 <div class="mentDoneAmountRows" id="ment_doneCustomer_ongyeol_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearDoneAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
+</div>
+</div>
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟥 화랑 잔금</b><button onclick="mentAddDoneAmount('hwarang')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_doneCustomer_hwarang_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearDoneAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
+</div>
+</div>
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟨 지호 잔금</b><button onclick="mentAddDoneAmount('jiho')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_doneCustomer_jiho_amounts">
 <div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount" data-ment-money="" onblur="mentDoneMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateDoneCustomer();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearDoneAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
 </div>
 </div>
@@ -3404,6 +3454,18 @@ input, textarea, [contenteditable="true"] {
 <div class="mentDoneCompany">
 <div class="mentDoneCompanyHead"><b>🟩 온결 특용비</b><button onclick="mentAddSpecialAmount('ongyeol')" type="button">+ 금액칸 추가</button></div>
 <div class="mentDoneAmountRows" id="ment_special_ongyeol_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearSpecialAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
+</div>
+</div>
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟥 화랑 특용비</b><button onclick="mentAddSpecialAmount('hwarang')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_special_hwarang_amounts">
+<div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearSpecialAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
+</div>
+</div>
+<div class="mentDoneCompany">
+<div class="mentDoneCompanyHead"><b>🟨 지호 특용비</b><button onclick="mentAddSpecialAmount('jiho')" type="button">+ 금액칸 추가</button></div>
+<div class="mentDoneAmountRows" id="ment_special_jiho_amounts">
 <div class="mentDoneAmountRow"><span class="mentDoneAmountIndex">1번</span><input class="mentMoney mentDoneAmount mentSpecialAmount" data-ment-money="" onblur="mentSpecialMoneyBlur(this)" onfocus="mentDoneMoneyFocus(this)" oninput="mentMoneyInput(this); mentUpdateSpecial();" value="0"/><span class="mentDoneWon">원</span><button class="mentDoneRemove" onclick="mentClearSpecialAmount(this)" title="1번 금액 지우기" type="button">×</button></div>
 </div>
 </div>
@@ -7411,6 +7473,7 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
 <div class="btns multiInfoBtns">
 <button onclick="parseMultiQuickInput()">반영</button>
 <button class="light" onclick="resetMultiInfoAndMsg()">초기화</button>
+<button class="light" id="multiAnonymousBtn" type="button" aria-pressed="false" onclick="multiToggleAnonymous()">익명</button>
 </div>
 <div class="quickParseBox" id="multiQuickParsePreview" style="display:none;"></div>
 <div class="hiddenManualFields" id="multiManualFields">
@@ -8353,6 +8416,7 @@ let multiRows = [];
 let multiAmountTitleOverrides = {};
 let multiQuoteModeTitleOverride = '';
 let multiCompanyLabels = {ht:'하이테크', partner:'복수업체'};
+let multiAnonymous = false;
 let multiExtraManual = {
   ht:{low:false, mid:false, high:false},
   partner:{low:false, mid:false, high:false}
@@ -8394,14 +8458,36 @@ function multiFormatAutoEok(n){
   return (Math.round(Number(n) * 100) / 100).toString().replace(/\.0+$/,'').replace(/(\.\d*[1-9])0+$/,'$1');
 }
 
-function multiExtractCompanyHeader(line){
+function multiExtractCompanyHeader(line, nextLine = ''){
   const text = String(line || '').trim();
   if(!text) return '';
-  const m = text.match(/^(하이테크|하감|바름|온결|복수업체)(?=\s|$|[()（）\[\]{}:：/\-])/);
-  return m ? m[1] : '';
+  // 기존에 사용하던 업체명/표기 방식은 그대로 인식합니다.
+  const known = text.match(/^(하이테크|하감|바름|온결|복수업체)(?=\s|$|[()（）\[\]{}:：/\-])/);
+  if(known) return known[1];
+
+  // 새로운 업체는 [업체명] 또는 [업체명 담당자명]에서 첫 단어를 업체명으로 사용합니다.
+  // 주소·메모를 업체로 잘못 인식하지 않도록 다음 줄이 금액 항목일 때만 새 헤더로 판별합니다.
+  const first = text.match(/^([^\s,，/:：()（）\[\]{}]+)(?:\s+.*)?$/);
+  if(!first || /^\d/.test(first[1])) return '';
+  const amountLabel = /^(?:희망\s*금액|희망가?|하한|최저가?|최소|기준|시세|적정가|중간값?|현재|최고|상한|최상|최대가?)\s*[:：]?\s*(?:\d|$)/;
+  if(amountLabel.test(text)) return '';
+  const following = String(nextLine || '').trim().replace(/^[-•]\s*/, '');
+  const rest = text.slice(first[1].length).trim();
+  return amountLabel.test(following) || (rest && amountLabel.test(rest)) ? first[1] : '';
 }
 function multiGetCompanyLabel(company){
+  if(multiAnonymous) return company === 'ht' ? '업체1' : '업체2';
   return multiCompanyLabels[company] || (company === 'ht' ? '하이테크' : '복수업체');
+}
+function multiToggleAnonymous(){
+  multiAnonymous = !multiAnonymous;
+  const btn = document.getElementById('multiAnonymousBtn');
+  if(btn){
+    btn.classList.toggle('active', multiAnonymous);
+    btn.setAttribute('aria-pressed', String(multiAnonymous));
+  }
+  multiUpdateCompanyLabelsUI();
+  multiCalculate();
 }
 function multiGetMessageCompanyLabel(company){
   const label = multiGetCompanyLabel(company);
@@ -8422,7 +8508,7 @@ function multiUpdateCompanyLabelsUI(){
   if(partnerHead) partnerHead.textContent = partnerLabel;
 }
 function parseMultiCompanyAmounts(lines){
-  const result = {ht:{}, partner:{}, blanks:{ht:{}, partner:{}}, labelOverrides:{ht:{}, partner:{}}, labels:{ht:'', partner:''}};
+  const result = {ht:{}, partner:{}, blanks:{ht:{}, partner:{}}, labelOverrides:{ht:{}, partner:{}}, labels:{ht:'', partner:''}, firstCompanyIndex:-1};
   let current = '';
   const companySlots = {};
   const getCompanySlot = (name) => {
@@ -8440,13 +8526,14 @@ function parseMultiCompanyAmounts(lines){
     return '';
   };
 
-  lines.forEach(line => {
+  lines.forEach((line, lineIndex) => {
     const original = String(line || '').trim();
     if(!original) return;
     let working = original;
-    const companyName = multiExtractCompanyHeader(original);
+    const companyName = multiExtractCompanyHeader(original, lines[lineIndex + 1]);
 
     if(companyName){
+      if(result.firstCompanyIndex === -1) result.firstCompanyIndex = lineIndex;
       current = getCompanySlot(companyName);
       working = original.slice(companyName.length).trim();
       // 업체명 뒤의 담당자명/메모는 금액 정보가 아니므로 무시합니다.
@@ -8532,12 +8619,10 @@ function parseMultiQuickInput(){
     }
   }
 
-  let beforeCompany = true;
   let firstAddressSeen = false;
   let floorAreaSeen = false;
-  lines.slice(1).forEach(line => {
-    if(multiExtractCompanyHeader(line)) { beforeCompany = false; return; }
-    if(!beforeCompany) return;
+  lines.slice(1).forEach((line, index) => {
+    if(amounts.firstCompanyIndex !== -1 && index + 1 >= amounts.firstCompanyIndex) return;
 
     const isFloorAreaOnly = /층/.test(line) && /\d/.test(line) && !/(서울|경기|인천|부산|대구|광주|대전|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주|시|구|군|동|로|길)/.test(line.replace(/층/g,''));
     const isAddressLike = /(서울|경기|인천|부산|대구|광주|대전|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주|시|군|구|동|읍|면|리|로|길).*\d/.test(line);
@@ -8907,9 +8992,22 @@ function multiMakeMsg(){
   if(!multiRows.length){
     lines.push('계산할 평가금액을 입력해주세요.');
   } else {
+    // 둘 이상의 금액 구분(최저/중간/최고 등)을 안내할 때만 문단별 제목과 여백을 표시합니다.
+    // 단일 금액 안내와 기존 금액·수수료·특용비 계산 형식은 그대로 유지합니다.
+    const sectionCount = mainKeys.filter(key => multiRows.some(r => r.key === key)).length;
+    let displayedSections = 0;
     mainKeys.forEach(key => {
       const ht = multiRows.find(r=>r.company==='ht' && r.key===key);
       const partner = multiRows.find(r=>r.company==='partner' && r.key===key);
+
+      if(sectionCount > 1 && (ht || partner)){
+        if(displayedSections > 0) lines.push('');
+        lines.push('━━━━━━━━━━━━━━━');
+        lines.push(`📌 ${labelMap[key]} 금액 안내`);
+        lines.push('━━━━━━━━━━━━━━━');
+        lines.push('');
+        displayedSections++;
+      }
 
       if(ht){
         lines.push(`🔸 [ ${multiGetMessageCompanyLabel('ht')} ${labelMap[key]} 금액 ]`);
@@ -8963,6 +9061,12 @@ async function multiCopyMsg(){
 function multiReset(){
   multiAmountTitleOverrides = {};
   multiQuoteModeTitleOverride = '';
+  multiAnonymous = false;
+  const anonymousBtn = document.getElementById('multiAnonymousBtn');
+  if(anonymousBtn){
+    anonymousBtn.classList.remove('active');
+    anonymousBtn.setAttribute('aria-pressed', 'false');
+  }
   multiCompanyLabels = {ht:'하이테크', partner:'복수업체'};
   multiUpdateCompanyLabelsUI();
   ['multiQuickInput','multiTarget','multiFloor','multiArea','multiUseType','multiPurposeCustom','multiMemo'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
@@ -12515,6 +12619,43 @@ function mentChooseRole(group, role){
   if(input) input.value = role;
   mentUpdateByGroup(group);
 }
+/* 탁감 2종: 완성 문구의 기존 인사 부분만 제거/복원하며 직접 수정한 본문은 유지 */
+function mentGreetingPrefix(group){
+  const role = mentRole(group);
+  if(group === 'takgam') return `안녕하세요 ${role}! 문의 주셔서 감사합니다:) \n\n`;
+  if(group === 'rightsTakgam') return `안녕하세요 ${role}:)\n문의 주셔서 감사합니다! \n\n`;
+  return '';
+}
+function mentIsGreetingRemoved(group){
+  return mentGet('ment_' + group + '_greetingBtn')?.dataset.greetingRemoved === '1';
+}
+function mentToggleTakgamGreeting(group){
+  if(group !== 'takgam' && group !== 'rightsTakgam') return;
+  const btn = mentGet('ment_' + group + '_greetingBtn');
+  const output = mentGet('ment_' + group + '_output');
+  if(!btn || !output) return;
+  if(mentIsGreetingRemoved(group)){
+    output.value = mentGreetingPrefix(group) + output.value;
+    btn.dataset.greetingRemoved = '0';
+    btn.textContent = '인사제거';
+    btn.classList.remove('active');
+  } else {
+    const greetingPattern = group === 'takgam'
+      ? /^안녕하세요[^\r\n]*! 문의 주셔서 감사합니다:\)[ \t]*\r?\n(?:[ \t]*\r?\n)*/
+      : /^안녕하세요[^\r\n]*:\)[ \t]*\r?\n문의 주셔서 감사합니다![ \t]*\r?\n(?:[ \t]*\r?\n)*/;
+    const withoutGreeting = output.value.replace(greetingPattern, '');
+    if(withoutGreeting === output.value) return;
+    output.value = withoutGreeting;
+    btn.dataset.greetingRemoved = '1';
+    btn.textContent = '인사복원';
+    btn.classList.add('active');
+  }
+}
+function mentChooseFirstContactReferrer(role){
+  const input = mentGet('ment_firstContact_referrer_role');
+  if(input) input.value = role;
+  mentUpdateFirstContact();
+}
 function mentUseCustomRole(group){
   const custom = mentGet('ment_' + group + '_customCheck');
   if(custom && custom.checked){
@@ -12580,7 +12721,7 @@ function mentDoneMoneyBlur(input){
   mentUpdateDoneCustomer();
 }
 function mentAddDoneAmount(company){
-  const type = ['ht', 'bareum', 'ongyeol'].includes(company) ? company : 'ht';
+  const type = ['ht', 'bareum', 'ongyeol', 'hwarang', 'jiho'].includes(company) ? company : 'ht';
   const rows = mentGet('ment_doneCustomer_' + type + '_amounts');
   if(!rows) return;
   const row = document.createElement('div');
@@ -12599,7 +12740,7 @@ function mentClearDoneAmount(button){
   mentUpdateDoneCustomer();
 }
 function mentResetDoneCustomer(){
-  ['ht', 'bareum', 'ongyeol'].forEach(company => {
+  ['ht', 'bareum', 'ongyeol', 'hwarang', 'jiho'].forEach(company => {
     const rows = mentGet('ment_doneCustomer_' + company + '_amounts');
     if(!rows) return;
     const allRows = Array.from(rows.querySelectorAll('.mentDoneAmountRow'));
@@ -12634,7 +12775,9 @@ function mentDoneCompanyBlock(company){
   const companies = {
     ht: {name:'하이테크', icon:'🟧', bank:'국민은행 532001-01-294849', holder:'하이테크감정평가법인(주)'},
     bareum: {name:'바름', icon:'🟦', bank:'국민은행 529401-01-292371', holder:'(주)바름감정평가법인'},
-    ongyeol: {name:'온결', icon:'🟩', bank:'국민은행 015437-04-023593', holder:'(주)온결감정평가법인'}
+    ongyeol: {name:'온결', icon:'🟩', bank:'국민은행 015437-04-023593', holder:'(주)온결감정평가법인'},
+    hwarang: {name:'화랑', icon:'🟥', bank:'신한은행 110-625-600975', holder:'감정평가 화랑'},
+    jiho: {name:'지호', icon:'🟨', bank:'국민은행 856901-00-165756', holder:'지호 감정평가사 사무소'}
   };
   const info = companies[company];
   if(!info) return '';
@@ -12651,7 +12794,7 @@ ${info.holder}`;
 }
 function mentUpdateDoneCustomer(){
   const role = mentRole('doneCustomer');
-  const companyBlocks = ['ht', 'bareum', 'ongyeol'].map(mentDoneCompanyBlock).filter(Boolean);
+  const companyBlocks = ['ht', 'bareum', 'ongyeol', 'hwarang', 'jiho'].map(mentDoneCompanyBlock).filter(Boolean);
   let text = `안녕하세요 ${role}!😊
 평가금액 확정되어 확인용 청구서와 괄호감정표 바로 전달드립니다:)
 
@@ -12707,7 +12850,7 @@ ${phrase} 전달드립니다!
 감사합니다!!😊`);
 }
 function mentSetStartCount(company, n){
-  const type = ['ht', 'bareum', 'ongyeol'].includes(company) ? company : 'ht';
+  const type = ['ht', 'bareum', 'ongyeol', 'hwarang', 'jiho'].includes(company) ? company : 'ht';
   const count = Math.max(0, Math.min(5, Number(n) || 0));
   const input = mentGet('ment_start_' + type + '_count');
   if(input) input.value = String(count);
@@ -12718,7 +12861,9 @@ function mentStartPhrase(company){
   const companies = {
     ht: {name:'하이테크', paymentTarget:'하이테크로'},
     bareum: {name:'바름', paymentTarget:'바름으로'},
-    ongyeol: {name:'온결', paymentTarget:'온결로'}
+    ongyeol: {name:'온결', paymentTarget:'온결로'},
+    hwarang: {name:'화랑', paymentTarget:'화랑으로'},
+    jiho: {name:'지호', paymentTarget:'지호로'}
   };
   const type = companies[company] ? company : 'ht';
   const count = Math.max(0, Number(mentVal('ment_start_' + type + '_count')) || 0);
@@ -12735,6 +12880,12 @@ function mentStartCompanyBlock(company){
     },
     ongyeol: {
       name:'온결', icon:'🟩', bank:'국민은행 015437-04-023593', holder:'(주)온결감정평가법인'
+    },
+    hwarang: {
+      name:'화랑', icon:'🟥', bank:'신한은행 110-625-600975', holder:'감정평가 화랑'
+    },
+    jiho: {
+      name:'지호', icon:'🟨', bank:'국민은행 856901-00-165756', holder:'지호 감정평가사 사무소'
     }
   };
   const info = companies[company];
@@ -12748,7 +12899,7 @@ ${info.bank}
 ${info.holder}`;
 }
 function mentUpdateStart(){
-  const selectedCompanies = ['ht', 'bareum', 'ongyeol'].filter(company => Number(mentVal('ment_start_' + company + '_count')) > 0);
+  const selectedCompanies = ['ht', 'bareum', 'ongyeol', 'hwarang', 'jiho'].filter(company => Number(mentVal('ment_start_' + company + '_count')) > 0);
   const companyBlocks = selectedCompanies.map(mentStartCompanyBlock).join('\n\n');
   const separateAccountNotice = selectedCompanies.length > 1 ? `
 6️⃣업체별 계좌가 별도이니 꼭 각각의 계좌로 입금 부탁드립니다^^` : '';
@@ -12765,16 +12916,14 @@ function mentUpdateStart(){
 5️⃣상속/증여 평가 : 증빙 고려하신다면 상속인/수증인 성함으로 입금 추천드립니다${separateAccountNotice}
 
 🔸평가서 의뢰인 칸에 기입될 정보 요청드립니다
--성함 or 상호:${companyBlocks ? '\n\n' + companyBlocks : ''}`);
+-성함 or 상호:${companyBlocks ? '\n\n' + companyBlocks : ''}\n\n‼️상속/증여 평가: 상속인/수증인 성함으로 입금 및 영수증 발행 추천드립니다`);
 }
 function mentUpdateTakgam(){
   const role = mentRole('takgam');
   const extra = [];
   if(mentGet('ment_takgam_extra1')?.checked) extra.push('*기타 저희가 참고해야 할 서류 있으면 전달 부탁드립니다:)');
   if(mentGet('ment_takgam_extra2')?.checked) extra.push('*입주권/분양권의 경우 해당 계약서 및 관련서류 사본 함께 전달 부탁드립니다!');
-  mentSet('ment_takgam_output', `안녕하세요 ${role}! 문의 주셔서 감사합니다:) 
-
-아래 내용 전달해 주시면 꼼꼼히 검토해서 회신 드리겠습니다!
+  mentSet('ment_takgam_output', `${mentIsGreetingRemoved('takgam') ? '' : mentGreetingPrefix('takgam')}아래 내용 전달해 주시면 꼼꼼히 검토해서 회신 드리겠습니다!
 
 🔸적어주실 항목
 1) 소재지: 
@@ -12785,17 +12934,21 @@ function mentUpdateTakgam(){
 }
 function mentUpdateFirstContact(){
   const role = mentRole('firstContact');
-  mentSet('ment_firstContact_output', `안녕하세요! ${role}:)
-세무사님께 번호 받아 연락드립니다!
+  const referrer = mentVal('ment_firstContact_referrer_role') || '세무사님';
+  mentSet('ment_firstContact_output', `안녕하세요! ${role}^^ 
+${referrer}께 번호 받아 연락드립니다!
 
-감정평가 도와드릴 하이테크 감정평가법인의 김가민 이사입니다😊`);
+탁상감정 및 감정평가 진행을 도와드릴
+김가민 이사입니다:) 
+010-6860-0317
+
+한번에 여러 평가업체 금액을 비교하여
+제일 좋은 금액으로 진행할 수 있도록
+도와드리고 있습니다😊`);
 }
 function mentUpdateRightsTakgam(){
   const role = mentRole('rightsTakgam');
-  mentSet('ment_rightsTakgam_output', `안녕하세요 ${role}:)
-문의 주셔서 감사합니다! 
-
-탁감으로 금액 알아보고 수수료도 같이 정리드리도록 하겠습니다!^^
+  mentSet('ment_rightsTakgam_output', `${mentIsGreetingRemoved('rightsTakgam') ? '' : mentGreetingPrefix('rightsTakgam')}탁감으로 금액 알아보고 수수료도 같이 정리드리도록 하겠습니다!^^
 
 탁감에 필요한 내용은 사진과 같고, 서류 사본 외에는 카톡으로 간단히 적어주시면 주시면 됩니다!`);
 }
@@ -12813,7 +12966,7 @@ function mentSpecialMoneyBlur(input){
   mentUpdateSpecial();
 }
 function mentAddSpecialAmount(company){
-  const type = ['ht', 'bareum', 'ongyeol'].includes(company) ? company : 'ht';
+  const type = ['ht', 'bareum', 'ongyeol', 'hwarang', 'jiho'].includes(company) ? company : 'ht';
   const rows = mentGet('ment_special_' + type + '_amounts');
   if(!rows) return;
   const row = document.createElement('div');
@@ -12851,7 +13004,9 @@ function mentSpecialCompanyLine(company){
   const companies = {
     ht: {name:'하이테크', icon:'🟧'},
     bareum: {name:'바름', icon:'🟦'},
-    ongyeol: {name:'온결', icon:'🟩'}
+    ongyeol: {name:'온결', icon:'🟩'},
+    hwarang: {name:'화랑', icon:'🟥'},
+    jiho: {name:'지호', icon:'🟨'}
   };
   const info = companies[company];
   if(!info) return '';
@@ -12863,7 +13018,9 @@ function mentExistingSpecialCompanyLine(company){
   const companies = {
     ht: {name:'하이테크', icon:'🟧'},
     bareum: {name:'바름', icon:'🟦'},
-    ongyeol: {name:'온결', icon:'🟩'}
+    ongyeol: {name:'온결', icon:'🟩'},
+    hwarang: {name:'화랑', icon:'🟥'},
+    jiho: {name:'지호', icon:'🟨'}
   };
   const info = companies[company];
   if(!info) return '';
@@ -12872,9 +13029,9 @@ function mentExistingSpecialCompanyLine(company){
   return `${info.icon} ${info.name} 특용비: ${amounts.map(amount => amount + '원').join(' & ')}`;
 }
 function mentUpdateSpecial(){
-  const companyLines = ['ht', 'bareum', 'ongyeol'].map(mentSpecialCompanyLine).filter(Boolean);
+  const companyLines = ['ht', 'bareum', 'ongyeol', 'hwarang', 'jiho'].map(mentSpecialCompanyLine).filter(Boolean);
   const amountBlock = companyLines.length ? `\n\n${companyLines.join('\n')}` : '';
-  const existingCompanyLines = ['ht', 'bareum', 'ongyeol'].map(mentExistingSpecialCompanyLine).filter(Boolean);
+  const existingCompanyLines = ['ht', 'bareum', 'ongyeol', 'hwarang', 'jiho'].map(mentExistingSpecialCompanyLine).filter(Boolean);
   const existingAmountBlock = existingCompanyLines.length ? `\n\n${existingCompanyLines.join('\n')}` : '';
   mentSet('ment_special_1', `마지막으로 요번 특용비는 어떤 방법으로 도와드릴까용? 
 방법 2개 중 택1 부탁드립니다!😊${amountBlock}
@@ -12896,9 +13053,9 @@ function mentUpdateSpecial(){
 
 믿고 맡겨주셔서 감사합니다😊
 언제든 편하게 문의주세요!ㅎㅎ`);
-  mentSet('ment_special_4', `특용비는 저희 회사에서 믿고 맡겨주신 감사함에 챙겨드리는 금액입니다!
+  mentSet('ment_special_4', `특용비는 믿고 맡겨주신 감사함에 회사 수익에서 일부 챙겨드리는 금액입니다!
 
-평가 마무리 후 다시 안내드리며 3.3% 또는 세금계산서 발급 후 이체드리는 방식입니다^^
+평가 마무리 후 다시 안내드리며 3.3% 또는 세금계산서 발급 후 이체드리고 있습니다^^
 
 사정이 있으신 경우 특용비 대신 해당 금액만큼 수수료 차감도 가능하고,
 반대로 총 수수료를 올리면서 특용비를 희망하시는 금액만큼 조율도 가능합니다!😊
