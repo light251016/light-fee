@@ -50,6 +50,11 @@ input, select, textarea {
 input[readonly] { background:#f8fafc; color:#334155; font-weight:900; }
 textarea { min-height:78px; line-height:1.55; resize:vertical; }
 
+/* 일반·복수 계산입력: 기존 할증 선택값 유지 + 같은 칸에서 소수 직접 입력 */
+.markupEditableControl { display:flex; align-items:stretch; gap:5px; width:100%; min-width:0; }
+.markupEditableControl > input { flex:1 1 auto; min-width:0; }
+.markupEditableControl > select.markupPresetSelect { flex:0 0 73px; width:73px; min-width:0; padding-left:7px; padding-right:4px; font-size:13px; cursor:pointer; }
+
 /* 모바일 입력칸 터치 시 브라우저 자동 확대 방지 */
 input, select, textarea, button {
   touch-action: manipulation;
@@ -6542,7 +6547,10 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
 <div class="formGrid feeCompactGrid" style="margin-top:12px;">
 <div class="field">
 <label>할증</label>
-<select class="userInput" id="markup" onchange="calculate()">
+<div class="markupEditableControl">
+<input class="userInput" id="markup" type="number" inputmode="decimal" step="any" min="0" value="1" aria-label="할증 직접 입력" oninput="calculate()"/>
+<select class="userInput markupPresetSelect" aria-label="할증 숫자 선택" onchange="if(this.value){ document.getElementById('markup').value=this.value; calculate(); } this.value='';">
+<option value="" selected>선택</option>
 <option value="1">1.0</option>
 <option value="1.1">1.1</option>
 <option value="1.2">1.2</option>
@@ -6555,6 +6563,7 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
 <option value="1.9">1.9</option>
 <option value="2">2.0</option>
 </select>
+</div>
 </div>
 <div class="field">
 <label>추가필지</label>
@@ -7503,7 +7512,10 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
 </div>
 <div class="field">
 <label>할증</label>
-<select class="userInput" id="multiMarkup" onchange="multiCalculate()">
+<div class="markupEditableControl">
+<input class="userInput" id="multiMarkup" type="number" inputmode="decimal" step="any" min="0" value="1" aria-label="할증 직접 입력" oninput="multiCalculate()"/>
+<select class="userInput markupPresetSelect" aria-label="할증 숫자 선택" onchange="if(this.value){ document.getElementById('multiMarkup').value=this.value; multiCalculate(); } this.value='';">
+<option value="" selected>선택</option>
 <option value="1">1.0</option>
 <option value="1.1">1.1</option>
 <option value="1.2">1.2</option>
@@ -7516,6 +7528,7 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
 <option value="1.9">1.9</option>
 <option value="2">2.0</option>
 </select>
+</div>
 </div>
 <div class="field">
 <label>기본 실비</label>
@@ -8156,7 +8169,7 @@ function calculate(){
 }
 function markupLabel(value){
   const n = Number(value) || 1;
-  return n === 1 ? '1.0' : n.toFixed(1);
+  return Number.isInteger(n) ? n.toFixed(1) : String(n);
 }
 function renderResults(hitName, travel, actual){
   document.getElementById('travelView').textContent = won(travel) + (hitName ? ' / ' + hitName : '');
