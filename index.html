@@ -3134,6 +3134,263 @@ input, textarea, [contenteditable="true"] {
 .baseDateStatusBtn.baseDateStatusExpired { background:#dc2626; color:#fff; }
 .baseDateStatusBtn.baseDateStatusUnknown { background:#facc15; color:#422006; }
 
+
+/* 신규 외부접수 전용 스타일: 일반접수 레이아웃만 독립 복제 */
+#page_receiveExternal .receiveLayout{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+  gap:16px;
+  align-items:stretch;
+  width:100%;
+  min-width:0;
+}
+#page_receiveExternal .receiveLayout > *{ min-width:0; }
+#page_receiveExternal .receiveInputCard,
+#page_receiveExternal .receiveOutputCard{ min-height:760px; display:flex; flex-direction:column; }
+#page_receiveExternal #receiveExternalInput{ min-height:360px; flex:1; }
+#page_receiveExternal #receiveExternalOutput{
+  min-height:640px;
+  flex:1;
+  background:#fffdf0;
+  color:#111827;
+  border:1px solid #facc15;
+  border-radius:15px;
+  padding:17px;
+  line-height:1.7;
+  white-space:pre-wrap;
+  font-size:15px;
+  overflow:auto;
+  font-family:inherit;
+  outline:none;
+}
+#page_receiveExternal .receiveTitleLine{
+  display:grid;
+  grid-template-columns:auto minmax(0, 1fr) auto;
+  gap:8px;
+  align-items:center;
+  margin:0 0 10px;
+}
+#page_receiveExternal .receiveTitleLabel{
+  font-size:13px;
+  font-weight:900;
+  color:#334155;
+  white-space:nowrap;
+}
+#page_receiveExternal #receiveExternalTitleValue{
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  padding:8px 10px;
+  border:1px solid #d1d5db;
+  border-radius:11px;
+  background:#fff;
+  font-size:14px;
+  font-weight:900;
+  color:#111827;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  outline:none;
+  cursor:text;
+}
+#page_receiveExternal #receiveExternalTitleValue:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 2px rgba(37,99,235,.10);
+}
+#page_receiveExternal .receiveMiniGrid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:10px 0 0; }
+#page_receiveExternal .receiveInfoBox{
+  background:#f8fafc; border:1px solid #e5e7eb; border-radius:14px; padding:12px;
+  color:#334155; font-size:13px; line-height:1.6; margin-top:12px;
+}
+#page_receiveExternal .receiveHighlight{
+  background:#fde68a;
+  color:#111827;
+  border-radius:4px;
+  padding:0 3px;
+  font-weight:900;
+}
+#page_receiveExternal .receiveInfoBox summary{
+  cursor:pointer;
+  font-weight:900;
+  color:#111827;
+  list-style:none;
+}
+#page_receiveExternal .receiveInfoBox summary::-webkit-details-marker{ display:none; }
+#page_receiveExternal .receiveInfoBox summary::after{ content:" 펼치기"; color:#64748b; font-size:12px; font-weight:800; }
+#page_receiveExternal .receiveInfoBox[open] summary::after{ content:" 접기"; }
+#page_receiveExternal .receiveInfoBody{ margin-top:8px; }
+#page_receiveExternal .receiveCalendarBox{
+  margin-top:12px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+  overflow:hidden;
+}
+#page_receiveExternal .receiveCalendarHead{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:10px 12px; background:#f8fafc; border-bottom:1px solid var(--line);
+  font-weight:900;
+}
+#page_receiveExternal .receiveCalendarHead button{ padding:6px 10px; border-radius:9px; }
+#page_receiveExternal .receiveCalendarGrid{
+  display:grid; grid-template-columns:repeat(7, 1fr); font-size:12px; text-align:center;
+}
+#page_receiveExternal .receiveCalendarGrid div{
+  min-height:32px; padding:7px 3px; border-right:1px solid #eef2f7; border-bottom:1px solid #eef2f7;
+}
+#page_receiveExternal .receiveCalendarGrid div:nth-child(7n){ border-right:0; }
+#page_receiveExternal .receiveCalDow{ background:#f8fafc; color:#475569; font-weight:900; }
+#page_receiveExternal .receiveCalHoliday,
+#page_receiveExternal .receiveCalWeekend{ color:#dc2626; font-weight:900; background:#fff1f2; }
+#page_receiveExternal .receiveCalToday{ outline:2px solid #2563eb; outline-offset:-2px; border-radius:8px; }
+#page_receiveExternal .receiveCalMuted{ color:#cbd5e1; background:#fff; }
+#page_receiveExternal .receiveCalendarLegend{ padding:8px 12px; font-size:12px; color:#64748b; line-height:1.45; }
+#page_receiveExternal .receiveCalendarBox.calendarCollapsed #receiveExternalCalendarGrid,
+#page_receiveExternal .receiveCalendarBox.calendarCollapsed .receiveCalendarLegend{ display:none; }
+#page_receiveExternal #receiveExternalCalendarToggleBtn{ min-width:54px; }
+@media (max-width:980px) and (pointer:coarse){
+#page_receiveExternal .receiveLayout{ grid-template-columns:1fr; gap:12px; min-width:0; }
+#page_receiveExternal .receiveInputCard,
+#page_receiveExternal .receiveOutputCard{ min-height:auto; }
+#page_receiveExternal #receiveExternalInput{ min-height:300px; }
+#page_receiveExternal #receiveExternalOutput{ min-height:420px; }
+#page_receiveExternal .receiveMiniGrid{ grid-template-columns:1fr; }
+}
+#page_receiveExternal .receiveInputCard,
+#page_receiveExternal .receiveOutputCard{
+  min-width:0;
+}
+#page_receiveExternal #receiveExternalInput,
+#page_receiveExternal #receiveExternalOutput{
+  width:100%;
+  max-width:100%;
+  overflow-wrap:anywhere;
+}
+#page_receiveExternal .receiveSheetBox{
+  margin-top:14px;
+  border:1px solid #c7d2fe;
+  background:#eef2ff;
+  border-radius:16px;
+  padding:12px;
+}
+#page_receiveExternal .receiveSheetTitle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  font-weight:900;
+  color:#1e1b4b;
+  margin-bottom:10px;
+}
+#page_receiveExternal .receiveSheetScroll{
+  overflow:auto;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+}
+#page_receiveExternal .receiveSheetTable{
+  min-width:1250px;
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+}
+#page_receiveExternal .receiveSheetTable th,
+#page_receiveExternal .receiveSheetTable td{
+  border:1px solid #e5e7eb;
+  padding:6px;
+}
+#page_receiveExternal .receiveSheetTable th{
+  background:#fff100;
+  color:#111827;
+  font-weight:900;
+}
+#page_receiveExternal .receiveSheetTable input{
+  min-width:80px;
+  padding:7px 8px;
+  font-size:13px;
+  border-radius:8px;
+}
+#page_receiveExternal .receiveSheetPaste{
+  margin-top:10px;
+  min-height:72px;
+  font-size:13px;
+  background:#fff;
+  color:#111827;
+  border:1px dashed #94a3b8;
+}
+#page_receiveExternal .receiveInputCard,
+#page_receiveExternal .receiveOutputCard{
+  min-height:auto !important;
+  align-self:start;
+}
+#page_receiveExternal #receiveExternalInput{
+  min-height:180px !important;
+  height:auto;
+  flex:unset !important;
+  overflow:hidden;
+}
+#page_receiveExternal #receiveExternalOutput{
+  min-height:260px !important;
+  flex:unset !important;
+  overflow:visible;
+}
+#page_receiveExternal .receiveSheetTable{
+  min-width:1580px !important;
+  table-layout:auto;
+}
+#page_receiveExternal .receiveSheetTable th,
+#page_receiveExternal .receiveSheetTable td{
+  white-space:nowrap;
+}
+#page_receiveExternal .receiveSheetTable input{
+  width:100%;
+  min-width:120px;
+  white-space:nowrap;
+  overflow:visible;
+  text-overflow:clip;
+}
+#page_receiveExternal #receiveExternalSheet_reportNo{ min-width:150px; }
+#page_receiveExternal #receiveExternalSheet_assignedDate,
+#page_receiveExternal #receiveExternalSheet_deadline,
+#page_receiveExternal #receiveExternalSheet_depositDate{ min-width:120px; }
+#page_receiveExternal #receiveExternalSheet_armUsePeriod{ min-width:145px; }
+#page_receiveExternal #receiveExternalSheet_customerManager,
+#page_receiveExternal #receiveExternalSheet_appraiser{ min-width:120px; }
+#page_receiveExternal #receiveExternalSheet_client{ min-width:150px; }
+#page_receiveExternal #receiveExternalSheet_region{ min-width:120px; }
+#page_receiveExternal #receiveExternalSheet_depositStatus{ min-width:190px; }
+#page_receiveExternal .receiveRegionGuide{
+  margin-top:16px;
+}
+#page_receiveExternal .receiveRegionGuide summary{
+  cursor:pointer;
+  font-weight:900;
+  padding:12px 14px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+}
+#page_receiveExternal .receiveRegionGuideInner{
+  padding:12px 0 0;
+}
+#page_receiveExternal .receiveRegionGuideGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+#page_receiveExternal .receiveRegionGuideBox{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  padding:12px;
+  line-height:1.65;
+  font-size:13px;
+  color:#334155;
+}
+#page_receiveExternal .receiveRegionGuideBox b{ color:#111827; }
+@media (max-width:980px) and (pointer:coarse){
+#page_receiveExternal .receiveRegionGuideGrid{ grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
@@ -3144,6 +3401,7 @@ input, textarea, [contenteditable="true"] {
 <button class="typeTab property g-main" onclick="showTypePage('rights')">무형</button>
 <button class="typeTab property g-fee" onclick="showTypePage('feeOnly')">수수료</button>
 <button class="typeTab property g-ment" onclick="showTypePage('ment')">멘트</button>
+<button class="typeTab property g-receive" onclick="showTypePage('receiveExternal')">외부접수</button>
 <button class="typeTab property g-receive" onclick="showTypePage('receiveProperty')">일반접수</button>
 <button class="typeTab property g-receive" onclick="showTypePage('receiveMulti')">복수접수</button>
 <button class="typeTab property g-receive" onclick="showTypePage('receiveRights')">무형접수</button>
@@ -4532,17 +4790,138 @@ html, body, .stage, .paper, .overlay {
   width:100%;
   display:block;
 }
+/* 신규 두 업체: 별도 심볼·차분한 문서 컬러 / 회사명과 하단 정보 모두 직접 편집 */
+.quoteCompanyToolbar{flex-wrap:nowrap;gap:8px;margin-bottom:3px;overflow-x:auto;}
+.quoteCompanyToolbar button{flex:0 0 auto;}
+.quoteActionToolbar{margin-top:8px;}
+.paper.jiho,.paper.hwarang{padding:58px 58px 50px !important;}
+.paper.jiho .externalTop,.paper.hwarang .externalTop{display:flex;justify-content:center;align-items:center;min-height:75px;margin:4px 0 58px;}
+.paper.jiho .externalName,.paper.hwarang .externalName{font-weight:900;letter-spacing:-.9px;text-align:center;font-size:29px;white-space:nowrap;}
+.paper.jiho .externalName{color:#0f766e;}
+.paper.hwarang .externalName{color:#7c3aed;}
+.paper.jiho .docTitle,.paper.hwarang .docTitle{border-left:4px solid;padding-left:12px;margin-bottom:38px;font-size:16px;}
+.paper.jiho .docTitle{border-color:#0f766e;}.paper.hwarang .docTitle{border-color:#7c3aed;}
+.paper.jiho .bodyLine,.paper.hwarang .bodyLine{margin-bottom:23px;line-height:1.55;font-size:15px;}
+.paper.jiho .divider,.paper.hwarang .divider{height:2px;margin:31px 0 39px;}
+.paper.jiho .divider,.paper.jiho .dividerBottom{background:#0f766e;}
+.paper.hwarang .divider,.paper.hwarang .dividerBottom{background:#7c3aed;}
+.paper.jiho .quoteGrid .cell{border-color:#0f766e!important;}
+.paper.hwarang .quoteGrid .cell{border-color:#7c3aed!important;}
+.paper.jiho .quoteGrid .headerFill{background:#ecfdf5!important;}
+.paper.hwarang .quoteGrid .headerFill{background:#f5f3ff!important;}
+.paper.jiho .quoteGrid .grand{background:#f0fdfa!important;}
+.paper.hwarang .quoteGrid .grand{background:#faf5ff!important;}
+.paper.jiho .accountLine,.paper.hwarang .accountLine{display:flex;justify-content:center;gap:16px;font-size:13px;font-weight:700;margin:22px 0 30px;text-align:center;white-space:nowrap;}
+.paper.jiho .companyName,.paper.hwarang .companyName{text-align:center;font-size:20px;font-weight:750;margin-bottom:17px;}
+.paper.jiho .address,.paper.hwarang .address,.paper.jiho .repLine,.paper.hwarang .repLine{text-align:center;font-size:13px;line-height:1.45;margin-bottom:6px;}
+.paper.jiho .tel,.paper.hwarang .tel{text-align:center;font-size:12px;}
+.paper.jiho .depositTitle,.paper.hwarang .depositTitle{margin-top:29px;}
+.paper.jiho .topLogo [contenteditable],.paper.hwarang .topLogo [contenteditable]{display:block;}
+
+/* 2026-11: 지호 전용 공공기관 서식 톤 · 화랑은 문서 제목만 검은색 */
+.paper.jiho, .paper.jiho * {
+  font-family:&#x27;Malgun Gothic&#x27;,&#x27;맑은 고딕&#x27;,&#x27;Noto Sans KR&#x27;,&#x27;Apple SD Gothic Neo&#x27;,sans-serif !important;
+}
+.paper.jiho { color:#263445 !important; }
+.paper.jiho .externalTop {
+  justify-content:flex-start !important;
+  min-height:69px !important;
+  margin:4px 0 38px !important;
+  padding:0 0 14px 4px !important;
+  border-bottom:1.5px solid #64748b;
+}
+.paper.jiho .externalName {
+  color:#111111 !important;
+  font-size:27px !important;
+  font-weight:800 !important;
+  letter-spacing:-0.55px !important;
+}
+.paper.jiho .docTitle {
+  color:#111111 !important;
+  background:#ebeff3 !important;
+  border-left:0 !important;
+  padding:10px 14px !important;
+  margin-bottom:27px !important;
+  font-size:15px !important;
+  font-weight:700 !important;
+}
+.paper.jiho .bodyLine { font-size:15px !important; font-weight:500 !important; margin-bottom:20px !important; }
+.paper.jiho .divider { background:#85919d !important; height:1px !important; margin:25px 0 31px !important; }
+.paper.jiho .targetLine, .paper.jiho .feeIntro, .paper.jiho .depositTitle {
+  color:#263445 !important;
+  border-left:3px solid #65778a;
+  padding-left:11px !important;
+  font-weight:700 !important;
+}
+.paper.jiho .targetLine { margin-bottom:10px !important; }
+.paper.jiho .feeIntro { margin-bottom:13px !important; }
+.paper.jiho .quoteGrid .cell { border-color:#7b8794 !important; }
+.paper.jiho .quoteGrid .headerFill { background:#e8edf2 !important; }
+.paper.jiho .quoteGrid .grand { background:#f0f3f6 !important; }
+.paper.jiho .accountLine { color:#263445 !important; }
+.paper.jiho .companyName { color:#111111 !important; font-weight:800 !important; }
+.paper.jiho .dividerBottom { background:#64748b !important; height:1px !important; }
+.paper.hwarang .externalName,
+.paper.hwarang .docTitle,
+.paper.hwarang .companyName { color:#111111 !important; }
+
+/* 화랑 전용: 지호와 다른 공문서형 웜그레이/회갈색 서식 */
+.paper.hwarang, .paper.hwarang * {
+  font-family:&#x27;Malgun Gothic&#x27;,&#x27;맑은 고딕&#x27;,&#x27;Noto Sans KR&#x27;,&#x27;Apple SD Gothic Neo&#x27;,sans-serif !important;
+}
+.paper.hwarang { color:#2d302f !important; padding:54px 61px 52px !important; }
+.paper.hwarang .externalTop {
+  min-height:82px !important; margin:0 0 36px !important;
+  padding:8px 14px 11px !important;
+  justify-content:center !important;
+  background:#f6f4ef !important;
+  border-top:3px double #777469 !important;
+  border-bottom:1px solid #a6a294 !important;
+}
+.paper.hwarang .externalName {
+  font-family:&#x27;Batang&#x27;,&#x27;바탕&#x27;,&#x27;Malgun Gothic&#x27;,serif !important;
+  font-size:26px !important; letter-spacing:1.2px !important;
+  font-weight:700 !important; color:#111111 !important;
+}
+.paper.hwarang .docTitle {
+  text-align:center !important; font-size:16px !important;
+  color:#111111 !important; background:transparent !important;
+  border-left:0 !important; border-bottom:1px solid #9e9b91 !important;
+  padding:0 0 12px !important; margin-bottom:32px !important;
+  font-weight:800 !important;
+}
+.paper.hwarang .bodyLine { margin-bottom:21px !important; font-size:15px !important; font-weight:500 !important; }
+.paper.hwarang .divider { height:1px !important; background:#8d8a7e !important; margin:28px 0 31px !important; }
+.paper.hwarang .targetLine, .paper.hwarang .feeIntro { font-size:15px !important; font-weight:700 !important; }
+.paper.hwarang .targetLine { margin-bottom:13px !important; }
+.paper.hwarang .feeIntro { margin-bottom:13px !important; }
+.paper.hwarang .quoteGrid .cell { border-color:#817f75 !important; }
+.paper.hwarang .quoteGrid .headerFill { background:#eceae4 !important; }
+.paper.hwarang .quoteGrid .grand { background:#f2f0eb !important; }
+.paper.hwarang .depositTitle { margin-top:32px !important; font-size:15px !important; font-weight:700 !important; }
+.paper.hwarang .accountLine {
+  gap:14px !important; color:#373936 !important;
+  margin:19px 0 28px !important; font-size:13px !important;
+}
+.paper.hwarang .companyName { color:#111111 !important; font-family:&#x27;Batang&#x27;,&#x27;바탕&#x27;,serif !important; font-size:23px !important; letter-spacing:.6px !important; margin-bottom:10px !important; }
+.paper.hwarang .dividerBottom { height:3px !important; background:#777469 !important; margin-bottom:16px !important; }
+.paper.hwarang .address, .paper.hwarang .repLine { color:#44443f !important; }
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;header&gt;
   &lt;h1 id=&quot;quoteCompanyTitle&quot;&gt;하감 견적서&lt;/h1&gt;
   &lt;div class=&quot;sub&quot;&gt;문서 화면에서 바로 입력하면 금액이 즉시 계산됩니다. 업체를 바꿔도 입력한 내용은 그대로 유지됩니다.&lt;/div&gt;
-  &lt;div class=&quot;toolbar&quot;&gt;
+  &lt;div class=&quot;toolbar quoteCompanyToolbar&quot;&gt;
     &lt;button class=&quot;active&quot; id=&quot;companyHagamBtn&quot; onclick=&quot;switchQuoteCompany(&#x27;hagam&#x27;)&quot;&gt;하감&lt;/button&gt;
     &lt;button class=&quot;ghost&quot; id=&quot;companyBareumBtn&quot; onclick=&quot;switchQuoteCompany(&#x27;bareum&#x27;)&quot;&gt;바름&lt;/button&gt;
     &lt;button class=&quot;ghost&quot; id=&quot;companyOngyeolBtn&quot; onclick=&quot;switchQuoteCompany(&#x27;ongyeol&#x27;)&quot;&gt;온결&lt;/button&gt;
+    &lt;button class=&quot;ghost&quot; id=&quot;companyJihoBtn&quot; onclick=&quot;switchQuoteCompany(&#x27;jiho&#x27;)&quot;&gt;지호&lt;/button&gt;
+    &lt;button class=&quot;ghost&quot; id=&quot;companyHwarangBtn&quot; onclick=&quot;switchQuoteCompany(&#x27;hwarang&#x27;)&quot;&gt;화랑&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;toolbar quoteActionToolbar&quot;&gt;
     &lt;button class=&quot;ghost&quot; onclick=&quot;resetDefaults()&quot;&gt;초기화&lt;/button&gt;
+    &lt;button class=&quot;warn&quot; id=&quot;vatBtn&quot; onclick=&quot;toggleQuoteVat()&quot;&gt;vat제거&lt;/button&gt;
     &lt;button class=&quot;warn&quot; id=&quot;hideBtn&quot; onclick=&quot;toggleSpecial()&quot;&gt;특용제거&lt;/button&gt;
     &lt;button onclick=&quot;saveImageStable(&#x27;jpeg&#x27;, event)&quot;&gt;jpg저장&lt;/button&gt;
     &lt;button class=&quot;ghost quoteZoomBtn&quot; onclick=&quot;quoteZoomOut()&quot;&gt;-&lt;/button&gt;
@@ -4587,6 +4966,8 @@ const LOGO_BAREUM=&#x27;data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDA
 
 let mode=&#x27;hagam&#x27;;
 let hideSpecial=false;
+// 견적서 총계 VAT 포함 여부만 제어; 수수료 입력값은 변경하지 않습니다.
+let quoteExcludeVat=false;
 
 function getKoreaTodayText(){
   try{
@@ -4633,8 +5014,28 @@ const quoteCompanyInfo={
     company:&#x27;(주)온결감정평가법인&#x27;, bank:&#x27;국민은행&#x27;, account:&#x27;015437-04-023593&#x27;, holder:&#x27;(주)온결감정평가법인&#x27;,
     address:&#x27;서울특별시 강남구 삼성로108길 18, 711호(삼성동, 시대제1빌딩)&#x27;,
     tel:&#x27;TEL. 010-6860-0317&#x27;
+  },
+  jiho:{
+    company:&#x27;지호감정평가사사무소&#x27;, bank:&#x27;국민은행&#x27;, account:&#x27;856901-00-165756&#x27;, holder:&#x27;지호 감정평가사 사무소&#x27;,
+    address:&#x27;경기도 고양시 덕양구 고양대로 1780, 503호&#x27;, rep:&#x27;대표 왕종혁&#x27;, tel:&#x27;&#x27;
+  },
+  hwarang:{
+    company:&#x27;감정평가사사무소 화랑&#x27;, bank:&#x27;신한은행&#x27;, account:&#x27;110-625-600975&#x27;, holder:&#x27;감정평가 화랑 (최승혁)&#x27;,
+    address:&#x27;10545 경기도 고양시 덕양구 향동1로 20, 206-1102&#x27;, rep:&#x27;대표 최승혁&#x27;, tel:&#x27;&#x27;
   }
 };
+const quoteNewCompanies=[&#x27;jiho&#x27;,&#x27;hwarang&#x27;];
+const quoteNewCompanyDefaults={
+  jiho:JSON.parse(JSON.stringify(quoteCompanyInfo.jiho)),
+  hwarang:JSON.parse(JSON.stringify(quoteCompanyInfo.hwarang))
+};
+function rememberQuoteNewCompanyInfo(){
+  if(!quoteNewCompanies.includes(quoteCompany) || mode!==&#x27;bareum&#x27;)return;
+  const info=quoteCompanyInfo[quoteCompany], d=data.bareum;
+  [&#x27;company&#x27;,&#x27;bank&#x27;,&#x27;account&#x27;,&#x27;holder&#x27;,&#x27;address&#x27;,&#x27;rep&#x27;,&#x27;tel&#x27;,&#x27;headerName&#x27;].forEach(k=&gt;{
+    if(Object.prototype.hasOwnProperty.call(d,k))info[k]=d[k];
+  });
+}
 function applyQuoteCompanyInfo(){
   const info=quoteCompanyInfo[quoteCompany];
   if(!info) return;
@@ -4644,6 +5045,10 @@ function applyQuoteCompanyInfo(){
   data.bareum.holder=info.holder;
   data.bareum.address=info.address;
   data.bareum.tel=info.tel;
+  if(quoteNewCompanies.includes(quoteCompany)){
+    data.bareum.rep=info.rep;
+    data.bareum.headerName=info.headerName===undefined?info.company:info.headerName;
+  }
 }
 const quoteTransientStore={hagam:null,bareum:null};
 // 업체마다 표의 열 수와 행 위치가 다르므로, 비고를 위치가 아닌 과목명으로 연결합니다.
@@ -4668,7 +5073,7 @@ function quoteRemarkFields(root){
 function quoteApplySharedRemarks(){
   [&#x27;paper&#x27;,&#x27;fullPaper&#x27;].forEach(id=&gt;{
     quoteRemarkFields(document.getElementById(id)).forEach(({key,el})=&gt;{
-      if(Object.prototype.hasOwnProperty.call(quoteSharedRemarks,key)){
+      if(Object.prototype.hasOwnProperty.call(quoteSharedRemarks,key) &amp;&amp; !(quoteExcludeVat &amp;&amp; key===&#x27;총계&#x27;)){
         const text=quoteSharedRemarks[key];
         if(el.innerText.replace(/\r/g,&#x27;&#x27;)!==text) el.innerText=text;
       }
@@ -4680,6 +5085,7 @@ function quoteApplySharedRemarks(){
 }
 function quoteRememberEditedRemark(key,el){
   const text=el.innerText.replace(/\r/g,&#x27;&#x27;);
+  if(quoteExcludeVat &amp;&amp; key===&#x27;총계&#x27;) return; // 자동 비고는 제외 모드에서 기존 사용자 비고를 덮어쓰지 않음
   quoteSharedRemarks[key]=text;
   if(key===&#x27;순수수료&#x27;) data.bareum.note=text;
   [&#x27;paper&#x27;,&#x27;fullPaper&#x27;].forEach(id=&gt;{
@@ -4737,9 +5143,10 @@ function syncSharedQuoteValuesFrom(sourceMode){
   else data.hagam.caseName=data.bareum.target||&#x27;&#x27;;
 }
 function switchQuoteCompany(company){
-  if(![&#x27;hagam&#x27;,&#x27;bareum&#x27;,&#x27;ongyeol&#x27;].includes(company)) return;
+  if(![&#x27;hagam&#x27;,&#x27;bareum&#x27;,&#x27;ongyeol&#x27;,&#x27;jiho&#x27;,&#x27;hwarang&#x27;].includes(company)) return;
   saveTransientForCurrentMode();
   saveFromDom();
+  rememberQuoteNewCompanyInfo();
   syncSharedQuoteValuesFrom(mode);
   if(company===&#x27;hagam&#x27;){
     mode=&#x27;hagam&#x27;;
@@ -4785,6 +5192,14 @@ function setMode(m){
   render();
   restoreTransientForCurrentMode();
 }
+function toggleQuoteVat(){
+  // 전환 전 현재 입력 내용, 비고 수정 내용, 편집한 문단을 보존합니다.
+  saveTransientForCurrentMode();
+  saveFromDom();
+  quoteExcludeVat=!quoteExcludeVat;
+  render();
+  restoreTransientForCurrentMode();
+}
 function toggleSpecial(){
   saveTransientForCurrentMode();
   saveFromDom();
@@ -4800,6 +5215,10 @@ function resetDefaults(){
   // 비고를 초기화하면 모든 업체에서 편집된 비고가 다시 나타나지 않도록 공통 변경분 제거
   Object.keys(quoteSharedRemarks).forEach(key=&gt;delete quoteSharedRemarks[key]);
   data.bareum.note=base.bareum.note;
+  if(mode===&#x27;bareum&#x27; &amp;&amp; quoteNewCompanies.includes(quoteCompany)){
+    const defaults=quoteNewCompanyDefaults[quoteCompany];
+    quoteCompanyInfo[quoteCompany]=JSON.parse(JSON.stringify(defaults));
+  }
   quoteTransientStore[quoteModeKey()]=null;
   syncSharedQuoteValuesFrom(mode);
   if(mode===&#x27;bareum&#x27;) applyQuoteCompanyInfo();
@@ -4822,7 +5241,7 @@ function makeHagam(){
   );
 
   const sum=rows.reduce((a,r)=&gt;a+Number(r[2]||0),0);
-  const vat=Math.round(sum*0.1);
+  const vat=quoteExcludeVat?0:Math.round(sum*0.1);
   const grand=sum+vat;
   const keyMap={&#x27;순수수료&#x27;:&#x27;pureFee&#x27;,&#x27;여비&#x27;:&#x27;travel&#x27;,&#x27;특별용역비&#x27;:&#x27;specialFee&#x27;,&#x27;물건조사비&#x27;:&#x27;inspection&#x27;,&#x27;공부발급비&#x27;:&#x27;docFee&#x27;,&#x27;기타실비&#x27;:&#x27;etc&#x27;};
 
@@ -4853,7 +5272,7 @@ function makeHagam(){
     &lt;div class=&quot;cell grand&quot;&gt;&lt;/div&gt;
     &lt;div class=&quot;cell grand&quot;&gt;총계&lt;/div&gt;
     &lt;div class=&quot;cell grand calc-grand money readonly&quot;&gt;${fmt(grand)}&lt;/div&gt;
-    &lt;div class=&quot;cell grand&quot;&gt;${centerText(&#x27;-&#x27;)}&lt;/div&gt;`;
+    &lt;div class=&quot;cell grand&quot;&gt;${centerText(quoteExcludeVat?&#x27;부가세 미포함 금액&#x27;:&#x27;-&#x27;)}&lt;/div&gt;`;
 
   return `&lt;h2 class=&quot;title&quot; contenteditable=&quot;true&quot;&gt;부동산 감정평가 견적서&lt;/h2&gt;
     &lt;div class=&quot;logoBox&quot;&gt;&lt;img class=&quot;logo-img&quot; src=&quot;${LOGO_HAGAM}&quot;&gt;&lt;/div&gt;
@@ -4894,7 +5313,7 @@ function makeBareum(){
   rows.push([&#x27;물건조사비&#x27;,d.inspection,&#x27;-&#x27;],[&#x27;공부발급비&#x27;,d.docFee,&#x27;-&#x27;],[&#x27;기타실비&#x27;,d.etc,&#x27;-&#x27;]);
 
   const sum=rows.reduce((a,r)=&gt;a+Number(r[1]||0),0);
-  const grand=Math.round(sum*1.1);
+  const grand=quoteExcludeVat?sum:Math.round(sum*1.1);
   const keyMap={&#x27;순수수료&#x27;:&#x27;pureFee&#x27;,&#x27;여비&#x27;:&#x27;travel&#x27;,&#x27;특별용역비&#x27;:&#x27;specialFee&#x27;,&#x27;물건조사비&#x27;:&#x27;inspection&#x27;,&#x27;공부발급비&#x27;:&#x27;docFee&#x27;,&#x27;기타실비&#x27;:&#x27;etc&#x27;};
 
   let grid=&#x27;&#x27;;
@@ -4916,12 +5335,16 @@ function makeBareum(){
 
   grid+=`&lt;div class=&quot;cell grand&quot;&gt;총계&lt;/div&gt;
     &lt;div class=&quot;cell grand calc-grand money readonly&quot;&gt;${fmt(grand)}&lt;/div&gt;
-    &lt;div class=&quot;cell grand&quot;&gt;${centerText(&#x27;부가세 10% 포함 금액&#x27;)}&lt;/div&gt;`;
+    &lt;div class=&quot;cell grand&quot;&gt;${centerText(quoteExcludeVat?&#x27;부가세 미포함 금액&#x27;:&#x27;부가세 10% 포함 금액&#x27;)}&lt;/div&gt;`;
 
-  const topCompany = quoteCompany===&#x27;ongyeol&#x27;
-    ? `&lt;div class=&quot;topLogo&quot;&gt;&lt;span class=&quot;ongyeolName&quot;&gt;(주)온결감정평가법인&lt;/span&gt;&lt;/div&gt;`
-    : `&lt;div class=&quot;topLogo&quot;&gt;&lt;img class=&quot;logo-img&quot; src=&quot;${LOGO_BAREUM}&quot;&gt;&lt;span class=&quot;bareumName&quot; contenteditable=&quot;true&quot;&gt;(주)바름감정평가법인&lt;/span&gt;&lt;/div&gt;`;
-  const accountContent = quoteCompany===&#x27;ongyeol&#x27;
+  const isExternal=quoteNewCompanies.includes(quoteCompany);
+  const jihoSectionMark = quoteCompany===&#x27;jiho&#x27; ? &#x27;■&#x27; : (quoteCompany===&#x27;hwarang&#x27; ? &#x27;◇&#x27; : &#x27;❖&#x27;);
+  const topCompany = isExternal
+    ? `&lt;div class=&quot;topLogo externalTop&quot;&gt;&lt;span class=&quot;externalName&quot;&gt;${editText(&#x27;headerName&#x27;)}&lt;/span&gt;&lt;/div&gt;`
+    : (quoteCompany===&#x27;ongyeol&#x27;
+      ? `&lt;div class=&quot;topLogo&quot;&gt;&lt;span class=&quot;ongyeolName&quot;&gt;(주)온결감정평가법인&lt;/span&gt;&lt;/div&gt;`
+      : `&lt;div class=&quot;topLogo&quot;&gt;&lt;img class=&quot;logo-img&quot; src=&quot;${LOGO_BAREUM}&quot;&gt;&lt;span class=&quot;bareumName&quot; contenteditable=&quot;true&quot;&gt;(주)바름감정평가법인&lt;/span&gt;&lt;/div&gt;`);
+  const accountContent = quoteCompany===&#x27;ongyeol&#x27;||isExternal
     ? `${editText(&#x27;bank&#x27;)} ${editText(&#x27;account&#x27;)} ${editText(&#x27;holder&#x27;)}`
     : `${editText(&#x27;company&#x27;)} ${editText(&#x27;bank&#x27;)} ${editText(&#x27;account&#x27;)}`;
 
@@ -4930,12 +5353,12 @@ function makeBareum(){
     &lt;div class=&quot;bodyLine&quot; contenteditable=&quot;true&quot;&gt;1. 귀하의 무궁한 발전을 기원합니다.&lt;/div&gt;
     &lt;div class=&quot;bodyLine&quot; contenteditable=&quot;true&quot;&gt;2. 귀하께서 의뢰한 감정평가에 대한 용역 견적서를 붙임과 같이 제출합니다.&lt;/div&gt;
     &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
-    &lt;div class=&quot;targetLine&quot;&gt;❖ 감정평가 대상물 : ${editText(&#x27;target&#x27;)}&lt;/div&gt;
-    &lt;div class=&quot;feeIntro&quot; contenteditable=&quot;true&quot;&gt;❖ 예상 감정평가 수수료 : 이하 견적서 첨부하였습니다.&lt;/div&gt;
+    &lt;div class=&quot;targetLine&quot;&gt;${jihoSectionMark} 감정평가 대상물 : ${editText(&#x27;target&#x27;)}&lt;/div&gt;
+    &lt;div class=&quot;feeIntro&quot; contenteditable=&quot;true&quot;&gt;${jihoSectionMark} 예상 감정평가 수수료 : 이하 견적서 첨부하였습니다.&lt;/div&gt;
 
     &lt;div class=&quot;quoteGrid feeGrid&quot;&gt;${grid}&lt;/div&gt;
 
-    &lt;div class=&quot;depositTitle&quot; contenteditable=&quot;true&quot;&gt;❖ 평가 착수를 위한 수수료 일부 착수금 입금 요청드립니다.&lt;/div&gt;
+    &lt;div class=&quot;depositTitle&quot; contenteditable=&quot;true&quot;&gt;${jihoSectionMark} 평가 착수를 위한 수수료 일부 착수금 입금 요청드립니다.&lt;/div&gt;
     &lt;div class=&quot;quoteGrid depositGrid&quot;&gt;
       &lt;div class=&quot;cell&quot;&gt;착수금&lt;/div&gt;
       &lt;div class=&quot;cell&quot;&gt;${moneyCell(&#x27;deposit&#x27;)}&lt;/div&gt;
@@ -4946,13 +5369,14 @@ function makeBareum(){
     &lt;div class=&quot;companyName&quot;&gt;${editText(&#x27;company&#x27;)}&lt;/div&gt;
     &lt;div class=&quot;dividerBottom&quot;&gt;&lt;/div&gt;
     &lt;div class=&quot;address&quot;&gt;${editText(&#x27;address&#x27;)}&lt;/div&gt;
+    ${isExternal?`&lt;div class=&quot;repLine&quot;&gt;${editText(&#x27;rep&#x27;)}&lt;/div&gt;`:&#x27;&#x27;}
     &lt;div class=&quot;tel&quot;&gt;${editText(&#x27;tel&#x27;)}&lt;/div&gt;`;
 }
 
 function render(){
   const paper=document.getElementById(&#x27;paper&#x27;);
   const full=document.getElementById(&#x27;fullPaper&#x27;);
-  const paperClass = mode===&#x27;bareum&#x27; &amp;&amp; quoteCompany===&#x27;ongyeol&#x27; ? &#x27;paper ongyeol&#x27; : &#x27;paper &#x27;+mode;
+  const paperClass = mode===&#x27;bareum&#x27; &amp;&amp; (quoteCompany===&#x27;ongyeol&#x27;||quoteNewCompanies.includes(quoteCompany)) ? (quoteNewCompanies.includes(quoteCompany)?&#x27;paper bareum &#x27;+quoteCompany:&#x27;paper &#x27;+quoteCompany) : &#x27;paper &#x27;+mode;
   paper.className=paperClass;
   full.className=paperClass;
   const html=mode===&#x27;hagam&#x27;?makeHagam():makeBareum();
@@ -4964,14 +5388,20 @@ function render(){
   bindMoneyInputs(full);
   document.getElementById(&#x27;hideBtn&#x27;).classList.toggle(&#x27;on&#x27;,hideSpecial);
   document.getElementById(&#x27;hideBtn&#x27;).textContent=hideSpecial?&#x27;특용제거중&#x27;:&#x27;특용제거&#x27;;
+  document.getElementById(&#x27;vatBtn&#x27;).classList.toggle(&#x27;on&#x27;,quoteExcludeVat);
+  document.getElementById(&#x27;vatBtn&#x27;).textContent=quoteExcludeVat?&#x27;vat제거중&#x27;:&#x27;vat제거&#x27;;
   const titleEl=document.getElementById(&#x27;quoteCompanyTitle&#x27;);
-  if(titleEl) titleEl.textContent=mode===&#x27;hagam&#x27;?&#x27;하감 견적서&#x27;:(quoteCompany===&#x27;ongyeol&#x27;?&#x27;온결 견적서&#x27;:&#x27;바름 견적서&#x27;);
+  if(titleEl) titleEl.textContent=({&#x27;hagam&#x27;:&#x27;하감&#x27;,&#x27;bareum&#x27;:&#x27;바름&#x27;,&#x27;ongyeol&#x27;:&#x27;온결&#x27;,&#x27;jiho&#x27;:&#x27;지호&#x27;,&#x27;hwarang&#x27;:&#x27;화랑&#x27;}[quoteCompany]||&#x27;바름&#x27;)+&#x27; 견적서&#x27;;
   const hagamBtn=document.getElementById(&#x27;companyHagamBtn&#x27;);
   const bareumBtn=document.getElementById(&#x27;companyBareumBtn&#x27;);
   const ongyeolBtn=document.getElementById(&#x27;companyOngyeolBtn&#x27;);
   if(hagamBtn){hagamBtn.classList.toggle(&#x27;active&#x27;,mode===&#x27;hagam&#x27;);hagamBtn.classList.toggle(&#x27;ghost&#x27;,mode!==&#x27;hagam&#x27;);}
   if(bareumBtn){bareumBtn.classList.toggle(&#x27;active&#x27;,mode===&#x27;bareum&#x27;&amp;&amp;quoteCompany===&#x27;bareum&#x27;);bareumBtn.classList.toggle(&#x27;ghost&#x27;,!(mode===&#x27;bareum&#x27;&amp;&amp;quoteCompany===&#x27;bareum&#x27;));}
   if(ongyeolBtn){ongyeolBtn.classList.toggle(&#x27;active&#x27;,mode===&#x27;bareum&#x27;&amp;&amp;quoteCompany===&#x27;ongyeol&#x27;);ongyeolBtn.classList.toggle(&#x27;ghost&#x27;,!(mode===&#x27;bareum&#x27;&amp;&amp;quoteCompany===&#x27;ongyeol&#x27;));}
+  [&#x27;jiho&#x27;,&#x27;hwarang&#x27;].forEach(c=&gt;{
+    const btn=document.getElementById(c===&#x27;jiho&#x27;?&#x27;companyJihoBtn&#x27;:&#x27;companyHwarangBtn&#x27;);
+    if(btn){const active=mode===&#x27;bareum&#x27;&amp;&amp;quoteCompany===c;btn.classList.toggle(&#x27;active&#x27;,active);btn.classList.toggle(&#x27;ghost&#x27;,!active);}
+  });
   quoteApplySharedRemarks();
 }
 
@@ -5100,7 +5530,7 @@ function recalc(root){
     const d=data.hagam;
     const pure=Number(d.pureFee||0)+(hideSpecial?Number(d.specialFee||0):0);
     let sum=pure+Number(d.travel||0)+(hideSpecial?0:Number(d.specialFee||0))+Number(d.inspection||0)+Number(d.docFee||0)+Number(d.etc||0);
-    const vat=Math.round(sum*.1), grand=sum+vat;
+    const vat=quoteExcludeVat?0:Math.round(sum*.1), grand=sum+vat;
     const total=root.querySelector(&#x27;.calc-total&#x27;); if(total) total.textContent=fmt(sum);
     const vatEl=root.querySelector(&#x27;.calc-vat&#x27;); if(vatEl) vatEl.textContent=fmt(vat);
     const grandEl=root.querySelector(&#x27;.calc-grand&#x27;); if(grandEl) grandEl.textContent=fmt(grand);
@@ -5108,7 +5538,7 @@ function recalc(root){
     const d=data.bareum;
     const pure=Number(d.pureFee||0)+(hideSpecial?Number(d.specialFee||0):0);
     let sum=pure+Number(d.travel||0)+(hideSpecial?0:Number(d.specialFee||0))+Number(d.inspection||0)+Number(d.docFee||0)+Number(d.etc||0);
-    const grand=Math.round(sum*1.1);
+    const grand=quoteExcludeVat?sum:Math.round(sum*1.1);
     const grandEl=root.querySelector(&#x27;.calc-grand&#x27;); if(grandEl) grandEl.textContent=fmt(grand);
   }
 }
@@ -5174,11 +5604,11 @@ function getHagamSvg(){
     [String(rows.length+3),&#x27;기타실비&#x27;,d.etc,&#x27;-&#x27;]
   );
   const sum=rows.reduce((a,r)=&gt;a+Number(r[2]||0),0);
-  const vat=Math.round(sum*.1);
+  const vat=quoteExcludeVat?0:Math.round(sum*.1);
   const grand=sum+vat;
   rows.push([`합계(1~${rows.length})`,&#x27;총수수료&#x27;,sum,&#x27;-&#x27;]);
   rows.push([&#x27;&#x27;,&#x27;부가가치세&#x27;,vat,&#x27;총수수료*10%&#x27;]);
-  rows.push([&#x27;&#x27;,&#x27;총계&#x27;,grand,&#x27;-&#x27;]);
+  rows.push([&#x27;&#x27;,&#x27;총계&#x27;,grand,quoteExcludeVat?&#x27;부가세 미포함 금액&#x27;:&#x27;-&#x27;]);
 
   const colW=[120,178,178,210];
   const rowH=[34,...rows.map((r,i)=&gt;i===0?74:34)];
@@ -5399,13 +5829,32 @@ function getBareumLayoutSvg(){
     s+=drawTextElement(paper.querySelector(&#x27;.address&#x27;));
     s+=drawTextElement(paper.querySelector(&#x27;.tel&#x27;));
   } else {
+  // 지호 전용 상단선·제목 띠는 화면과 JPG 모두 동일하게 렌더링
+  if(quoteCompany===&#x27;jiho&#x27;){
+    const jihoTop=paper.querySelector(&#x27;.externalTop&#x27;);
+    if(jihoTop){const r=rectOf(jihoTop);s+=`&lt;line x1=&quot;${r.x.toFixed(2)}&quot; y1=&quot;${(r.y+r.h).toFixed(2)}&quot; x2=&quot;${(r.x+r.w).toFixed(2)}&quot; y2=&quot;${(r.y+r.h).toFixed(2)}&quot; stroke=&quot;#64748b&quot; stroke-width=&quot;1.5&quot;/&gt;`;}
+    const jihoTitle=paper.querySelector(&#x27;.docTitle&#x27;);
+    if(jihoTitle){const r=rectOf(jihoTitle);s+=`&lt;rect x=&quot;${r.x.toFixed(2)}&quot; y=&quot;${r.y.toFixed(2)}&quot; width=&quot;${r.w.toFixed(2)}&quot; height=&quot;${r.h.toFixed(2)}&quot; fill=&quot;#ebeff3&quot;/&gt;`;}
+  }
+  // 화랑 상단 박스·양쪽 선과 제목 밑줄을 JPG에서도 재현
+  if(quoteCompany===&#x27;hwarang&#x27;){
+    const top=paper.querySelector(&#x27;.externalTop&#x27;);
+    if(top){
+      const r=rectOf(top);
+      s+=`&lt;rect x=&quot;${r.x.toFixed(2)}&quot; y=&quot;${r.y.toFixed(2)}&quot; width=&quot;${r.w.toFixed(2)}&quot; height=&quot;${r.h.toFixed(2)}&quot; fill=&quot;#f6f4ef&quot;/&gt;`;
+      s+=`&lt;line x1=&quot;${r.x}&quot; y1=&quot;${r.y}&quot; x2=&quot;${r.x+r.w}&quot; y2=&quot;${r.y}&quot; stroke=&quot;#777469&quot; stroke-width=&quot;3&quot;/&gt;`;
+      s+=`&lt;line x1=&quot;${r.x}&quot; y1=&quot;${r.y+r.h}&quot; x2=&quot;${r.x+r.w}&quot; y2=&quot;${r.y+r.h}&quot; stroke=&quot;#a6a294&quot; stroke-width=&quot;1&quot;/&gt;`;
+    }
+    const title=paper.querySelector(&#x27;.docTitle&#x27;);
+    if(title){const r=rectOf(title);s+=`&lt;line x1=&quot;${r.x}&quot; y1=&quot;${r.y+r.h}&quot; x2=&quot;${r.x+r.w}&quot; y2=&quot;${r.y+r.h}&quot; stroke=&quot;#9e9b91&quot; stroke-width=&quot;1&quot;/&gt;`;}
+  }
   // 상단 로고/업체명
   const logo=paper.querySelector(&#x27;.topLogo img&#x27;);
   if(logo){
     const r=rectOf(logo);
     s+=svgImg(logo.src,r.x,r.y,r.w,r.h);
   }
-  const topName=paper.querySelector(&#x27;.topLogo .bareumName, .topLogo .ongyeolName&#x27;);
+  const topName=paper.querySelector(&#x27;.topLogo .bareumName, .topLogo .ongyeolName, .topLogo .externalName&#x27;);
   if(topName) s+=drawTextElement(topName);
 
   // 본문
@@ -5437,6 +5886,7 @@ function getBareumLayoutSvg(){
   s+=drawTextElement(paper.querySelector(&#x27;.companyName&#x27;));
   s+=drawRule(paper.querySelector(&#x27;.dividerBottom&#x27;));
   s+=drawTextElement(paper.querySelector(&#x27;.address&#x27;));
+  s+=drawTextElement(paper.querySelector(&#x27;.repLine&#x27;));
   s+=drawTextElement(paper.querySelector(&#x27;.tel&#x27;));
 
   }
@@ -5458,8 +5908,8 @@ function getBareumSvg(){
   if(!hideSpecial) rows.push([&#x27;특별용역비&#x27;,d.specialFee,&#x27;-&#x27;]);
   rows.push([&#x27;물건조사비&#x27;,d.inspection,&#x27;-&#x27;],[&#x27;공부발급비&#x27;,d.docFee,&#x27;-&#x27;],[&#x27;기타실비&#x27;,d.etc,&#x27;-&#x27;]);
   const sum=rows.reduce((a,r)=&gt;a+Number(r[1]||0),0);
-  const grand=Math.round(sum*1.1);
-  rows.push([&#x27;총계&#x27;,grand,&#x27;부가세 10% 포함 금액&#x27;]);
+  const grand=quoteExcludeVat?sum:Math.round(sum*1.1);
+  rows.push([&#x27;총계&#x27;,grand,quoteExcludeVat?&#x27;부가세 미포함 금액&#x27;:&#x27;부가세 10% 포함 금액&#x27;]);
 
   const colW=quoteCompany===&#x27;ongyeol&#x27;?[145,185,356]:[150,190,346];
   const rowH=[32,...rows.map((r,i)=&gt;i===0?46:32)];
@@ -5572,7 +6022,7 @@ function saveImageStable(fmtType, ev){
         const outUrl=URL.createObjectURL(blob);
         const a=document.createElement(&#x27;a&#x27;);
         a.href=outUrl;
-        const quoteFileCompany = mode===&#x27;hagam&#x27; ? &#x27;하감&#x27; : (quoteCompany===&#x27;ongyeol&#x27;?&#x27;온결&#x27;:&#x27;바름&#x27;);
+        const quoteFileCompany = ({hagam:&#x27;하감&#x27;,bareum:&#x27;바름&#x27;,ongeol:&#x27;온결&#x27;,jiho:&#x27;지호&#x27;,hwarang:&#x27;화랑&#x27;})[quoteCompany] || &#x27;바름&#x27;;
         a.download=quoteFileCompany+&#x27;_견적서.&#x27;+(fmtType===&#x27;jpeg&#x27;?&#x27;jpg&#x27;:&#x27;png&#x27;);
         document.body.appendChild(a);
         a.click();
@@ -5687,6 +6137,8 @@ quoteApplyZoom();
   <button id="unifiedRequestHagamBtn" class="choiceBtn active" type="button" onclick="switchUnifiedRequestCompany('hagam')">하감</button>
   <button id="unifiedRequestBareumBtn" class="choiceBtn" type="button" onclick="switchUnifiedRequestCompany('bareum')">바름</button>
   <button id="unifiedRequestOngeolBtn" class="choiceBtn" type="button" onclick="switchUnifiedRequestCompany('ongeol')">온결</button>
+  <button id="unifiedRequestJihoBtn" class="choiceBtn" type="button" onclick="switchUnifiedRequestCompany('jiho')">지호</button>
+  <button id="unifiedRequestHwarangBtn" class="choiceBtn" type="button" onclick="switchUnifiedRequestCompany('hwarang')">화랑</button>
 </div>
 <div id="unifiedRequestHagamPane" class="quoteEmbedWrap" style="display:block;">
 <iframe id="unifiedRequestHagamFrame" class="quoteEmbedFrame hagamRequestFrame" srcdoc="&lt;!doctype html&gt;
@@ -6058,6 +6510,76 @@ body.company-ongeol .bottomTable td{border-color:#5b6b80;background:#fcfdff;}
 body.company-ongeol .bottomTable td:nth-child(1),
 body.company-ongeol .bottomTable td:nth-child(3){background:#f3f6fa;font-weight:700;}
 
+/* 신규 업체 전용 서식: 문서와 JPG 저장의 강조색 동일 */
+body.company-jiho{background:#eefbf9;}
+body.company-hwarang{background:#f6f1ff;}
+body.company-jiho .requestBox{border:2px solid #0f766e;}
+body.company-hwarang .requestBox{border:2px solid #7c3aed;}
+body.company-jiho .mainTable td{border-color:#0f766e;}
+body.company-hwarang .mainTable td{border-color:#7c3aed;}
+body.company-jiho .docTitle{background:#ecfdf5;color:#134e4a;letter-spacing:11px;}
+body.company-hwarang .docTitle{background:#f5f3ff;color:#4c1d95;letter-spacing:11px;}
+body.company-jiho .mainTable .label,body.company-jiho .subLabel{background:#f0fdfa;}
+body.company-hwarang .mainTable .label,body.company-hwarang .subLabel{background:#faf5ff;}
+body.company-jiho .company{border-top:2px solid #0f766e;background:#f0fdfa;}
+body.company-hwarang .company{border-top:2px solid #7c3aed;background:#faf5ff;}
+body.company-jiho .companyBank,body.company-hwarang .companyBank{gap:12px;font-size:12px;}
+body.company-jiho .companyName,body.company-hwarang .companyName{font-size:24px;}
+body.company-jiho .companyAddr,body.company-hwarang .companyAddr{font-size:13px;}
+body.company-jiho .bottomTable td{border-color:#0f766e;}
+body.company-hwarang .bottomTable td{border-color:#7c3aed;}
+.company [contenteditable=&quot;true&quot;]{display:inline-block;max-width:100%;white-space:pre-wrap;overflow-wrap:anywhere;}
+.company .companyName[contenteditable],.company .companyAddr[contenteditable],.company .companyRep[contenteditable]{display:block;}
+
+/* 2026-11: 지호 공공기관 스타일(화면과 JPG를 같은 차분한 남회색으로) */
+body.company-jiho { background:#f1f3f6 !important; color:#263445 !important; }
+body.company-jiho .paper,
+body.company-jiho .paper * {
+  font-family:&#x27;Malgun Gothic&#x27;,&#x27;맑은 고딕&#x27;,&#x27;Noto Sans KR&#x27;,&#x27;Apple SD Gothic Neo&#x27;,sans-serif !important;
+}
+body.company-jiho .requestBox { border:1.5px solid #64748b !important; }
+body.company-jiho .mainTable td,
+body.company-jiho .bottomTable td { border-color:#718096 !important; }
+body.company-jiho .docTitle { background:#e9eef3 !important; color:#111111 !important; letter-spacing:10px !important; }
+body.company-jiho .docTitleEdit { color:#111111 !important; }
+body.company-jiho .mainTable .label,
+body.company-jiho .subLabel { background:#eff3f6 !important; }
+body.company-jiho .company { background:#f6f8fa !important; border-top:1.5px solid #64748b !important; }
+body.company-jiho .bottomTable td:nth-child(1),
+body.company-jiho .bottomTable td:nth-child(3) { background:#eff3f6 !important; }
+body.company-jiho .companyName { color:#111111 !important; font-weight:800 !important; }
+body.company-hwarang .docTitle,
+body.company-hwarang .docTitleEdit,
+body.company-hwarang .companyName { color:#111111 !important; }
+
+/* 화랑 전용: 화이트·웜그레이·회갈색 공문서형, 지호와 다른 제목 구성 */
+body.company-hwarang { background:#efeee9 !important; color:#33332f !important; }
+body.company-hwarang header { background:rgba(250,249,246,.97) !important; border-bottom-color:#c5c2b8 !important; }
+body.company-hwarang .paper, body.company-hwarang .paper * {
+  font-family:&#x27;Malgun Gothic&#x27;,&#x27;맑은 고딕&#x27;,&#x27;Noto Sans KR&#x27;,&#x27;Apple SD Gothic Neo&#x27;,sans-serif !important;
+}
+body.company-hwarang .requestBox { border:1.5px solid #7e7b72 !important; }
+body.company-hwarang .mainTable td, body.company-hwarang .bottomTable td { border-color:#89857b !important; }
+body.company-hwarang .docTitle {
+  color:#111111 !important; background:#faf9f6 !important;
+  border-left:5px solid #777469 !important; font-size:31px !important;
+  letter-spacing:11px !important;
+}
+body.company-hwarang .docTitleEdit { color:#111111 !important; }
+body.company-hwarang .mainTable .label, body.company-hwarang .subLabel,
+body.company-hwarang .ownerLabel,body.company-hwarang .mortgageLabel { background:#f4f2ed !important; font-weight:700 !important; }
+body.company-hwarang .company {
+  background:#f7f5f0 !important; border-top:2px solid #777469 !important;
+  padding-top:19px !important;
+}
+body.company-hwarang .companyName {
+  color:#111111 !important; font-family:&#x27;Batang&#x27;,&#x27;바탕&#x27;,&#x27;Malgun Gothic&#x27;,serif !important;
+  font-size:23px !important; letter-spacing:.4px !important;
+}
+body.company-hwarang .bottomTable td:nth-child(1),
+body.company-hwarang .bottomTable td:nth-child(3){ background:#ebe9e2 !important; font-weight:700 !important; }
+body.company-hwarang .companyBank { gap:12px !important; font-size:12px !important; }
+body.company-hwarang .companyAddr { font-size:13px !important; }
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -6118,10 +6640,10 @@ body.company-ongeol .bottomTable td:nth-child(3){background:#f3f6fa;font-weight:
         &lt;/div&gt;
       &lt;/div&gt;
       &lt;div class=&quot;company&quot;&gt;
-        &lt;div id=&quot;companyNameText&quot; class=&quot;companyName&quot;&gt;(주)바름감정평가법인&lt;/div&gt;
-        &lt;div id=&quot;companyAddrText&quot; class=&quot;companyAddr&quot;&gt;서울특별시 강남구 삼성로 104길 11, 4층&lt;/div&gt;
-        &lt;div class=&quot;companyBank&quot;&gt;&lt;span id=&quot;companyBankText&quot;&gt;국민은행&lt;/span&gt;&lt;span id=&quot;companyAccountText&quot;&gt;529401-01-292371&lt;/span&gt;&lt;span id=&quot;companyHolderText&quot;&gt;(주)바름감정평가법인&lt;/span&gt;&lt;/div&gt;
-        &lt;div id=&quot;companyRepText&quot; class=&quot;companyRep&quot;&gt;대표 권다은&lt;/div&gt;
+        &lt;div id=&quot;companyNameText&quot; class=&quot;companyName&quot; contenteditable=&quot;true&quot;&gt;(주)바름감정평가법인&lt;/div&gt;
+        &lt;div id=&quot;companyAddrText&quot; class=&quot;companyAddr&quot; contenteditable=&quot;true&quot;&gt;서울특별시 강남구 삼성로 104길 11, 4층&lt;/div&gt;
+        &lt;div class=&quot;companyBank&quot;&gt;&lt;span id=&quot;companyBankText&quot; contenteditable=&quot;true&quot;&gt;국민은행&lt;/span&gt;&lt;span id=&quot;companyAccountText&quot; contenteditable=&quot;true&quot;&gt;529401-01-292371&lt;/span&gt;&lt;span id=&quot;companyHolderText&quot; contenteditable=&quot;true&quot;&gt;(주)바름감정평가법인&lt;/span&gt;&lt;/div&gt;
+        &lt;div id=&quot;companyRepText&quot; class=&quot;companyRep&quot; contenteditable=&quot;true&quot;&gt;대표 권다은&lt;/div&gt;
       &lt;/div&gt;
       &lt;table class=&quot;bottomTable&quot;&gt;&lt;colgroup&gt;&lt;col style=&quot;width:15.5%&quot;&gt;&lt;col style=&quot;width:34.5%&quot;&gt;&lt;col style=&quot;width:15.5%&quot;&gt;&lt;col&gt;&lt;/colgroup&gt;&lt;tr&gt;&lt;td&gt;접수번호&lt;/td&gt;&lt;td&gt;&lt;div id=&quot;receiptNo&quot; class=&quot;editBox center&quot; contenteditable=&quot;true&quot;&gt;&lt;/div&gt;&lt;/td&gt;&lt;td&gt;착수금&lt;/td&gt;&lt;td class=&quot;depositCell&quot;&gt;&lt;span id=&quot;depositAmount&quot; class=&quot;depositEdit&quot; contenteditable=&quot;true&quot;&gt;50만원&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
     &lt;/div&gt;
@@ -6132,11 +6654,26 @@ function $(id){return document.getElementById(id);}
 function txt(id){const el=$(id);return el?(el.textContent||&#x27;&#x27;).trim():&#x27;&#x27;;}
 const COMPANY_INFO={
   bareum:{name:&#x27;(주)바름감정평가법인&#x27;,address:&#x27;서울특별시 강남구 삼성로 104길 11, 4층&#x27;,bank:&#x27;국민은행&#x27;,account:&#x27;529401-01-292371&#x27;,holder:&#x27;(주)바름감정평가법인&#x27;,rep:&#x27;대표 권다은&#x27;,repCanvas:&#x27;대 표 권 다 은&#x27;,fileName:&#x27;바름_의뢰서.jpg&#x27;},
-  ongeol:{name:&#x27;(주)온결감정평가법인&#x27;,address:&#x27;서울특별시 강남구 삼성로108길 18, 711호(삼성동, 시대제1빌딩)&#x27;,bank:&#x27;국민은행&#x27;,account:&#x27;015437-04-023593&#x27;,holder:&#x27;(주)온결감정평가법인&#x27;,rep:&#x27;대표 이선우&#x27;,repCanvas:&#x27;대 표 이 선 우&#x27;,fileName:&#x27;온결_의뢰서.jpg&#x27;}
+  ongeol:{name:&#x27;(주)온결감정평가법인&#x27;,address:&#x27;서울특별시 강남구 삼성로108길 18, 711호(삼성동, 시대제1빌딩)&#x27;,bank:&#x27;국민은행&#x27;,account:&#x27;015437-04-023593&#x27;,holder:&#x27;(주)온결감정평가법인&#x27;,rep:&#x27;대표 이선우&#x27;,repCanvas:&#x27;대 표 이 선 우&#x27;,fileName:&#x27;온결_의뢰서.jpg&#x27;},
+  jiho:{name:&#x27;지호감정평가사사무소&#x27;,address:&#x27;경기도 고양시 덕양구 고양대로 1780, 503호&#x27;,bank:&#x27;국민은행&#x27;,account:&#x27;856901-00-165756&#x27;,holder:&#x27;지호 감정평가사 사무소&#x27;,rep:&#x27;대표 왕종혁&#x27;,repCanvas:&#x27;대표 왕종혁&#x27;,fileName:&#x27;지호_의뢰서.jpg&#x27;},
+  hwarang:{name:&#x27;감정평가사사무소 화랑&#x27;,address:&#x27;10545 경기도 고양시 덕양구 향동1로 20, 206-1102&#x27;,bank:&#x27;신한은행&#x27;,account:&#x27;110-625-600975&#x27;,holder:&#x27;감정평가 화랑 (최승혁)&#x27;,rep:&#x27;대표 최승혁&#x27;,repCanvas:&#x27;대표 최승혁&#x27;,fileName:&#x27;화랑_의뢰서.jpg&#x27;}
 };
 let currentCompany=&#x27;bareum&#x27;;
-function applyCompanyInfo(){const info=COMPANY_INFO[currentCompany]||COMPANY_INFO.bareum;$(&#x27;companyNameText&#x27;).textContent=info.name;$(&#x27;companyAddrText&#x27;).textContent=info.address;$(&#x27;companyBankText&#x27;).textContent=info.bank;$(&#x27;companyAccountText&#x27;).textContent=info.account;$(&#x27;companyHolderText&#x27;).textContent=info.holder;$(&#x27;companyRepText&#x27;).textContent=info.rep;const title=$(&#x27;companyRequestTitle&#x27;);if(title)title.textContent=currentCompany===&#x27;ongeol&#x27;?&#x27;온결 의뢰서&#x27;:&#x27;바름 의뢰서&#x27;;document.body.classList.toggle(&#x27;company-bareum&#x27;,currentCompany===&#x27;bareum&#x27;);document.body.classList.toggle(&#x27;company-ongeol&#x27;,currentCompany===&#x27;ongeol&#x27;);const b=$(&#x27;companyBareumBtn&#x27;),o=$(&#x27;companyOngeolBtn&#x27;);if(b)b.classList.toggle(&#x27;active&#x27;,currentCompany===&#x27;bareum&#x27;);if(o)o.classList.toggle(&#x27;active&#x27;,currentCompany===&#x27;ongeol&#x27;);}
-function switchCompany(type){if(!COMPANY_INFO[type])return;currentCompany=type;applyCompanyInfo();}
+const companyIdKeys={name:&#x27;companyNameText&#x27;,address:&#x27;companyAddrText&#x27;,bank:&#x27;companyBankText&#x27;,account:&#x27;companyAccountText&#x27;,holder:&#x27;companyHolderText&#x27;,rep:&#x27;companyRepText&#x27;};
+const companyNames={bareum:&#x27;바름&#x27;,ongeol:&#x27;온결&#x27;,jiho:&#x27;지호&#x27;,hwarang:&#x27;화랑&#x27;};
+function rememberCompanyInfo(){
+  const info=COMPANY_INFO[currentCompany];if(!info)return;
+  Object.entries(companyIdKeys).forEach(([key,id])=&gt;{info[key]=txt(id);});
+}
+function applyCompanyInfo(){
+  const info=COMPANY_INFO[currentCompany]||COMPANY_INFO.bareum;
+  Object.entries(companyIdKeys).forEach(([key,id])=&gt;{$(id).textContent=info[key]||&#x27;&#x27;;});
+  const title=$(&#x27;companyRequestTitle&#x27;);if(title)title.textContent=(companyNames[currentCompany]||&#x27;바름&#x27;)+&#x27; 의뢰서&#x27;;
+  [&#x27;bareum&#x27;,&#x27;ongeol&#x27;,&#x27;jiho&#x27;,&#x27;hwarang&#x27;].forEach(c=&gt;document.body.classList.toggle(&#x27;company-&#x27;+c,currentCompany===c));
+  const b=$(&#x27;companyBareumBtn&#x27;),o=$(&#x27;companyOngeolBtn&#x27;);
+  if(b)b.classList.toggle(&#x27;active&#x27;,currentCompany===&#x27;bareum&#x27;);if(o)o.classList.toggle(&#x27;active&#x27;,currentCompany===&#x27;ongeol&#x27;);
+}
+function switchCompany(type){if(!COMPANY_INFO[type])return;if(currentCompany!==type)rememberCompanyInfo();currentCompany=type;applyCompanyInfo();}
 function applyKoreanInputHints(root){(root||document).querySelectorAll(&#x27;input,textarea,[contenteditable=&quot;true&quot;]&#x27;).forEach(el=&gt;{el.setAttribute(&#x27;lang&#x27;,&#x27;ko&#x27;);el.setAttribute(&#x27;inputmode&#x27;,&#x27;text&#x27;);el.setAttribute(&#x27;autocomplete&#x27;,&#x27;off&#x27;);el.setAttribute(&#x27;autocapitalize&#x27;,&#x27;off&#x27;);el.setAttribute(&#x27;spellcheck&#x27;,&#x27;false&#x27;);el.style.imeMode=&#x27;active&#x27;;});}
 function setToday(){const d=new Date();$(&#x27;year&#x27;).textContent=d.getFullYear();$(&#x27;month&#x27;).textContent=String(d.getMonth()+1).padStart(2,&#x27;0&#x27;);$(&#x27;day&#x27;).textContent=String(d.getDate()).padStart(2,&#x27;0&#x27;);}
 function resetDefaults(){document.querySelectorAll(&#x27;[contenteditable=&quot;true&quot;]&#x27;).forEach(el=&gt;el.textContent=&#x27;&#x27;);document.querySelectorAll(&#x27;input[type=&quot;checkbox&quot;]&#x27;).forEach(el=&gt;el.checked=false);$(&#x27;docTitle&#x27;).textContent=&#x27;감 정 평 가 의 뢰 서&#x27;;$(&#x27;submitPlace&#x27;).textContent=&#x27;국세청 및 세무서&#x27;;$(&#x27;depositAmount&#x27;).textContent=&#x27;50만원&#x27;;setToday();applyCompanyInfo();applyKoreanInputHints(document);}
@@ -6155,10 +6692,10 @@ function drawPurpose(ctx,x,y,w,h){ctx.font=&#x27;11.8px Malgun Gothic&#x27;;ctx.
 function drawPair(ctx,a,b,x,y,w){ctx.fillText(a,x,y);ctx.fillText(b,x+w-ctx.measureText(b).width,y);}
 function drawFour(ctx,x,y,w){const chars=[&#x27;전&#x27;,&#x27;화&#x27;,&#x27;번&#x27;,&#x27;호&#x27;];for(let i=0;i&lt;chars.length;i++){ctx.fillText(chars[i],x+(w-ctx.measureText(chars[i]).width)*i/3,y);}}
 function drawOrgLabel(ctx,x,y,w){const left=&#x27;기&#x27;;const mid=&#x27;관또는상&#x27;;const right=&#x27;호&#x27;;ctx.fillText(left,x,y);ctx.fillText(mid,x+(w-ctx.measureText(mid).width)/2,y);ctx.fillText(right,x+w-ctx.measureText(right).width,y);}
-function drawCanvas(canvas,scale){scale=scale||2.5;const W=794,H=1123;canvas.width=W*scale;canvas.height=H*scale;const ctx=canvas.getContext(&#x27;2d&#x27;);ctx.scale(scale,scale);const isOngeol=currentCompany===&#x27;ongeol&#x27;;const fontFamily=isOngeol?&quot;Batang, Georgia, serif&quot;:&quot;Malgun Gothic&quot;;const colors=isOngeol?{line:&#x27;#5b6b80&#x27;,text:&#x27;#213043&#x27;,labelBg:&#x27;#f5f8fc&#x27;,titleBg:&#x27;#eef3f8&#x27;,companyBg:&#x27;#f8fbff&#x27;,bottomLabelBg:&#x27;#f1f5f9&#x27;}:{line:&#x27;#000&#x27;,text:&#x27;#000&#x27;,labelBg:null,titleBg:null,companyBg:null,bottomLabelBg:null};ctx.fillStyle=&#x27;#fff&#x27;;ctx.fillRect(0,0,W,H);ctx.fillStyle=colors.text;ctx.strokeStyle=colors.line;ctx.lineWidth=isOngeol?1.2:1;const X=60,Y=64,BW=674,BH=1000,C1=150,C2=90,LW=C1+C2;let y=Y;const rows=[92,48,48,48,48,82,48,48,48,48,48];let ys=[Y];rows.forEach(h=&gt;{y+=h;ys.push(y);});const by=Y+BH-46;if(isOngeol){ctx.fillStyle=colors.titleBg;ctx.fillRect(X+1,Y+1,BW-2,rows[0]-2);ctx.fillStyle=colors.labelBg;ctx.fillRect(X+1,ys[1]+1,LW-2,rows[1]-2);ctx.fillRect(X+1,ys[2]+1,LW-2,rows[2]-2);ctx.fillRect(X+1,ys[3]+1,C1-2,rows[3]+rows[4]-2);ctx.fillRect(X+C1+1,ys[3]+1,C2-2,rows[3]-2);ctx.fillRect(X+C1+1,ys[4]+1,C2-2,rows[4]-2);ctx.fillRect(X+1,ys[5]+1,LW-2,rows[5]-2);ctx.fillRect(X+1,ys[6]+1,LW-2,rows[6]-2);ctx.fillRect(X+1,ys[7]+1,C1-2,rows[7]+rows[8]-2);ctx.fillRect(X+C1+1,ys[7]+1,C2-2,rows[7]-2);ctx.fillRect(X+C1+1,ys[8]+1,C2-2,rows[8]-2);ctx.fillRect(X+1,ys[9]+1,LW-2,rows[9]-2);ctx.fillRect(X+1,ys[10]+1,LW-2,rows[10]-2);ctx.fillStyle=colors.companyBg;ctx.fillRect(X+1,ys[11]+196+1,BW-2,by-(ys[11]+196)-2);ctx.fillRect(X+1,by+1,104-2,46-2);ctx.fillRect(X+337+1,by+1,104-2,46-2);ctx.fillStyle=colors.text;}ctx.strokeRect(X,Y,BW,BH);ctx.beginPath();for(let i=1;i&lt;ys.length;i++){if(i===4||i===8){ctx.moveTo(X+C1,ys[i]);ctx.lineTo(X+BW,ys[i]);}else{ctx.moveTo(X,ys[i]);ctx.lineTo(X+BW,ys[i]);}}ctx.moveTo(X+LW,ys[1]);ctx.lineTo(X+LW,ys[11]);ctx.moveTo(X+C1,ys[3]);ctx.lineTo(X+C1,ys[5]);ctx.moveTo(X+C1,ys[7]);ctx.lineTo(X+C1,ys[9]);ctx.stroke();ctx.font=(isOngeol?&#x27;700 31px &#x27;+fontFamily:&#x27;900 33px &#x27;+fontFamily);ctx.textAlign=&#x27;center&#x27;;ctx.textBaseline=&#x27;middle&#x27;;ctx.fillText(txt(&#x27;docTitle&#x27;)||&#x27;감 정 평 가 의 뢰 서&#x27;,X+BW/2,Y+rows[0]/2);ctx.textAlign=&#x27;left&#x27;;ctx.textBaseline=&#x27;alphabetic&#x27;;ctx.font=(isOngeol?&#x27;700 14px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily);drawCenteredLines(ctx,&#x27;감정평가 의뢰 물건(권리)&#x27;,X+12,ys[1],LW-24,rows[1],17);drawCenteredLines(ctx,&#x27;감정평가 의뢰 물건 소재지&#x27;,X+12,ys[2],LW-24,rows[2],17);drawCenteredLines(ctx,&#x27;소유자 (권리자)&#x27;,X+12,ys[3],C1-24,rows[3]+rows[4],17);centerText(ctx,&#x27;주    소&#x27;,X+C1,ys[3],C2,rows[3],&#x27;14px &#x27;+fontFamily);centerText(ctx,&#x27;성    명&#x27;,X+C1,ys[4],C2,rows[4],&#x27;14px &#x27;+fontFamily);drawCenteredLines(ctx,&#x27;감정평가서의 사용목적&#x27;,X+12,ys[5],LW-24,rows[5],17);drawCenteredLines(ctx,&#x27;기준시점&#x27;,X+12,ys[6],LW-24,rows[6],17);drawCenteredLines(ctx,&#x27;금융기관 등의 담보\n감정평가인 경우&#x27;,X+12,ys[7],C1-24,rows[7]+rows[8],20);centerText(ctx,&#x27;채무자명&#x27;,X+C1,ys[7],C2,rows[7],&#x27;14px &#x27;+fontFamily);centerText(ctx,&#x27;전화번호&#x27;,X+C1,ys[8],C2,rows[8],&#x27;14px &#x27;+fontFamily);drawCenteredLines(ctx,&#x27;감정평가서의 제출처&#x27;,X+12,ys[9],LW-24,rows[9],17);drawCenteredLines(ctx,&#x27;기타참고사항&#x27;,X+12,ys[10],LW-24,rows[10],17);ctx.font=(isOngeol?&#x27;13px &#x27;+fontFamily:&#x27;13px &#x27;+fontFamily);drawCenteredLines(ctx,txt(&#x27;targetRight&#x27;),X+LW+10,ys[1],BW-LW-20,rows[1],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;objectRight&#x27;),X+LW+10,ys[2],BW-LW-20,rows[2],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;ownerAddr&#x27;),X+LW+10,ys[3],BW-LW-20,rows[3],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;ownerName&#x27;),X+LW+10,ys[4],BW-LW-20,rows[4],16,&#x27;left&#x27;,3);drawPurpose(ctx,X+LW+8,ys[5]+7,BW-LW-16,rows[5]-14);drawCenteredLines(ctx,txt(&#x27;baseDate&#x27;),X+LW+10,ys[6],BW-LW-20,rows[6],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;debtorName&#x27;),X+LW+10,ys[7],BW-LW-20,rows[7],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;debtorPhone&#x27;),X+LW+10,ys[8],BW-LW-20,rows[8],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;submitPlace&#x27;),X+LW+10,ys[9],BW-LW-20,rows[9],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;notes&#x27;),X+LW+10,ys[10],BW-LW-20,rows[10],16,&#x27;left&#x27;,3);let ay=ys[11];ctx.beginPath();ctx.moveTo(X,ay+196);ctx.lineTo(X+BW,ay+196);ctx.stroke();ctx.font=(isOngeol?&#x27;700 16px &#x27;+fontFamily:&#x27;700 17px &#x27;+fontFamily);ctx.textAlign=&#x27;center&#x27;;ctx.fillText(&#x27;위 물건에 대하여 이면기재의 약정사항에 동의하고 감정평가를 의뢰합니다.&#x27;,X+BW/2,ay+38);ctx.font=&#x27;14px &#x27;+fontFamily;ctx.fillText(`${txt(&#x27;year&#x27;)} 년    ${txt(&#x27;month&#x27;)} 월    ${txt(&#x27;day&#x27;)} 일`,X+BW/2,ay+72);ctx.textAlign=&#x27;left&#x27;;ctx.font=(isOngeol?&#x27;13.5px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily);ctx.fillText(&#x27;위 의뢰인&#x27;,X+146,ay+104);drawPair(ctx,&#x27;주&#x27;,&#x27;소&#x27;,X+238,ay+104,88);ctx.fillText(txt(&#x27;clientAddr&#x27;),X+358,ay+104);drawOrgLabel(ctx,X+238,ay+130,88);ctx.fillText(txt(&#x27;clientOrg&#x27;),X+358,ay+130);drawPair(ctx,&#x27;성&#x27;,&#x27;명&#x27;,X+238,ay+156,88);ctx.fillText(txt(&#x27;clientName&#x27;),X+358,ay+156);ctx.fillText(&#x27;(인)&#x27;,X+595,ay+156);drawFour(ctx,X+238,ay+182,88);ctx.fillText(txt(&#x27;clientPhone&#x27;),X+358,ay+182);let cy=ay+196;const bottomH=46;const company=COMPANY_INFO[currentCompany]||COMPANY_INFO.bareum;ctx.beginPath();ctx.moveTo(X,by);ctx.lineTo(X+BW,by);ctx.stroke();ctx.textAlign=&#x27;center&#x27;;ctx.font=(isOngeol?&#x27;700 24px &#x27;+fontFamily:&#x27;900 26px &#x27;+fontFamily);ctx.fillText(company.name,X+BW/2,cy+36);ctx.font=(isOngeol?&#x27;13px &#x27;+fontFamily:(currentCompany===&#x27;ongeol&#x27;?&#x27;13px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily));ctx.fillText(company.address,X+BW/2,cy+64);ctx.font=(isOngeol?&#x27;13.5px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily);ctx.fillText(company.bank+&#x27;      &#x27;+company.account+&#x27;      &#x27;+company.holder,X+BW/2,cy+88);ctx.fillText(company.repCanvas,X+BW/2,cy+106);ctx.beginPath();ctx.moveTo(X+104,by);ctx.lineTo(X+104,Y+BH);ctx.moveTo(X+337,by);ctx.lineTo(X+337,Y+BH);ctx.moveTo(X+441,by);ctx.lineTo(X+441,Y+BH);ctx.stroke();ctx.font=(isOngeol?&#x27;13.5px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily);ctx.textBaseline=&#x27;middle&#x27;;ctx.textAlign=&#x27;center&#x27;;ctx.fillText(&#x27;접수번호&#x27;,X+52,by+bottomH/2);ctx.fillText(txt(&#x27;receiptNo&#x27;),X+220,by+bottomH/2);ctx.fillText(&#x27;착수금&#x27;,X+389,by+bottomH/2);ctx.textAlign=&#x27;left&#x27;;ctx.fillText(txt(&#x27;depositAmount&#x27;),X+455,by+bottomH/2);ctx.textBaseline=&#x27;alphabetic&#x27;;}
+function drawCanvas(canvas,scale){scale=scale||2.5;const W=794,H=1123;canvas.width=W*scale;canvas.height=H*scale;const ctx=canvas.getContext(&#x27;2d&#x27;);ctx.scale(scale,scale);const isOngeol=currentCompany===&#x27;ongeol&#x27;;const isJiho=currentCompany===&#x27;jiho&#x27;,isHwarang=currentCompany===&#x27;hwarang&#x27;;const styled=isOngeol||isJiho||isHwarang;const fontFamily=isOngeol?&quot;Batang, Georgia, serif&quot;:isJiho?&#x27;&quot;Malgun Gothic&quot;, &quot;맑은 고딕&quot;, &quot;Noto Sans KR&quot;, sans-serif&#x27;:&quot;Malgun Gothic&quot;;const colors=isOngeol?{line:&#x27;#5b6b80&#x27;,text:&#x27;#213043&#x27;,labelBg:&#x27;#f5f8fc&#x27;,titleBg:&#x27;#eef3f8&#x27;,companyBg:&#x27;#f8fbff&#x27;,bottomLabelBg:&#x27;#f1f5f9&#x27;}:isJiho?{line:&#x27;#718096&#x27;,text:&#x27;#263445&#x27;,labelBg:&#x27;#eff3f6&#x27;,titleBg:&#x27;#e9eef3&#x27;,companyBg:&#x27;#f6f8fa&#x27;,bottomLabelBg:&#x27;#eff3f6&#x27;}:isHwarang?{line:&#x27;#89857b&#x27;,text:&#x27;#33332f&#x27;,labelBg:&#x27;#f4f2ed&#x27;,titleBg:&#x27;#faf9f6&#x27;,companyBg:&#x27;#f7f5f0&#x27;,bottomLabelBg:&#x27;#ebe9e2&#x27;}:{line:&#x27;#000&#x27;,text:&#x27;#000&#x27;,labelBg:null,titleBg:null,companyBg:null,bottomLabelBg:null};ctx.fillStyle=&#x27;#fff&#x27;;ctx.fillRect(0,0,W,H);ctx.fillStyle=colors.text;ctx.strokeStyle=colors.line;ctx.lineWidth=isOngeol?1.2:1;const X=60,Y=64,BW=674,BH=1000,C1=150,C2=90,LW=C1+C2;let y=Y;const rows=[92,48,48,48,48,82,48,48,48,48,48];let ys=[Y];rows.forEach(h=&gt;{y+=h;ys.push(y);});const by=Y+BH-46;if(styled){ctx.fillStyle=colors.titleBg;ctx.fillRect(X+1,Y+1,BW-2,rows[0]-2);ctx.fillStyle=colors.labelBg;ctx.fillRect(X+1,ys[1]+1,LW-2,rows[1]-2);ctx.fillRect(X+1,ys[2]+1,LW-2,rows[2]-2);ctx.fillRect(X+1,ys[3]+1,C1-2,rows[3]+rows[4]-2);ctx.fillRect(X+C1+1,ys[3]+1,C2-2,rows[3]-2);ctx.fillRect(X+C1+1,ys[4]+1,C2-2,rows[4]-2);ctx.fillRect(X+1,ys[5]+1,LW-2,rows[5]-2);ctx.fillRect(X+1,ys[6]+1,LW-2,rows[6]-2);ctx.fillRect(X+1,ys[7]+1,C1-2,rows[7]+rows[8]-2);ctx.fillRect(X+C1+1,ys[7]+1,C2-2,rows[7]-2);ctx.fillRect(X+C1+1,ys[8]+1,C2-2,rows[8]-2);ctx.fillRect(X+1,ys[9]+1,LW-2,rows[9]-2);ctx.fillRect(X+1,ys[10]+1,LW-2,rows[10]-2);ctx.fillStyle=colors.companyBg;ctx.fillRect(X+1,ys[11]+196+1,BW-2,by-(ys[11]+196)-2);ctx.fillRect(X+1,by+1,104-2,46-2);ctx.fillRect(X+337+1,by+1,104-2,46-2);ctx.fillStyle=colors.text;}if(isHwarang){ctx.fillStyle=&#x27;#777469&#x27;;ctx.fillRect(X+1,Y+1,5,rows[0]-2);ctx.fillStyle=colors.text;}ctx.strokeRect(X,Y,BW,BH);ctx.beginPath();for(let i=1;i&lt;ys.length;i++){if(i===4||i===8){ctx.moveTo(X+C1,ys[i]);ctx.lineTo(X+BW,ys[i]);}else{ctx.moveTo(X,ys[i]);ctx.lineTo(X+BW,ys[i]);}}ctx.moveTo(X+LW,ys[1]);ctx.lineTo(X+LW,ys[11]);ctx.moveTo(X+C1,ys[3]);ctx.lineTo(X+C1,ys[5]);ctx.moveTo(X+C1,ys[7]);ctx.lineTo(X+C1,ys[9]);ctx.stroke();ctx.font=(isOngeol?&#x27;700 31px &#x27;+fontFamily:&#x27;900 33px &#x27;+fontFamily);ctx.textAlign=&#x27;center&#x27;;ctx.textBaseline=&#x27;middle&#x27;;ctx.fillStyle=(isJiho||isHwarang)?&#x27;#111111&#x27;:colors.text;ctx.fillText(txt(&#x27;docTitle&#x27;)||&#x27;감 정 평 가 의 뢰 서&#x27;,X+BW/2,Y+rows[0]/2);ctx.fillStyle=colors.text;ctx.textAlign=&#x27;left&#x27;;ctx.textBaseline=&#x27;alphabetic&#x27;;ctx.font=(isOngeol?&#x27;700 14px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily);drawCenteredLines(ctx,&#x27;감정평가 의뢰 물건(권리)&#x27;,X+12,ys[1],LW-24,rows[1],17);drawCenteredLines(ctx,&#x27;감정평가 의뢰 물건 소재지&#x27;,X+12,ys[2],LW-24,rows[2],17);drawCenteredLines(ctx,&#x27;소유자 (권리자)&#x27;,X+12,ys[3],C1-24,rows[3]+rows[4],17);centerText(ctx,&#x27;주    소&#x27;,X+C1,ys[3],C2,rows[3],&#x27;14px &#x27;+fontFamily);centerText(ctx,&#x27;성    명&#x27;,X+C1,ys[4],C2,rows[4],&#x27;14px &#x27;+fontFamily);drawCenteredLines(ctx,&#x27;감정평가서의 사용목적&#x27;,X+12,ys[5],LW-24,rows[5],17);drawCenteredLines(ctx,&#x27;기준시점&#x27;,X+12,ys[6],LW-24,rows[6],17);drawCenteredLines(ctx,&#x27;금융기관 등의 담보\n감정평가인 경우&#x27;,X+12,ys[7],C1-24,rows[7]+rows[8],20);centerText(ctx,&#x27;채무자명&#x27;,X+C1,ys[7],C2,rows[7],&#x27;14px &#x27;+fontFamily);centerText(ctx,&#x27;전화번호&#x27;,X+C1,ys[8],C2,rows[8],&#x27;14px &#x27;+fontFamily);drawCenteredLines(ctx,&#x27;감정평가서의 제출처&#x27;,X+12,ys[9],LW-24,rows[9],17);drawCenteredLines(ctx,&#x27;기타참고사항&#x27;,X+12,ys[10],LW-24,rows[10],17);ctx.font=(isOngeol?&#x27;13px &#x27;+fontFamily:&#x27;13px &#x27;+fontFamily);drawCenteredLines(ctx,txt(&#x27;targetRight&#x27;),X+LW+10,ys[1],BW-LW-20,rows[1],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;objectRight&#x27;),X+LW+10,ys[2],BW-LW-20,rows[2],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;ownerAddr&#x27;),X+LW+10,ys[3],BW-LW-20,rows[3],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;ownerName&#x27;),X+LW+10,ys[4],BW-LW-20,rows[4],16,&#x27;left&#x27;,3);drawPurpose(ctx,X+LW+8,ys[5]+7,BW-LW-16,rows[5]-14);drawCenteredLines(ctx,txt(&#x27;baseDate&#x27;),X+LW+10,ys[6],BW-LW-20,rows[6],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;debtorName&#x27;),X+LW+10,ys[7],BW-LW-20,rows[7],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;debtorPhone&#x27;),X+LW+10,ys[8],BW-LW-20,rows[8],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;submitPlace&#x27;),X+LW+10,ys[9],BW-LW-20,rows[9],16,&#x27;left&#x27;,3);drawCenteredLines(ctx,txt(&#x27;notes&#x27;),X+LW+10,ys[10],BW-LW-20,rows[10],16,&#x27;left&#x27;,3);let ay=ys[11];ctx.beginPath();ctx.moveTo(X,ay+196);ctx.lineTo(X+BW,ay+196);ctx.stroke();ctx.font=(isOngeol?&#x27;700 16px &#x27;+fontFamily:&#x27;700 17px &#x27;+fontFamily);ctx.textAlign=&#x27;center&#x27;;ctx.fillText(&#x27;위 물건에 대하여 이면기재의 약정사항에 동의하고 감정평가를 의뢰합니다.&#x27;,X+BW/2,ay+38);ctx.font=&#x27;14px &#x27;+fontFamily;ctx.fillText(`${txt(&#x27;year&#x27;)} 년    ${txt(&#x27;month&#x27;)} 월    ${txt(&#x27;day&#x27;)} 일`,X+BW/2,ay+72);ctx.textAlign=&#x27;left&#x27;;ctx.font=(isOngeol?&#x27;13.5px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily);ctx.fillText(&#x27;위 의뢰인&#x27;,X+146,ay+104);drawPair(ctx,&#x27;주&#x27;,&#x27;소&#x27;,X+238,ay+104,88);ctx.fillText(txt(&#x27;clientAddr&#x27;),X+358,ay+104);drawOrgLabel(ctx,X+238,ay+130,88);ctx.fillText(txt(&#x27;clientOrg&#x27;),X+358,ay+130);drawPair(ctx,&#x27;성&#x27;,&#x27;명&#x27;,X+238,ay+156,88);ctx.fillText(txt(&#x27;clientName&#x27;),X+358,ay+156);ctx.fillText(&#x27;(인)&#x27;,X+595,ay+156);drawFour(ctx,X+238,ay+182,88);ctx.fillText(txt(&#x27;clientPhone&#x27;),X+358,ay+182);let cy=ay+196;const bottomH=46;const company=COMPANY_INFO[currentCompany]||COMPANY_INFO.bareum;ctx.beginPath();ctx.moveTo(X,by);ctx.lineTo(X+BW,by);ctx.stroke();ctx.textAlign=&#x27;center&#x27;;ctx.font=(isOngeol?&#x27;700 24px &#x27;+fontFamily:&#x27;900 26px &#x27;+fontFamily);ctx.fillStyle=(isJiho||isHwarang)?&#x27;#111111&#x27;:colors.text;ctx.fillText(txt(&#x27;companyNameText&#x27;),X+BW/2,cy+36,BW-35);ctx.fillStyle=colors.text;ctx.font=(isOngeol?&#x27;13px &#x27;+fontFamily:(currentCompany===&#x27;ongeol&#x27;?&#x27;13px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily));ctx.fillText(txt(&#x27;companyAddrText&#x27;),X+BW/2,cy+64,BW-35);ctx.font=(isOngeol?&#x27;13.5px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily);ctx.fillText(txt(&#x27;companyBankText&#x27;)+&#x27;      &#x27;+txt(&#x27;companyAccountText&#x27;)+&#x27;      &#x27;+txt(&#x27;companyHolderText&#x27;),X+BW/2,cy+88,BW-30);ctx.fillText(txt(&#x27;companyRepText&#x27;),X+BW/2,cy+106,BW-35);ctx.beginPath();ctx.moveTo(X+104,by);ctx.lineTo(X+104,Y+BH);ctx.moveTo(X+337,by);ctx.lineTo(X+337,Y+BH);ctx.moveTo(X+441,by);ctx.lineTo(X+441,Y+BH);ctx.stroke();ctx.font=(isOngeol?&#x27;13.5px &#x27;+fontFamily:&#x27;14px &#x27;+fontFamily);ctx.textBaseline=&#x27;middle&#x27;;ctx.textAlign=&#x27;center&#x27;;ctx.fillText(&#x27;접수번호&#x27;,X+52,by+bottomH/2);ctx.fillText(txt(&#x27;receiptNo&#x27;),X+220,by+bottomH/2);ctx.fillText(&#x27;착수금&#x27;,X+389,by+bottomH/2);ctx.textAlign=&#x27;left&#x27;;ctx.fillText(txt(&#x27;depositAmount&#x27;),X+455,by+bottomH/2);ctx.textBaseline=&#x27;alphabetic&#x27;;}
 
 function downloadCanvas(canvas,btn,old){canvas.toBlob(function(blob){if(!blob){alert(&#x27;이미지 생성에 실패했어요.&#x27;);if(btn)btn.textContent=old;return;}const out=URL.createObjectURL(blob);const a=document.createElement(&#x27;a&#x27;);a.href=out;a.download=(COMPANY_INFO[currentCompany]||COMPANY_INFO.bareum).fileName;document.body.appendChild(a);a.click();setTimeout(()=&gt;{URL.revokeObjectURL(out);a.remove();if(btn)btn.textContent=old;},500);},&#x27;image/jpeg&#x27;,0.95);}
-function saveJpg(ev){if(ev){ev.preventDefault();ev.stopPropagation();}if(document.activeElement)document.activeElement.blur();const btn=ev&amp;&amp;ev.currentTarget?ev.currentTarget:null;const old=btn?btn.textContent:&#x27;&#x27;;try{if(btn)btn.textContent=&#x27;저장중...&#x27;;const canvas=document.createElement(&#x27;canvas&#x27;);drawCanvas(canvas,2.5);downloadCanvas(canvas,btn,old);}catch(err){alert(&#x27;저장 중 오류: &#x27;+err.message);if(btn)btn.textContent=old;}}
+function saveJpg(ev){if(ev){ev.preventDefault();ev.stopPropagation();}if(document.activeElement)document.activeElement.blur();rememberCompanyInfo();const btn=ev&amp;&amp;ev.currentTarget?ev.currentTarget:null;const old=btn?btn.textContent:&#x27;&#x27;;try{if(btn)btn.textContent=&#x27;저장중...&#x27;;const canvas=document.createElement(&#x27;canvas&#x27;);drawCanvas(canvas,2.5);downloadCanvas(canvas,btn,old);}catch(err){alert(&#x27;저장 중 오류: &#x27;+err.message);if(btn)btn.textContent=old;}}
 document.addEventListener(&#x27;DOMContentLoaded&#x27;,()=&gt;{resetDefaults();applyZoom();const etc=$(&#x27;purposeEtc&#x27;);const etcWrap=$(&#x27;purposeEtcWrap&#x27;);etc.addEventListener(&#x27;pointerdown&#x27;,e=&gt;e.stopPropagation());etc.addEventListener(&#x27;click&#x27;,e=&gt;e.stopPropagation());etc.addEventListener(&#x27;focus&#x27;,()=&gt;{$(&#x27;purposeEtcCheck&#x27;).checked=true;});etcWrap.addEventListener(&#x27;click&#x27;,e=&gt;{if(e.target!==$(&#x27;purposeEtc&#x27;)){$(&#x27;purposeEtcCheck&#x27;).checked=true;setTimeout(()=&gt;etc.focus(),0);}});});
 window.addEventListener(&#x27;resize&#x27;,applyZoom);
 &lt;/script&gt;
@@ -6225,7 +6762,7 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
     }
   }
   function setButtons(company){
-    [['hagam','unifiedRequestHagamBtn'],['bareum','unifiedRequestBareumBtn'],['ongeol','unifiedRequestOngeolBtn']].forEach(([c,id])=>{const b=document.getElementById(id);if(b)b.classList.toggle('active',c===company);});
+    [['hagam','unifiedRequestHagamBtn'],['bareum','unifiedRequestBareumBtn'],['ongeol','unifiedRequestOngeolBtn'],['jiho','unifiedRequestJihoBtn'],['hwarang','unifiedRequestHwarangBtn']].forEach(([c,id])=>{const b=document.getElementById(id);if(b)b.classList.toggle('active',c===company);});
   }
   function showPane(company){
     const hp=document.getElementById('unifiedRequestHagamPane'),mp=document.getElementById('unifiedRequestMultiPane');
@@ -6233,13 +6770,13 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
     if(mp)mp.style.display=company==='hagam'?'none':'block';
   }
   window.switchUnifiedRequestCompany=function(company,skipCollect){
-    if(!['hagam','bareum','ongeol'].includes(company))return;
+    if(!['hagam','bareum','ongeol','jiho','hwarang'].includes(company))return;
     if(!skipCollect)collect(current==='hagam'?'hagam':'multi');
     current=company;
     if(company==='hagam'){applyCommon('hagam');}
     else{
       applyCommon('multi');
-      const f=frame('multi');try{if(f&&f.contentWindow&&typeof f.contentWindow.switchCompany==='function')f.contentWindow.switchCompany(company==='ongeol'?'ongeol':'bareum');}catch(e){}
+      const f=frame('multi');try{if(f&&f.contentWindow&&typeof f.contentWindow.switchCompany==='function')f.contentWindow.switchCompany(company);}catch(e){}
     }
     showPane(company);setButtons(company);
     setTimeout(()=>{if(typeof window.resizeQuoteRequestFrames==='function')window.resizeQuoteRequestFrames();},40);
@@ -6253,7 +6790,7 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
     const f=frame(kind);if(!f)return;
     const hook=()=>{
       try{const w=f.contentWindow;if(w&&typeof w.resetDefaults==='function'&&!w.__unifiedResetHooked){w.__unifiedResetHooked=true;w.__unifiedOriginalReset=w.resetDefaults;w.resetDefaults=function(){w.__unifiedOriginalReset();window.parent.unifiedRequestHandleReset(kind);};}}catch(e){}
-      if(kind==='multi'){try{const w=f.contentWindow;if(w&&typeof w.switchCompany==='function')w.switchCompany(current==='ongeol'?'ongeol':'bareum');}catch(e){}}
+      if(kind==='multi'){try{const w=f.contentWindow;if(w&&typeof w.switchCompany==='function')w.switchCompany(current==='hagam'?'bareum':current);}catch(e){}}
       setTimeout(()=>{if(typeof window.resizeQuoteRequestFrames==='function')window.resizeQuoteRequestFrames();},30);
     };
     f.addEventListener('load',hook);setTimeout(hook,0);
@@ -6988,6 +7525,88 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
 </div>
 </details>
 </div>
+</section>
+<section class="typePage" id="page_receiveExternal">
+<div class="modeNotice">
+<b>[외부접수]</b><br/>
+      외부 감정평가업체에 전달할 접수글을 작성하는 페이지입니다. 일반접수와 입력·출력·달력을 독립적으로 사용합니다.
+    </div>
+<div class="receiveLayout">
+<section class="card receiveInputCard">
+<div class="sectionTitle"><span class="badge">1</span> 정보 기입</div>
+<textarea class="userInput infoExampleInput" id="receiveExternalInput" placeholder="예:
+✅ 서울 광진구 자양로 50길 49 402호
+- 평가목적 : 증여
+- 기준시점 : 현재
+- 기타사항 : 기준시가 1.6억 / 신속통합구역 구의동 32 구역 물건
+
+🔸 [ 중간 금액(유사시세) ]
+- 예상평가액 : 3.5억 내외
+
+🔸 [ 최저 금액 ]
+- 예상평가액 : 2.9억 내외
+- 예상수수료 (영수증 발행X, VAT 제외) : 115만원 내외
+- 예상특용비 : 56.6만원 내외
+
+하용원"></textarea>
+
+<div class="btns">
+<button onclick="receiveExternalGenerate()">반영</button>
+<button class="light" onclick="receiveExternalReset()">초기화</button>
+</div>
+<details class="receiveInfoBox">
+<summary>자동 추출 기준</summary>
+<div class="receiveInfoBody">
+            • ✅ 주소, 평가목적, 기준시점, 기타사항을 추출합니다.<br/>
+            • 최저/중간/최고 금액 중 일반접수와 동일한 우선순위로 픽스 금액을 선택합니다.<br/>
+            • 맨 하단에 따로 적힌 이름이나 상호가 있을 때만 의뢰인으로 사용합니다.<br/>
+            • 동·호 또는 호수가 있으면 3영업일, 그 외 물건은 4영업일 뒤를 마감일로 설정합니다.
+          </div>
+</details>
+<div class="receiveCalendarBox">
+<div class="receiveCalendarHead">
+<button class="light smallBtn" onclick="receiveExternalMoveCalendar(-1)">이전</button>
+<span id="receiveExternalCalendarTitle">-</span>
+<div style="display:flex; gap:6px; align-items:center;">
+<button class="light smallBtn" onclick="receiveExternalMoveCalendar(1)">다음</button>
+<button class="light smallBtn" id="receiveExternalCalendarToggleBtn" onclick="receiveExternalToggleCalendar()">접기</button>
+</div>
+</div>
+<div class="receiveCalendarGrid" id="receiveExternalCalendarGrid"></div>
+<div class="receiveCalendarLegend">빨간색은 주말/등록 공휴일입니다. 마감일 계산에서도 제외됩니다.</div>
+</div>
+</section>
+<section class="card receiveOutputCard">
+<div class="sectionTitle"><span class="badge">2</span> 접수글</div>
+<div class="output" contenteditable="true" id="receiveExternalOutput">정보를 입력하고 반영을 누르면 외부접수글이 생성됩니다.</div>
+<div class="btns">
+<button onclick="receiveExternalCopy()">복사</button>
+<button class="light" onclick="receiveExternalGenerate()">반영</button>
+</div>
+
+</section>
+</div>
+<details class="card full receiveRegionGuide">
+<summary>서울/경기 평가지역 구분표</summary>
+<div class="receiveRegionGuideInner">
+<div class="receiveRegionGuideGrid">
+<div class="receiveRegionGuideBox">
+<b>서울동부</b><br/>강동구, 송파구, 광진구, 성동구, 동대문구, 중랑구<br/><br/>
+<b>서울서부</b><br/>강서구, 양천구, 마포구, 서대문구, 은평구<br/><br/>
+<b>서울남부</b><br/>강남구, 서초구, 관악구, 동작구, 금천구, 구로구, 영등포구<br/><br/>
+<b>서울북부</b><br/>강북구, 도봉구, 노원구, 성북구<br/><br/>
+<b>서울중부</b><br/>종로구, 중구, 용산구
+          </div>
+<div class="receiveRegionGuideBox">
+<b>경기북부</b><br/>고양시, 파주시, 의정부시, 양주시, 동두천시, 포천시, 연천군, 가평군, 구리시, 남양주시<br/><br/>
+<b>경기남부</b><br/>수원시, 성남시, 용인시, 화성시, 오산시, 평택시, 안성시, 이천시, 여주시, 광주시, 하남시<br/><br/>
+<b>경기서부</b><br/>부천시, 광명시, 시흥시, 안산시, 안양시, 군포시, 의왕시, 과천시, 김포시<br/><br/>
+<b>경기동부</b><br/>양평군, 여주시, 이천시, 광주시, 하남시, 남양주시, 구리시
+          </div>
+</div>
+<div class="mini" style="margin-top:10px;">※ 같은 시/군이 여러 권역에 걸쳐 있는 경우 현재 자동분류 코드 기준으로 먼저 매칭되는 권역이 적용됩니다.</div>
+</div>
+</details>
 </section>
 <section class="typePage" id="page_receiveProperty">
 <div class="modeNotice">
@@ -13890,6 +14509,179 @@ setTimeout(mentSyncStickyOffset, 250);
   window.baseDateStatusRefresh = refresh;
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',setup);
   else setup();
+})();
+</script>
+
+
+<script>
+/* 외부접수 페이지 전용: 기존 일반접수·복수접수의 함수/입력/출력에는 영향 없음 */
+(function(){
+  'use strict';
+  const get = id => document.getElementById(id);
+  const emptyMessage = '정보를 입력하고 반영을 누르면 외부접수글이 생성됩니다.';
+  let calendarDate = new Date();
+
+  function escapeHtml(s){ return receiveEscapeHtml(String(s || '')); }
+  function getOutputText(){
+    const box = get('receiveExternalOutput');
+    return box ? (box.innerText || box.textContent || '').trim() : '';
+  }
+  function showOutput(txt, highlighted){
+    const el = get('receiveExternalOutput');
+    if(!el) return;
+    el.innerHTML = highlighted ? String(txt).split('\n').map(line=>{
+      const match = line.match(/^(-\s*)(.+?)(\s+픽스\b.*)$/);
+      if(match){
+        return escapeHtml(match[1]) + '<span class="receiveHighlight">' + escapeHtml(match[2]) + '</span>' + escapeHtml(match[3]);
+      }
+      const deadline = line.match(/^(-\s*마감일:\s*평가서\s+)(\d{1,2}\/\d{1,2})(.*)$/);
+      if(deadline){
+        return escapeHtml(deadline[1]) + '<span class="receiveHighlight">' + escapeHtml(deadline[2]) + '</span>' + escapeHtml(deadline[3]);
+      }
+      return escapeHtml(line);
+    }).join('\n') : escapeHtml(txt);
+  }
+  // Only a final standalone name/company line counts as a client. Without it, keep blank.
+  function extractClient(raw){
+    const lines = String(raw || '').replace(/\r/g,'').split('\n');
+    for(let i=lines.length-1;i>=0;i--){
+      const line = lines[i].trim();
+      if(!line) continue;
+      if(/^[-•*🔸✅]/u.test(line) || /^\[/.test(line)) return '';
+      if(/[:：]/.test(line) || /^(?:예상|평가|기준|기타|금액|중간|최저|최고|희망|현재|마감|청구서)/.test(line)) return '';
+      // Not an address or a value from the preceding appraisal description.
+      if(/\d|서울|경기|광역|특별|시\s|구\s|로\s|길\s|동\s/.test(line)) return '';
+      if(line.length>60) return '';
+      return receiveCleanLine(line);
+    }
+    return '';
+  }
+  function parse(raw){
+    const lines=String(raw).split(/\r?\n/);
+    const addr=lines.find(s=>/^\s*✅/.test(s)) || '';
+    const sections=receiveParseSections(raw);
+    const selected=receivePickAmount(sections);
+    return {
+      client:extractClient(raw),
+      target:receiveCleanLine(addr),
+      purpose:receiveExtractField(raw,'평가목적'),
+      baseDate:receiveExtractField(raw,'기준시점'),
+      notes:receiveExtractField(raw,'기타사항'),
+      selectedKey:selected.key,
+      selected:selected.item
+    };
+  }
+  function externalDeadlineBusinessDays(target){
+    const s=String(target||'').replace(/\s+/g,' ').trim();
+    // Ordinary street-number hyphens (e.g. 77-4) are not unit numbers.
+    // Match the existing 'unit = 3 days' policy, including a terminal '402호'.
+    const hasUnit=/(?:\d+\s*동\s*\d+\s*호|지하\s*\d+\s*호|지층\s*\d+\s*호|B\s*\d+\s*호|제\s*\d+\s*호|(?:^|[^\d])\d{1,4}\s*호)(?=\s|$|[),.])/i.test(s);
+    return hasUnit ? 3 : 4;
+  }
+  function buildMessage(parsed){
+    const deadline = receiveAddBusinessDays(new Date(), externalDeadlineBusinessDays(parsed.target));
+    const amountText = parsed.selected?.amountText || '**억';
+    const amountValue = parsed.selected?.amountValue;
+    const fee = parsed.selected?.feeText || '';
+    const feeSpace = fee.replace(/\s*만원$/,' 만원');
+    const baseRate = amountValue != null && amountValue <= 5.1 ? '기준요율' : '하한요율';
+    // Match the original general-reception special-expense threshold precisely.
+    const specialRule = amountValue != null && amountValue <= 5.1 ? '+10만' : '기준-하한';
+    const fixGuide = parsed.selectedKey === 'high'
+      ? '딱 요 금액이나 살짝 높게 부탁드려요! 낮아지면 안됩니당!'
+      : '딱 요 금액이나 살짝 아래로 부탁드려요! 올라가면 안됩니당!';
+    return `- 의뢰인 : ${parsed.client}
+- 평가대상 : ${parsed.target}
+- 평가목적 : ${parsed.purpose}
+- 제출처 : 국세청 및 세무서
+- 기준시점 : ${parsed.baseDate}
+- 조사일자, 작성일자, 발송도장 : 현재
+- 기타사항 : ${parsed.notes}
+
+- ${amountText} 픽스 (${fixGuide})
+- 마감일: 평가서 ${receiveFormatMD(deadline)}까지 청구서, 괄감, 제본파일 전달 필요
+
+청구서
+- 순수수료: ${baseRate}
+- 전체 할증:
+- 특용비: ${specialRule}
+- 여비: 서울기준
+- 실비: 3 만원
+- 착수금: 50 만원
+- vat 포함 총 수수료 [${feeSpace}] 안으로
+
+*문제 있거나 조율 필요한 부분은 편하게 말씀주세요`;
+  }
+  function generate(){
+    const raw = get('receiveExternalInput')?.value.trim() || '';
+    if(!raw){ showOutput(emptyMessage,false); return; }
+    showOutput(buildMessage(parse(raw)),true);
+  }
+  function reset(){
+    const area=get('receiveExternalInput');
+    if(area){ area.value=''; autoResize(area); }
+    showOutput(emptyMessage,false);
+  }
+  function copy(){
+    const text=getOutputText();
+    if(!text || text === emptyMessage) return;
+    if(navigator.clipboard?.writeText) navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text));
+    else fallbackCopy(text);
+  }
+  function fallbackCopy(text){
+    const area=document.createElement('textarea');
+    area.value=text;
+    area.style.position='fixed'; area.style.opacity='0';
+    document.body.appendChild(area);area.select();
+    try{document.execCommand('copy');}finally{area.remove();}
+  }
+  function moveCalendar(delta){
+    calendarDate=new Date(calendarDate.getFullYear(),calendarDate.getMonth()+delta,1);
+    renderCalendar();
+  }
+  function toggleCalendar(){
+    const box=document.querySelector('#page_receiveExternal .receiveCalendarBox');
+    const collapsed=box?.classList.toggle('calendarCollapsed');
+    const btn=get('receiveExternalCalendarToggleBtn');
+    if(btn) btn.textContent=collapsed?'펼치기':'접기';
+  }
+  function renderCalendar(){
+    const title=get('receiveExternalCalendarTitle');
+    const grid=get('receiveExternalCalendarGrid');
+    if(!title||!grid) return;
+    const y=calendarDate.getFullYear(), m=calendarDate.getMonth();
+    title.textContent=y+'년 '+(m+1)+'월';
+    const dow=['일','월','화','수','목','금','토'];
+    let html=dow.map((day,i)=>`<div class="receiveCalDow ${i===0||i===6?'receiveCalWeekend':''}">${day}</div>`).join('');
+    const first=new Date(y,m,1), last=new Date(y,m+1,0), today=receiveDateKey(new Date());
+    for(let i=0;i<first.getDay();i++) html+='<div class="receiveCalMuted"></div>';
+    for(let day=1;day<=last.getDate();day++){
+      const current=new Date(y,m,day), key=receiveDateKey(current);
+      const css=[current.getDay()===0||current.getDay()===6?'receiveCalWeekend':'',receivePropertyHolidays.has(key)?'receiveCalHoliday':'',key===today?'receiveCalToday':''].filter(Boolean).join(' ');
+      html+=`<div class="${css}">${day}</div>`;
+    }
+    grid.innerHTML=html;
+  }
+  function autoResize(el){
+    if(!el) return;
+    el.style.height='auto';
+    el.style.height=Math.max(el.scrollHeight,180)+'px';
+  }
+  function init(){
+    renderCalendar();
+    const input=get('receiveExternalInput');
+    if(input){
+      input.addEventListener('input',()=>autoResize(input));
+      autoResize(input);
+    }
+  }
+  window.receiveExternalGenerate=generate;
+  window.receiveExternalReset=reset;
+  window.receiveExternalCopy=copy;
+  window.receiveExternalMoveCalendar=moveCalendar;
+  window.receiveExternalToggleCalendar=toggleCalendar;
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
+  else init();
 })();
 </script>
 
