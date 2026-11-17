@@ -8030,7 +8030,8 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
 <div class="output" id="rightsMsg">정보를 입력하고 반영을 누르면 권리평가 안내문이 생성됩니다.</div>
 <div class="btns"><button type="button" class="baseDateStatusBtn baseDateStatusUnknown" id="baseDateStatus_rights_3" onclick="baseDateStatusRefresh('rights')" title="기준시점 확인 필요">3달 이내</button>
 <button type="button" class="baseDateStatusBtn baseDateStatusUnknown" id="baseDateStatus_rights_6" onclick="baseDateStatusRefresh('rights')" title="기준시점 확인 필요">6달 이내</button>
-<button onclick="rightsCopyMsg()">복사</button></div>
+<button onclick="rightsCopyMsg()">복사</button>
+<button class="specialToggleBtn" id="rightsRemoveSpecialBtn" type="button" onclick="rightsToggleSpecial()">특용제거</button></div>
 </section>
 </div>
 <details class="card full collapsibleCard">
@@ -8102,6 +8103,9 @@ window.addEventListener(&#x27;resize&#x27;,applyZoom);
 <option value="mid">중간</option>
 <option value="high">최고</option>
 <option value="range">범위</option>
+<option value="lowhigh">최저최고</option>
+<option value="lowmid">최저중간</option>
+<option value="midhigh">중간최고</option>
 </select>
 <textarea class="userInput" id="multiTarget"></textarea>
 <input class="userInput" id="multiFloor"/>
@@ -9192,9 +9196,48 @@ function parseMultiCompanyAmounts(lines){
   }
   return result;
 }
+// 복수 페이지 전용: 첫 줄 희망금액 표현을 7가지 유형으로 세분화합니다.
+// 조합 표현의 기입 순서와 관계없이 최저→중간→최고 순으로 출력합니다.
+function multiParseRequestedMode(value){
+  const t = String(value || '').replace(/\s+/g, '');
+  if(!t) return '';
+  if(/범위|구간/.test(t)) return 'range';
+  if(/(?:최저|하한|최소).*?(?:최고|상한|최대)|(?:최고|상한|최대).*?(?:최저|하한|최소)/.test(t)) return 'lowhigh';
+  if(/(?:최저|하한|최소).*?중간|중간.*?(?:최저|하한|최소)/.test(t)) return 'lowmid';
+  if(/(?:최고|상한|최대).*?중간|중간.*?(?:최고|상한|최대)/.test(t)) return 'midhigh';
+  return mapQuickMode(t);
+}
+function multiModeKeys(mode){
+  return {
+    range:['low','mid','high'],
+    lowhigh:['low','high'],
+    lowmid:['low','mid'],
+    midhigh:['mid','high'],
+    low:['low'], mid:['mid'], high:['high']
+  }[mode] || ['low'];
+}
+function multiModeDisplayName(mode, titleOverride){
+  return {lowhigh:'최저최고', lowmid:'최저중간', midhigh:'중간최고'}[mode] || labelQuickMode(mode, titleOverride);
+}
+function multiIsFullMarketRangeNeeded(mode){
+  return mode === 'low' || mode === 'high' || mode === 'lowhigh';
+}
+
+// 일반/복수 정보기입: 기타사항은 맨 위 기본정보 문단에서만 추출합니다.
+// 빈 줄 뒤의 평가금액/업체명 문단은 내부 메모이므로 기타사항에 넣지 않습니다.
+// 빈 줄 구분이 없어도 금액 행이 시작되면 이후는 평가금액 영역으로 처리합니다.
+function quickTopInfoLineCount(raw){
+  const normalized = String(raw || '').replace(/\r\n?/g, '\n').trim();
+  const topParagraph = normalized.split(/\n[^\S\n]*\n/)[0] || '';
+  const topLines = topParagraph.split('\n').map(v => v.trim()).filter(Boolean);
+  const amountIndex = topLines.findIndex((line, i) => i > 0 && !!parseQuickAmountLine(line));
+  return amountIndex >= 0 ? amountIndex : topLines.length;
+}
+
 function parseMultiQuickInput(){
   const raw = document.getElementById('multiQuickInput')?.value || '';
   const lines = raw.split(/\n+/).map(v => v.trim()).filter(Boolean);
+  const topInfoLineCount = quickTopInfoLineCount(raw);
   if(!lines.length){
     alert('내용기입 칸에 내용을 입력해주세요.');
     return;
@@ -9220,7 +9263,7 @@ function parseMultiQuickInput(){
   const firstParts = splitQuickMetaLine(lines[0]);
   firstParts.forEach(part => {
     const p = mapQuickPurpose(part);
-    const m = mapQuickMode(part);
+    const m = multiParseRequestedMode(part);
     const d = normalizeQuickDate(part);
     if((!purpose && p && p !== part) || /상속|증여|양수도|양도|매매|저가|특관|주식|법인|현물|자산/.test(part)) purpose = p;
     if(!quoteMode && m) quoteMode = m;
@@ -9229,7 +9272,7 @@ function parseMultiQuickInput(){
   });
   if(!quoteMode){
     for(const line of lines){
-      const m = mapQuickMode(line);
+      const m = multiParseRequestedMode(line);
       if(m) {
         quoteMode = m;
         if(m === 'low' && isHopeAmountText(line)) multiQuoteModeTitleOverride = 'hope';
@@ -9246,7 +9289,10 @@ function parseMultiQuickInput(){
     const isFloorAreaOnly = /층/.test(line) && /\d/.test(line) && !/(서울|경기|인천|부산|대구|광주|대전|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주|시|구|군|동|로|길)/.test(line.replace(/층/g,''));
     const isAddressLike = /(서울|경기|인천|부산|대구|광주|대전|울산|세종|강원|충북|충남|전북|전남|경북|경남|제주|시|군|구|동|읍|면|리|로|길).*\d/.test(line);
 
-    if(isAddressLike && !floorAreaSeen){
+    // 주소 이후의 추가 줄은 기본적으로 기타사항입니다.
+    // 단, 시·도부터 시작하는 별도의 명확한 주소줄은 기존 여러 주소 입력 방식대로 유지합니다.
+    const isSeparateFullAddress = /^(?:✅\s*)?(?:서울(?:특별시|시)?|경기(?:도)?|인천(?:광역시|시)?|부산(?:광역시|시)?|대구(?:광역시|시)?|광주(?:광역시|시)?|대전(?:광역시|시)?|울산(?:광역시|시)?|세종(?:특별자치시|시)?|강원(?:특별자치도|도)?|충북|충남|전북|전남|경북|경남|제주(?:특별자치도|도)?|충청북도|충청남도|전라북도|전라남도|경상북도|경상남도)\s+.*\d/.test(line);
+    if(isAddressLike && !floorAreaSeen && (!firstAddressSeen || isSeparateFullAddress)){
       firstAddressSeen = true;
       const split = splitAddressAndParenMemo(line);
       if(split.address) addressLines.push(split.address);
@@ -9260,7 +9306,7 @@ function parseMultiQuickInput(){
       floorAreaSeen = true;
       return;
     }
-    if(firstAddressSeen || floorAreaSeen) memoParts.push(line);
+    if((firstAddressSeen || floorAreaSeen) && index + 1 < topInfoLineCount) memoParts.push(line);
   });
 
   multiSelectPurposeByText(purpose);
@@ -9308,7 +9354,7 @@ function parseMultiQuickInput(){
     '',
     '평가목적: ' + (purpose || ''),
     '기준시점: ' + (baseDate || ''),
-    '희망금액: ' + labelQuickMode(quoteMode, multiQuoteModeTitleOverride),
+    '희망금액: ' + multiModeDisplayName(quoteMode, multiQuoteModeTitleOverride),
     '주소:',
     (addressLines.join('\n') || ''),
     '층 / 전용면적 / 용도: ' + [floor ? floor + '층' : '', area ? area + '㎡' : '', useType || ''].filter(Boolean).join(' / '),
@@ -9440,13 +9486,11 @@ function multiCalcOne(company,key,label){
 }
 function multiGetKeysForMode(){
   const mode = document.getElementById('multiQuoteMode')?.value || 'low';
-  if(mode === 'range') return ['low','mid','high'];
-  return [mode];
+  return multiModeKeys(mode);
 }
 function multiGetMessageMainKeys(){
   const mode = document.getElementById('multiQuoteMode')?.value || 'low';
-  if(mode === 'range') return ['low','mid','high'];
-  return [mode];
+  return multiModeKeys(mode);
 }
 function multiAmountDisplayLabel(key){
   if(key === 'low' && (multiAmountTitleOverrides.low === 'hope' || multiQuoteModeTitleOverride === 'hope')) return '희망';
@@ -9601,29 +9645,27 @@ function multiMakeMsg(){
   if(memo) lines.push('• 기타사항 : ' + memo);
   if(purpose || base || fa || memo) lines.push('');
 
-  // 시세 범위는 두 업체의 중간금액만 기준으로 항상 위에 표시합니다.
-  const midRows = ['ht','partner'].map(company => multiCalcOne(company, 'mid', '중간')).filter(Boolean);
-  if(midRows.length){
-    lines.push('🔸 시세 범위 : ' + eokRangeFromRows(midRows));
+  // 중간 수수료를 요청하지 않은 경우에만 중간 평가액을 '시세 범위'로 안내합니다.
+  // 중간금액이 없다면 해당 항목만 빈칸으로 두고 중간 수수료는 계산·출력하지 않습니다.
+  if(multiIsFullMarketRangeNeeded(mode)){
+    const midAmounts = ['ht','partner'].map(company => ({w:multiAmountWon(company,'mid')})).filter(row => row.w > 0);
+    lines.push('🔸 시세 범위 : ' + eokRangeFromRows(midAmounts));
     lines.push('');
   }
 
   if(!multiRows.length){
     lines.push('계산할 평가금액을 입력해주세요.');
   } else {
-    // 둘 이상의 금액 구분(최저/중간/최고 등)을 안내할 때만 문단별 제목과 여백을 표시합니다.
-    // 단일 금액 안내와 기존 금액·수수료·특용비 계산 형식은 그대로 유지합니다.
-    const sectionCount = mainKeys.filter(key => multiRows.some(r => r.key === key)).length;
+    // 금액 종류가 하나여도 제목을 붙이고, 실제 출력 순서대로 1️⃣ 2️⃣ 3️⃣을 사용합니다.
+    const numberIcons = ['1️⃣','2️⃣','3️⃣'];
     let displayedSections = 0;
     mainKeys.forEach(key => {
       const ht = multiRows.find(r=>r.company==='ht' && r.key===key);
       const partner = multiRows.find(r=>r.company==='partner' && r.key===key);
 
-      if(sectionCount > 1 && (ht || partner)){
+      if(ht || partner){
         if(displayedSections > 0) lines.push('');
-        lines.push('━━━━━━━━━━━━━━━');
-        lines.push(`📌 ${labelMap[key]} 금액 안내`);
-        lines.push('━━━━━━━━━━━━━━━');
+        lines.push(`${numberIcons[displayedSections]} ${labelMap[key]} 금액 안내 ━━━━━━━━`);
         lines.push('');
         displayedSections++;
       }
@@ -10104,6 +10146,7 @@ function updateAmountRangeValidation(mid, minus18, plus18){
 function parseQuickInput(){
   const raw = document.getElementById('quickInput')?.value || '';
   const lines = raw.split(/\n+/).map(v => v.trim()).filter(Boolean);
+  const topInfoLineCount = quickTopInfoLineCount(raw);
   if(!lines.length){
     alert('내용기입 칸에 내용을 입력해주세요.');
     return;
@@ -10245,8 +10288,8 @@ function parseQuickInput(){
       return;
     }
 
-    // 복수 페이지와 같은 기준: 주소/층면적 이후에 남는 내용은 전달문구 기타사항으로 반영
-    if(firstAddressSeen || floorAreaSeen) memoParts.push(line);
+    // 맨 위 기본정보 문단의 내용만 기타사항에 반영하고, 평가금액 문단의 메모는 제외합니다.
+    if((firstAddressSeen || floorAreaSeen) && idx < topInfoLineCount) memoParts.push(line);
   });
 
   // 첫 줄의 '/' 뒤 내용은 내부 참고용 메모입니다.
@@ -12450,6 +12493,19 @@ function rightsRowsFor(type, min, max){
   const table = type === '영업권' ? goodwillFeeTable : (type === insuranceTypeLabel ? insuranceFeeTable : commonRightsFeeTable);
   return table.filter(row => max >= row.min && min < row.max);
 }
+// 무형 전달문구에만 적용되는 특용제거 표시 상태 (다른 페이지와 독립).
+let rightsSpecialRemoved = false;
+function rightsSyncSpecialButton(){
+  const btn = document.getElementById('rightsRemoveSpecialBtn');
+  if(!btn) return;
+  btn.classList.toggle('active', rightsSpecialRemoved);
+  btn.textContent = rightsSpecialRemoved ? '특용복원' : '특용제거';
+}
+function rightsToggleSpecial(){
+  rightsSpecialRemoved = !rightsSpecialRemoved;
+  rightsSyncSpecialButton();
+  rightsGenerate();
+}
 function rightsBuildMessage(item){
   const rows = rightsRowsFor(item.type, item.min, item.max);
   const rightsCount = rightsGetCount();
@@ -12458,7 +12514,7 @@ function rightsBuildMessage(item){
   const amountBlock = item.isSingleAmount
     ? `🔸예상평가액\n•희망금액 ${item.wishText || item.minText}`
     : `🔸예상평가액\n•최저 ${item.minText}\n•최대 ${item.maxText}\n*최저~최대 사이 금액 모두 진행 가능합니다 :)`;
-  return `세무사님:) 탁감 결과 전달드립니다ㅎㅎ
+  const mainText = `세무사님:) 탁감 결과 전달드립니다ㅎㅎ
 
 • 평가대상/종류: ${item.name} ${item.type}
 • 평가목적 : ${item.purpose || ''}
@@ -12467,7 +12523,10 @@ function rightsBuildMessage(item){
 ${amountBlock}
 
 🔸${item.type} 예상 수수료(vat 포함)
-${feeLines}
+${feeLines}`;
+  // 특용제거 중에는 예상 수수료까지 유지하고, 특용비·하단 안내만 제외.
+  if(rightsSpecialRemoved) return mainText;
+  return `${mainText}
 
 🔸${item.type} 예상 특용비
 ${extraLines}
@@ -12506,6 +12565,8 @@ function rightsGenerate(){
   out.textContent = normalizeGeneratedMessageText(messages.join('\n\n'));
 }
 function rightsReset(){
+  rightsSpecialRemoved = false;
+  rightsSyncSpecialButton();
   const input = document.getElementById('rightsInput');
   const out = document.getElementById('rightsMsg');
   const count = document.getElementById('rightsCount');
